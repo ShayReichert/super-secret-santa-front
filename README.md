@@ -4,6 +4,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 1. Check that you have a Node version equal to or higher than 20, and npm version equal to or higher to 10.
    This project was made with Node 20.10.0 and npm 10.2.3.
+   There is a .nvmrc file in the project, so you can you run "nvm use" to download, install, and switch to that version.
 
 2. Clone this repo and install the dependencies :
 
