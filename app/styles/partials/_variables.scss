@@ -1,0 +1,53 @@
+//////////////////////
+// Colors
+//////////////////////
+
+$black: #000;
+$white: #fff;
+
+$primary-color: #d63638;
+$secondary-color: #53af84;
+$tertiary-color: #fceee0;
+$dark-primary: #be272c;
+$dark-secondary: #4a7a58;
+$dark-tertiary: #efddcb;
+$light-secondary: #d4f1e3;
+
+$accent-color: $primary-color;
+$cta-color: $primary-color;
+$background-color: $white;
+
+$overlay-color: rgba(114, 114, 114, 0.57);
+
+$gray200: #f7f9fa;
+$gray500: #727272;
+$gray800: black;
+
+//////////////////////
+// Sizes
+//////////////////////
+
+$max-width: 150rem;
+$max-content: calc($max-width - 20rem);
+$border-radius: 15px;
+
+// Fonts sizes
+$font-size-h1: 50px;
+$font-size-h2: 60px;
+$font-size-h3: 40px;
+$font-size-body: 18px;
+
+// Screen sizes
+$min_large_screen: 1500px;
+$desktop: 1499px;
+$laptop: 1269px;
+$large_tablet: 1023px;
+$tablet: 767px;
+$mobile: 479px;
+
+//////////////////////
+// Menu
+//////////////////////
+
+$menu-desktop-height: 8.6rem;
+$menu-mobile-height: 6.5rem;

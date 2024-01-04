@@ -1,0 +1,66 @@
+@import "./partials/mixins";
+
+// ----- GLOBAL ----- //
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: $background-color;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+a,
+li,
+button {
+  &:focus-visible {
+    outline: 4px solid $accent-color !important;
+  }
+}
+
+// ----- FONTS SIZE ----- //
+
+h1 {
+  @include fluid-font(40px, $font-size-h1);
+  font-weight: 600;
+  line-height: 1;
+}
+
+h2 {
+  @include fluid-font(40px, $font-size-h2);
+  font-weight: 600;
+  line-height: 1;
+}
+
+h3 {
+  @include fluid-font(24px, $font-size-h3);
+  font-weight: 600;
+  line-height: 1;
+}
+
+p,
+ul {
+  @include fluid-font(14px, $font-size-body);
+}

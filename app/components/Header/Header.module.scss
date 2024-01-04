@@ -1,0 +1,16 @@
+@import "../../styles/partials/mixins";
+
+.header {
+  background-color: $primary-color;
+
+  h1 {
+    text-align: center;
+    color: $white;
+    text-transform: uppercase;
+
+    span {
+      display: block;
+      @include fluid-font(30px, 40px);
+    }
+  }
+}
