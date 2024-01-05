@@ -1,0 +1,11 @@
+@import "../../../styles/partials/mixins";
+
+.dashboard-page {
+  display: inline-block;
+  padding: 4rem;
+  width: 50%;
+
+  .user-wishlist {
+    background-color: $tertiary-color;
+  }
+}

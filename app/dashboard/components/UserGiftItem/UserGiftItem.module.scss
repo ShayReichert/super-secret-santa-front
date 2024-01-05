@@ -1,0 +1,7 @@
+@import "../../../styles/partials/mixins";
+
+.gift-item {
+  .delete-icon {
+    transform: translateY(3px);
+  }
+}
