@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import GifteeeDetails from "./components/GifteeDetails/GifteeDetails";
+import GifteeDetails from "./components/GifteeDetails/GifteeDetails";
 import UserWishlist from "./components/UserWishlist/UserWishlist";
+import SantaImage from "../components/SantaImage/SantaImage";
 
 export const metadata: Metadata = {
   title: "Dashboard | Super Secret Santa",
@@ -9,9 +10,10 @@ export const metadata: Metadata = {
 
 export default function Dashboard() {
   return (
-    <main id="main">
-      <GifteeeDetails />
+    <main id="main" style={{ display: "flex" }}>
+      <GifteeDetails />
       <UserWishlist />
+      <SantaImage />
     </main>
   );
 }

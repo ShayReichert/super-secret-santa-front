@@ -3,6 +3,7 @@
 import { useState, useCallback, FormEvent } from "react";
 import styles from "./UserWishlist.module.scss";
 import UserGiftItem from "../UserGiftItem/UserGiftItem";
+import Image from "next/image";
 
 export default function UserWishlist() {
   const [gifts, setGifts] = useState<Gift[]>([
@@ -28,13 +29,6 @@ export default function UserWishlist() {
     [gifts]
   );
 
-  const handleEditChange = useCallback(
-    (index: number, text: string): void => {
-      setGifts(gifts.map((gift, idx) => (idx === index ? { ...gift, editingText: text } : gift)));
-    },
-    [gifts]
-  );
-
   const handleEditSubmit = useCallback(
     (index: number): void => {
       setGifts(gifts.map((gift, idx) => (idx === index ? { ...gift, name: gift.editingText, isEditing: false } : gift)));
@@ -50,11 +44,11 @@ export default function UserWishlist() {
   );
 
   return (
-    <div className={styles["dashboard-page"]}>
-      <div className={styles["user-wishlist"]}>
+    <div className={styles["dashboard-wrapper"]}>
+      <div className={styles["dashboard-background"]}>
         <div className={styles["content"]}>
           <p>Et toi, que voudrais-tu pour Noël ?</p>
-          <ul>
+          <ul className={styles["wishlist"]}>
             {gifts.map((gift, index) => (
               <UserGiftItem key={index} gift={gift} index={index} onEdit={handleEditClick} onDelete={handleDelete} onEditSubmit={handleEditSubmit} />
             ))}
@@ -73,6 +67,7 @@ export default function UserWishlist() {
             </button>
           </form>
         </div>
+        <Image className={styles["reindeer-image"]} src="/renne.webp" alt="Un petit renne de noël" width={93} height={162} priority />
       </div>
     </div>
   );

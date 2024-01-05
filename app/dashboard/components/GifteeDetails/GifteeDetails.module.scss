@@ -1,11 +1,42 @@
 @import "../../../styles/partials/mixins";
 
-.dashboard-page {
-  display: inline-block;
-  padding: 4rem;
-  width: 50%;
+.dashboard-wrapper {
+  @include dashboard-wrapper();
 
-  .giftee-details {
-    background-color: $light-secondary;
+  .dashboard-background {
+    @include dashboard-background($light-secondary);
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .name {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        margin: 2rem 0 6rem;
+        min-width: 25rem;
+        border-radius: 10px;
+        background-color: $secondary-color;
+        color: $white;
+        text-align: center;
+        font-size: 40px;
+      }
+    }
+
+    .giftee-list {
+      padding: 2rem 2rem 10rem 2rem;
+      margin-top: 3rem;
+      border-radius: 5px;
+      background-color: $medium-secondary;
+      border: 2px solid $secondary-color;
+      box-shadow: 4px 4px 4.3px 0px rgba(74, 122, 88, 0.21);
+
+      ul {
+        @include fluid-font(28px, 32px);
+      }
+    }
   }
 }

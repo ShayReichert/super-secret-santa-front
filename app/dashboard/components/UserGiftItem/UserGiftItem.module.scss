@@ -1,7 +1,38 @@
 @import "../../../styles/partials/mixins";
 
 .gift-item {
-  .delete-icon {
-    transform: translateY(3px);
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  cursor: default;
+
+  &:hover {
+    .icons {
+      opacity: 1;
+    }
+  }
+
+  input {
+    @include default-input();
+  }
+
+  .icons {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+
+    img {
+      margin: 0 0.5rem;
+      opacity: 0.5;
+      cursor: pointer;
+      transition: opacity 0.2s ease-in-out;
+
+      &.delete-icon {
+        transform: translateY(3px);
+      }
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 }

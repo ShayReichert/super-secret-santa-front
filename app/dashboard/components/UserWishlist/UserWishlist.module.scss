@@ -1,11 +1,52 @@
 @import "../../../styles/partials/mixins";
 
-.dashboard-page {
-  display: inline-block;
-  padding: 4rem;
-  width: 50%;
+.dashboard-wrapper {
+  @include dashboard-wrapper();
 
-  .user-wishlist {
-    background-color: $tertiary-color;
+  .dashboard-background {
+    @include dashboard-background($tertiary-color);
+    height: 100%;
+    position: relative;
+
+    .content {
+      > p {
+        text-align: center;
+      }
+
+      .wishlist {
+        padding: 2rem 2rem 5rem 2rem;
+        margin-top: 3rem;
+        border-radius: 5px;
+        background-color: $white;
+        border: 2px solid rgba(192, 178, 165, 0.46);
+        box-shadow: 4px 4px 4.3px 0px rgba(192, 178, 165, 0.46);
+
+        ul {
+          @include fluid-font(28px, 32px);
+        }
+      }
+
+      form {
+        display: flex;
+        align-items: center;
+        margin-top: 3rem;
+
+        input {
+          @include default-input();
+          margin: 0 1rem 0 0;
+          flex: 2;
+        }
+
+        .button {
+          @include button();
+        }
+      }
+    }
+
+    .reindeer-image {
+      position: absolute;
+      right: 25px;
+      bottom: 0;
+    }
   }
 }
