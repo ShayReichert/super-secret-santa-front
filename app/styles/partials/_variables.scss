@@ -13,7 +13,7 @@ $dark-secondary: #4a7a58;
 $dark-tertiary: #efddcb;
 $light-secondary: #d4f1e3;
 
-$accent-color: $primary-color;
+$accent-color: #3e36d6;
 $cta-color: $primary-color;
 $background-color: $white;
 
@@ -33,9 +33,9 @@ $border-radius: 15px;
 
 // Fonts sizes
 $font-size-h1: 50px;
-$font-size-h2: 60px;
-$font-size-h3: 40px;
-$font-size-body: 18px;
+$font-size-h2: 40px;
+$font-size-h3: 30px;
+$font-size-body: 20px;
 
 // Screen sizes
 $min_large_screen: 1500px;
@@ -46,8 +46,9 @@ $tablet: 767px;
 $mobile: 479px;
 
 //////////////////////
-// Menu
+// Header / Footer
 //////////////////////
 
-$menu-desktop-height: 8.6rem;
-$menu-mobile-height: 6.5rem;
+$header-desktop-height: 12rem;
+$footer-desktop-height: 4.8rem;
+// $menu-mobile-height: 6.5rem;

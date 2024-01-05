@@ -15,12 +15,18 @@ html {
 
 html,
 body {
-  max-width: 100vw;
   overflow-x: hidden;
 }
 
 body {
   background-color: $background-color;
+  font-size: 20px;
+}
+
+main {
+  position: relative;
+  height: 100%;
+  min-height: calc(100vh - ($header-desktop-height + $footer-desktop-height));
 }
 
 a {
@@ -49,7 +55,7 @@ h1 {
 }
 
 h2 {
-  @include fluid-font(40px, $font-size-h2);
+  @include fluid-font(30px, $font-size-h2);
   font-weight: 600;
   line-height: 1;
 }
@@ -62,5 +68,5 @@ h3 {
 
 p,
 ul {
-  @include fluid-font(14px, $font-size-body);
+  @include fluid-font(20px, $font-size-body);
 }

@@ -1,16 +1,47 @@
 @import "../../styles/partials/mixins";
 
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 4rem;
   background-color: $primary-color;
+  color: $white;
+
+  @include devices(mobile) {
+    padding: 1.5rem 1rem;
+  }
+
+  .left-space {
+    flex: 1;
+
+    @include devices(large_tablet) {
+      display: none;
+    }
+  }
 
   h1 {
     text-align: center;
-    color: $white;
     text-transform: uppercase;
+    flex: 2;
+
+    @include devices(mobile) {
+      font-size: 35px;
+    }
 
     span {
       display: block;
       @include fluid-font(30px, 40px);
+    }
+  }
+
+  .log {
+    flex: 1;
+    text-align: right;
+    font-size: 15px;
+
+    @include devices(large_tablet) {
+      display: none;
     }
   }
 }

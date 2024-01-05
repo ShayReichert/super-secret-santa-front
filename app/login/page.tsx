@@ -1,0 +1,17 @@
+import type { Metadata } from "next";
+import LoginForm from "./components/LoginForm/LoginForm";
+import SantaImage from "../components/SantaImage/SantaImage";
+
+export const metadata: Metadata = {
+  title: "Connexion | Super Secret Santa",
+  description: "Connectez-vous à votre compte",
+};
+
+export default function Login() {
+  return (
+    <main id="main">
+      <LoginForm />
+      <SantaImage />
+    </main>
+  );
+}

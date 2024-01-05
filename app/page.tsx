@@ -1,5 +1,5 @@
-import Connexion from "./connexion/page";
+import Login from "./login/page";
 
 export default function Home() {
-  return <Connexion />;
+  return <Login />;
 }
