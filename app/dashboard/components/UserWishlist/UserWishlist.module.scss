@@ -29,6 +29,10 @@
         border: 2px solid rgba(192, 178, 165, 0.46);
         box-shadow: 4px 4px 4.3px 0px rgba(192, 178, 165, 0.46);
 
+        @include devices(large_tablet) {
+          padding: 2rem 1rem 5rem 2rem;
+        }
+
         ul {
           @include fluid-font(28px, 32px);
         }

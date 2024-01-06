@@ -3,3 +3,9 @@ type Gift = {
   isEditing: boolean;
   editingText: string;
 };
+
+type DeleteModalProps = {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+};

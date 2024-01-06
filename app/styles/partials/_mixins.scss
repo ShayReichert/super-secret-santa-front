@@ -96,14 +96,15 @@
 
 // ----- COMPONENTS ----- //
 
-@mixin button() {
+@mixin button($color: $primary-color) {
   display: inline-block;
   position: relative;
   overflow: hidden;
   padding: 1.3rem 2.4rem;
   border-radius: 4px;
   border: none;
-  background: $primary-color;
+  background: linear-gradient(#0000, rgb(0 0 0/15%)) top/100% 800%;
+  background-color: $color;
   color: $white;
   text-decoration: none;
   text-align: center;
@@ -111,9 +112,10 @@
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
+  transition: 0.3s;
 
   &:hover {
-    background: $dark-primary;
+    background-position: bottom;
   }
 
   &:disabled {
@@ -183,4 +185,12 @@
   .user-letter {
     line-height: 1;
   }
+}
+
+@mixin reset-button() {
+  background: none;
+  color: inherit;
+  border: none;
+  cursor: pointer;
+  outline: inherit;
 }

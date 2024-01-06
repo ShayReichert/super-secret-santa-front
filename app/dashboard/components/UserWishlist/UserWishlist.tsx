@@ -4,6 +4,7 @@ import { useState, useCallback, FormEvent } from "react";
 import styles from "./UserWishlist.module.scss";
 import UserGiftItem from "../UserGiftItem/UserGiftItem";
 import Image from "next/image";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 
 export default function UserWishlist() {
   const [gifts, setGifts] = useState<Gift[]>([
@@ -13,6 +14,22 @@ export default function UserWishlist() {
   ]);
 
   const [newGift, setNewGift] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+
+  const openModal = (index: number): void => {
+    setIsModalOpen(true);
+    setItemToDelete(index);
+  };
+
+  const closeModal = (): void => {
+    setIsModalOpen(false);
+  };
+
+  const confirmDelete = (): void => {
+    if (itemToDelete !== null) handleDelete(itemToDelete);
+    closeModal();
+  };
 
   const handleAddGift = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -31,7 +48,15 @@ export default function UserWishlist() {
 
   const handleEditSubmit = useCallback(
     (index: number): void => {
-      setGifts(gifts.map((gift, idx) => (idx === index ? { ...gift, name: gift.editingText, isEditing: false } : gift)));
+      const currentGift = gifts[index];
+
+      if (!currentGift.editingText.trim()) {
+        setGifts(gifts.filter((_, idx) => idx !== index));
+      } else {
+        setGifts(
+          gifts.map((gift, idx) => (idx === index ? { ...gift, name: currentGift.editingText.trim(), isEditing: false, editingText: "" } : gift))
+        );
+      }
     },
     [gifts]
   );
@@ -50,7 +75,7 @@ export default function UserWishlist() {
           <p>Et toi, que voudrais-tu pour Noël ?</p>
           <ul className={styles["wishlist"]}>
             {gifts.map((gift, index) => (
-              <UserGiftItem key={index} gift={gift} index={index} onEdit={handleEditClick} onDelete={handleDelete} onEditSubmit={handleEditSubmit} />
+              <UserGiftItem key={index} gift={gift} index={index} onEdit={handleEditClick} onDelete={openModal} onEditSubmit={handleEditSubmit} />
             ))}
           </ul>
           <form onSubmit={handleAddGift}>
@@ -70,6 +95,7 @@ export default function UserWishlist() {
         </div>
         <Image className={styles["reindeer-image"]} src="/renne.webp" alt="Un petit renne de noël" width={93} height={162} priority />
       </div>
+      <ConfirmationDialog open={isModalOpen} onClose={closeModal} onConfirm={confirmDelete} />
     </div>
   );
 }

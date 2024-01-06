@@ -6,7 +6,8 @@
   margin: 0.5rem 0;
   cursor: default;
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     .icons {
       opacity: 1;
     }
@@ -17,21 +18,31 @@
   }
 
   .icons {
+    display: flex;
+    align-items: flex-end;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
 
-    img {
-      margin: 0 0.5rem;
-      opacity: 0.5;
-      cursor: pointer;
-      transition: opacity 0.2s ease-in-out;
+    button {
+      @include reset-button();
 
-      &.delete-icon {
-        transform: translateY(3px);
-      }
+      img {
+        margin: 0 0.5rem;
+        opacity: 0.5;
+        cursor: pointer;
+        transition: opacity 0.2s ease-in-out;
 
-      &:hover {
-        opacity: 1;
+        &.delete-icon {
+          transform: translateY(3px);
+
+          @include devices(large_tablet) {
+            margin-left: 2rem;
+          }
+        }
+
+        &:hover {
+          opacity: 1;
+        }
       }
     }
   }

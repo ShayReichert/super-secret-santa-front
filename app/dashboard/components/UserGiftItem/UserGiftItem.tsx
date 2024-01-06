@@ -40,8 +40,12 @@ export default function UserGiftItem({
         <>
           {gift.name}
           <span className={styles["icons"]}>
-            <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="edit" onClick={() => onEdit(index, gift.name)} height={20} width={20} />
-            <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="delete" onClick={() => onDelete(index)} height={26} width={26} />
+            <button className={styles["edit-button"]} onClick={() => onEdit(index, gift.name)} aria-label="Modifier">
+              <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} />
+            </button>
+            <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
+              <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} />
+            </button>
           </span>
         </>
       )}
