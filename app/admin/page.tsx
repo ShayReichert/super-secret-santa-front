@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AdminUserList from "./components/AdminUserList/AdminUserList";
 
 export const metadata: Metadata = {
   title: "Admin | Super Secret Santa",
@@ -6,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function Admin() {
-  return <main id="main">Admin</main>;
+  return (
+    <main id="main">
+      <AdminUserList />
+    </main>
+  );
 }
