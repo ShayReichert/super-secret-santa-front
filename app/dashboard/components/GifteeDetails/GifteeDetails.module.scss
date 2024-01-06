@@ -3,6 +3,10 @@
 .dashboard-wrapper {
   @include dashboard-wrapper();
 
+  @include devices(large_tablet) {
+    order: 1;
+  }
+
   .dashboard-background {
     @include dashboard-background($light-secondary);
 

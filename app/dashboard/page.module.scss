@@ -1,0 +1,11 @@
+@import "../styles/partials/mixins";
+
+.main {
+  display: flex;
+
+  @include devices(large_tablet) {
+    flex-direction: column;
+    align-items: center;
+    background-color: $light-secondary;
+  }
+}

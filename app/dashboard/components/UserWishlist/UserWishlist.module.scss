@@ -3,10 +3,18 @@
 .dashboard-wrapper {
   @include dashboard-wrapper();
 
+  @include devices(large_tablet) {
+    order: 3;
+  }
+
   .dashboard-background {
     @include dashboard-background($tertiary-color);
     height: 100%;
     position: relative;
+
+    @include devices(large_tablet) {
+      padding-bottom: calc(162px + 5rem);
+    }
 
     .content {
       > p {
@@ -31,14 +39,26 @@
         align-items: center;
         margin-top: 3rem;
 
+        @include devices(large_tablet) {
+          flex-direction: column;
+        }
+
         input {
           @include default-input();
           margin: 0 1rem 0 0;
-          flex: 2;
+          flex: 1;
+
+          @include devices(large_tablet) {
+            width: 100%;
+          }
         }
 
         .button {
           @include button();
+
+          @include devices(large_tablet) {
+            margin-top: 1rem;
+          }
         }
       }
     }

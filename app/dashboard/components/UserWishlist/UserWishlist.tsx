@@ -58,6 +58,7 @@ export default function UserWishlist() {
               type="text"
               className=""
               placeholder="Ajoute un cadeau"
+              name="newGift"
               value={newGift}
               onChange={(e) => setNewGift(e.target.value)}
               autoComplete="off"

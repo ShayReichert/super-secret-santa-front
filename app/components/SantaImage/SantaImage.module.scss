@@ -10,4 +10,12 @@
   &:hover {
     opacity: 0;
   }
+
+  @include devices(large_tablet) {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    transform: translateX(0);
+    order: 2;
+  }
 }
