@@ -173,3 +173,14 @@
     font-weight: 300;
   }
 }
+
+@mixin user-icon() {
+  background-color: $secondary-color;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  margin-right: 0.5rem;
+
+  .user-letter {
+    line-height: 1;
+  }
+}

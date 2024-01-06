@@ -7,13 +7,21 @@
   color: $white;
   font-size: 12px;
 
-  .log {
+  .menu {
     display: none;
 
     @include devices(large_tablet) {
       display: block;
       font-size: 15px;
       margin: 3rem 0 4rem;
+    }
+
+    .user {
+      margin-bottom: 1rem;
+
+      .user-icon {
+        @include user-icon();
+      }
     }
   }
 }

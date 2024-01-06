@@ -11,7 +11,17 @@ export default function Header() {
         <span>Super</span>
         🎄 Secret Santa 🎄
       </h1>
-      <div className={styles["log"]}>Se déconnecter</div>
+      <div className={styles["menu"]}>
+        <div className={styles["content"]}>
+          <div className={styles["user"]}>
+            <span className={styles["user-icon"]}>
+              <span className={styles["user-letter"]}>N</span>
+            </span>
+            <span className={styles["user-name"]}>Nicole</span>
+          </div>
+          <div className={styles["log"]}>Se déconnecter</div>
+        </div>
+      </div>
     </header>
   );
 }
