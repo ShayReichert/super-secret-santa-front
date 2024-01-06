@@ -22,7 +22,7 @@
       }
 
       .wishlist {
-        padding: 2rem 2rem 5rem 2rem;
+        padding: 2rem 1.5rem 5rem 1.5rem;
         margin-top: 3rem;
         border-radius: 5px;
         background-color: $white;
@@ -30,7 +30,7 @@
         box-shadow: 4px 4px 4.3px 0px rgba(192, 178, 165, 0.46);
 
         @include devices(large_tablet) {
-          padding: 2rem 1rem 5rem 2rem;
+          padding: 2rem 0.5rem 5rem 1.5rem;
         }
 
         ul {

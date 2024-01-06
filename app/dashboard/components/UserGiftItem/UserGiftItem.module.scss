@@ -3,11 +3,14 @@
 .gift-item {
   display: flex;
   justify-content: space-between;
-  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 5px;
   cursor: default;
 
   &:hover,
   &:focus-within {
+    background-color: $gray200;
+
     .icons {
       opacity: 1;
     }
