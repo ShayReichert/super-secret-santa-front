@@ -21,32 +21,6 @@
   }
 
   .icons {
-    display: flex;
-    align-items: flex-end;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-
-    button {
-      @include reset-button();
-
-      img {
-        margin: 0 0.5rem;
-        opacity: 0.5;
-        cursor: pointer;
-        transition: opacity 0.2s ease-in-out;
-
-        &.delete-icon {
-          transform: translateY(3px);
-
-          @include devices(large_tablet) {
-            margin-left: 2rem;
-          }
-        }
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-    }
+    @include edit-buttons();
   }
 }

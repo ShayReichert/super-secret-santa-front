@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import styles from "./LoginForm.module.scss";
 import { Titan_One } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function LoginForm() {
+  const router = useRouter();
   const [inputs, setInputs] = useState({
     userName: "",
     password: "",
@@ -40,7 +42,10 @@ export default function LoginForm() {
       return;
     }
 
-    console.log(inputs);
+    // TODO : ajouter la logique de vérification des ids de connexion
+
+    // Si la connexion est réussie, redirigez vers le tableau de bord
+    router.push("/dashboard");
   };
 
   return (

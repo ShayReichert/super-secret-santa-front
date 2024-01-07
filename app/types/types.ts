@@ -5,6 +5,7 @@ type Gift = {
 };
 
 type DeleteModalProps = {
+  text: string;
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;

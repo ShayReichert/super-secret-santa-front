@@ -17,5 +17,9 @@
     bottom: 0;
     transform: translateX(0);
     order: 2;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }

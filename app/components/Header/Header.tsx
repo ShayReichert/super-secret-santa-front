@@ -1,20 +1,30 @@
+"use client";
+
 import styles from "./Header.module.scss";
 import { Titan_One } from "next/font/google";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function Header() {
+  const pathname = usePathname();
+  const isAdminPage = pathname.includes("/admin");
+
   return (
-    <header className={styles["header"]}>
+    <header className={`${styles["header"]} ${isAdminPage ? styles["header-admin"] : ""}`}>
       <div className={styles["left-space"]}></div>
-      <h1 className={titan_one.className}>
-        <span>Super</span>
-        🎄 Secret Santa 🎄
-      </h1>
+      <Link className={styles["title"]} href="/">
+        <h1 className={titan_one.className}>
+          <span>Super</span>
+          🎄 Secret Santa 🎄
+        </h1>
+      </Link>
+
       <div className={styles["menu"]}>
         <div className={styles["content"]}>
           <div className={styles["user"]}>
-            <span className={styles["user-icon"]}>
+            <span className={`${styles["user-icon"]} ${isAdminPage ? styles["user-icon-admin"] : ""}`}>
               <span className={styles["user-letter"]}>N</span>
             </span>
             <span className={styles["user-name"]}>Nicole</span>

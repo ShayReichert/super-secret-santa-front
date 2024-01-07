@@ -1,0 +1,140 @@
+@import "../../../styles/partials/mixins";
+
+.admin-container {
+  @include dashboard-background($tertiary-color);
+  @include size();
+  min-height: calc(100vh - 16.8rem);
+  padding: 4rem 3rem;
+  margin: 4rem 3rem;
+
+  > p {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  @include devices(large_tablet) {
+    margin: 0;
+  }
+
+  .admin-wrappers {
+    display: flex;
+    max-width: $max-width;
+    margin: auto;
+    padding: 2rem 0 calc($santa-height / 2 + 5rem);
+
+    @include devices(large_tablet) {
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0 0;
+    }
+
+    .users-wrapper {
+      @include dashboard-wrapper();
+      padding: 5rem 0 0;
+
+      @include devices(large_tablet) {
+        padding: 5rem 0;
+      }
+
+      .content {
+        max-width: 60rem;
+        margin: auto;
+
+        table.users {
+          // TABLE ON DESKTOP
+          @include fluid-font(16px, 20px);
+          border-collapse: collapse;
+          border-spacing: 0;
+          width: 100%;
+
+          thead {
+            color: $gray500;
+
+            th {
+              padding-bottom: 0.7rem;
+              font-size: 16px;
+              font-weight: normal;
+            }
+          }
+
+          tbody {
+            border: 2px solid #ddd5cd;
+            border-radius: 5px;
+            background-color: $white;
+            box-shadow: 4px 4px 4.3px 0px #ddd5cd;
+
+            tr {
+              &:hover,
+              &:focus-within {
+                background-color: $gray200;
+              }
+            }
+          }
+
+          // TABLE ON MOBILE
+          @include devices(large_tablet) {
+            word-break: break-all;
+
+            thead {
+              display: none;
+            }
+
+            tr {
+              display: flex;
+              flex-direction: column;
+              padding: 0.5rem;
+              border-bottom: 1px solid #ddd5cd;
+              border-radius: 0;
+
+              td {
+                margin: 0.5rem 0;
+                padding: 0.5rem 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .add-user-wrapper {
+      @include dashboard-wrapper();
+      padding: 5rem 0 0;
+
+      .content {
+        display: flex;
+        justify-content: center;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 36rem;
+        border: 2px solid #ddd5cd;
+        border-radius: 5px;
+        padding: 2rem;
+
+        @include devices(laptop) {
+          width: 100%;
+          max-width: 33rem;
+        }
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          margin: 0 0 4rem 0;
+
+          input {
+            @include default-input();
+            @include fluid-font(16px, 20px);
+          }
+        }
+
+        .button {
+          @include button();
+        }
+      }
+    }
+  }
+}

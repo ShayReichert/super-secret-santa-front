@@ -7,21 +7,46 @@
   color: $white;
   font-size: 12px;
 
-  .menu {
+  &-admin {
+    background-color: $secondary-color;
+  }
+
+  .menu-desktop {
+    @include devices(large_tablet) {
+      display: none;
+    }
+
+    .admin {
+      margin: 1rem 0;
+    }
+  }
+
+  .menu-mobile {
     display: none;
 
     @include devices(large_tablet) {
       display: block;
-      font-size: 15px;
       margin: 3rem 0 4rem;
+      font-size: 15px;
     }
 
     .user {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
       margin-bottom: 1rem;
 
       .user-icon {
         @include user-icon();
+
+        &-admin {
+          background-color: $primary-color;
+        }
       }
+    }
+
+    .admin {
+      margin: 1rem 0;
     }
   }
 }

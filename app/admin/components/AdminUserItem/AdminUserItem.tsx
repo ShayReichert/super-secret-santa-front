@@ -58,6 +58,7 @@ export default function AdminUserItem({
   const handleBlur = () => {
     setTimeout(() => {
       if (!document.activeElement || document.activeElement.tagName !== "INPUT") {
+        submitEdit();
         setIsEditing(false);
       }
     }, 100);
@@ -65,31 +66,44 @@ export default function AdminUserItem({
 
   return (
     <tr className={styles["user-item"]}>
-      <td>
-        {isEditing ? (
-          <div onBlur={handleBlur}>
-            <input value={localName} onChange={handleChangeName} onKeyDown={handleKeyDown} autoFocus />
-            <input value={localEmail} onChange={handleChangeEmail} onKeyDown={handleKeyDown} />
-          </div>
-        ) : (
-          <>
+      {isEditing ? (
+        <>
+          <td>
+            <input value={localName} onChange={handleChangeName} onKeyDown={handleKeyDown} onBlur={handleBlur} autoFocus />
+          </td>
+          <td>
+            <input value={localEmail} onChange={handleChangeEmail} onKeyDown={handleKeyDown} onBlur={handleBlur} />
+          </td>
+        </>
+      ) : (
+        <>
+          <td>
             <span>{user.name}</span>
+          </td>
+          <td>
             <span>{user.email}</span>
-          </>
-        )}
-      </td>
-      <td>
-        <span className={styles["icons"]}>
-          {!isEditing && (
+          </td>
+        </>
+      )}
+
+      {isEditing ? (
+        <td>
+          <span className={styles["icons"]}>
+            <button>OK</button>
+          </span>
+        </td>
+      ) : (
+        <td>
+          <span className={styles["icons"]}>
             <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
               <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
             </button>
-          )}
-          <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
-            <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} priority />
-          </button>
-        </span>
-      </td>
+            <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
+              <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} priority />
+            </button>
+          </span>
+        </td>
+      )}
     </tr>
   );
 }

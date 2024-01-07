@@ -85,7 +85,7 @@ export default function UserWishlist() {
         </div>
         <Image className={styles["reindeer-image"]} src="/renne.webp" alt="Un petit renne de noël" width={93} height={162} priority />
       </div>
-      <ConfirmationDialog open={isModalOpen} onClose={closeModal} onConfirm={confirmDelete} />
+      <ConfirmationDialog text="Es-tu sûr·e de vouloir supprimer ce cadeau ?" open={isModalOpen} onClose={closeModal} onConfirm={confirmDelete} />
     </div>
   );
 }

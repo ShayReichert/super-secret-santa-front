@@ -9,7 +9,7 @@ import { Titan_One } from "next/font/google";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
-export default function ConfirmationDialog({ open, onClose, onConfirm }: DeleteModalProps) {
+export default function ConfirmationDialog({ text, open, onClose, onConfirm }: DeleteModalProps) {
   return (
     <Dialog
       className={styles["dialog"]}
@@ -24,7 +24,7 @@ export default function ConfirmationDialog({ open, onClose, onConfirm }: DeleteM
       </DialogTitle>
       <DialogContent>
         <DialogContentText className={styles["dialog-content-text"]} id="alert-dialog-description">
-          <span>Es-tu sûr·e de vouloir supprimer ce cadeau ?</span>
+          <span>{text}</span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
