@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import styles from "./UserWishlist.module.scss";
 import UserGiftItem from "../UserGiftItem/UserGiftItem";
 import Image from "next/image";
@@ -12,7 +12,6 @@ export default function UserWishlist() {
     { name: "Une pomme", isEditing: false, editingText: "" },
     { name: "Un stylo bic", isEditing: false, editingText: "" },
   ]);
-
   const [newGift, setNewGift] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
@@ -39,34 +38,25 @@ export default function UserWishlist() {
     }
   };
 
-  const handleEditClick = useCallback(
-    (index: number, text: string): void => {
-      setGifts(gifts.map((gift, idx) => (idx === index ? { ...gift, isEditing: true, editingText: text } : gift)));
-    },
-    [gifts]
-  );
+  const handleEditClick = (index: number, text: string): void => {
+    setGifts(gifts.map((gift, idx) => (idx === index ? { ...gift, isEditing: true, editingText: text } : gift)));
+  };
 
-  const handleEditSubmit = useCallback(
-    (index: number): void => {
-      const currentGift = gifts[index];
+  const handleEditSubmit = (index: number): void => {
+    const currentGift = gifts[index];
 
-      if (!currentGift.editingText.trim()) {
-        setGifts(gifts.filter((_, idx) => idx !== index));
-      } else {
-        setGifts(
-          gifts.map((gift, idx) => (idx === index ? { ...gift, name: currentGift.editingText.trim(), isEditing: false, editingText: "" } : gift))
-        );
-      }
-    },
-    [gifts]
-  );
-
-  const handleDelete = useCallback(
-    (index: number): void => {
+    if (!currentGift.editingText.trim()) {
       setGifts(gifts.filter((_, idx) => idx !== index));
-    },
-    [gifts]
-  );
+    } else {
+      setGifts(
+        gifts.map((gift, idx) => (idx === index ? { ...gift, name: currentGift.editingText.trim(), isEditing: false, editingText: "" } : gift))
+      );
+    }
+  };
+
+  const handleDelete = (index: number): void => {
+    setGifts(gifts.filter((_, idx) => idx !== index));
+  };
 
   return (
     <div className={styles["dashboard-wrapper"]}>

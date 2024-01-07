@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, KeyboardEvent } from "react";
+import { useState, KeyboardEvent } from "react";
 import styles from "./AdminUserItem.module.scss";
 import Image from "next/image";
 
@@ -48,14 +48,11 @@ export default function AdminUserItem({
   };
 
   // Gérer les événements clavier
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        submitEdit();
-      }
-    },
-    [submitEdit]
-  );
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      submitEdit();
+    }
+  };
 
   // Gérer le flou avec un délai
   const handleBlur = () => {

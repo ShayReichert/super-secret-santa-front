@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, KeyboardEvent } from "react";
+import { KeyboardEvent } from "react";
 import styles from "./UserGiftItem.module.scss";
 import Image from "next/image";
 
@@ -17,14 +17,11 @@ export default function UserGiftItem({
   onDelete: (index: number) => void;
   onEditSubmit: (index: number) => void;
 }) {
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        onEditSubmit(index);
-      }
-    },
-    [index, onEditSubmit]
-  );
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onEditSubmit(index);
+    }
+  };
 
   return (
     <li className={styles["gift-item"]}>
