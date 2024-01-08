@@ -14,6 +14,7 @@ export default function ConfirmationDialog({ text, open, onClose, onConfirm }: D
     <Dialog
       className={styles["dialog"]}
       classes={{ paper: styles["dialog-paper"] }}
+      disableScrollLock={true}
       open={open}
       onClose={onClose}
       aria-labelledby="alert-dialog-title"
