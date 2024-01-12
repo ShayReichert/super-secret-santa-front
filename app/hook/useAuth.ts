@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { setCookie } from "cookies-next";
+import { setCookie, deleteCookie, getCookie } from "cookies-next";
 
 interface AuthState {
   errorMessage: string;
@@ -12,6 +12,10 @@ export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     errorMessage: "",
   });
+
+  const isLoggedIn = () => {
+    return !!getCookie("jwt_token");
+  };
 
   const login = async (userName: string, password: string) => {
     try {
@@ -38,5 +42,10 @@ export const useAuth = () => {
     }
   };
 
-  return { authState, login };
+  const logout = () => {
+    deleteCookie("jwt_token");
+    router.push("/login");
+  };
+
+  return { authState, isLoggedIn, login, logout };
 };

@@ -67,6 +67,14 @@
             background-color: $primary-color;
           }
         }
+
+        // .user-name {
+        //   @include link();
+        // }
+      }
+
+      .log {
+        @include link();
       }
     }
   }
