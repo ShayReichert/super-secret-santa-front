@@ -28,9 +28,9 @@ export const useAuth = () => {
       setCookie("jwt_token", token, {
         maxAge: 60 * 60 * 24, // 24 hours
         path: "/",
+        sameSite: "strict",
         // TODO : en prod, ajouter d'autres options de sécurité si nécessaire, par exemple :
         // secure: true, // Assurez-vous que le cookie est transmis uniquement via HTTPS
-        // sameSite: "strict", // Contrôle l'envoi du cookie avec les requêtes cross-site
       });
 
       router.push("/dashboard");
