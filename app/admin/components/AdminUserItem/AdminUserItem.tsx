@@ -21,14 +21,14 @@ export default function AdminUserItem({
   const [localName, setLocalName] = useState(user.name);
   const [localEmail, setLocalEmail] = useState(user.email);
 
-  // Activer l'édition pour les deux champs
+  // Enable editing for both fields
   const handleEdit = () => {
     setIsEditing(true);
     setLocalName(user.name);
     setLocalEmail(user.email);
   };
 
-  // Soumettre les modifications
+  // Submit modifications
   const submitEdit = () => {
     if (isEditing) {
       onEditSubmit(index, localName, localEmail);
@@ -36,7 +36,7 @@ export default function AdminUserItem({
     }
   };
 
-  // Gérer les changements locaux
+  // Manage local changes
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalName(e.target.value);
     onEdit(index, e.target.value, "name");
@@ -47,14 +47,14 @@ export default function AdminUserItem({
     onEdit(index, e.target.value, "email");
   };
 
-  // Gérer les événements clavier
+  // Handle keyboard events
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       submitEdit();
     }
   };
 
-  // Gérer le flou avec un délai
+  // Handle blur with a delay
   const handleBlur = () => {
     setTimeout(() => {
       if (!document.activeElement || document.activeElement.tagName !== "INPUT") {

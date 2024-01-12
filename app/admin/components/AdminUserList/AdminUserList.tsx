@@ -42,11 +42,9 @@ export default function AdminUserList() {
   };
 
   const handleEditSubmit = (index: number, newName: string, newEmail: string): void => {
-    // Si les deux valeurs sont vides, rien faire
     if (!newName.trim() && !newEmail.trim()) {
       return;
     } else {
-      // Sinon, mettre à jour l'utilisateur avec les nouvelles valeurs
       setUsers(users.map((user, idx) => (idx === index ? { ...user, name: newName.trim(), email: newEmail.trim(), isEditing: false } : user)));
     }
   };
