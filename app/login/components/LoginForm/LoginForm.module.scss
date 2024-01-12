@@ -55,6 +55,11 @@
         input {
           @include default-input();
         }
+
+        .error-message {
+          font-size: 14px;
+          color: $primary-color;
+        }
       }
 
       .button {
