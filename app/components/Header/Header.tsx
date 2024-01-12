@@ -1,21 +1,28 @@
 "use client";
 
 import styles from "./Header.module.scss";
-import { Titan_One } from "next/font/google";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/app/hook/useAuth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/app/hook/useAuth";
+import { Titan_One } from "next/font/google";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function Header() {
   const pathname = usePathname();
   const isAdminPage = pathname.includes("/admin");
+  const [isMounted, setIsMounted] = useState(false);
   const { isLoggedIn, logout } = useAuth();
+
+  useEffect(() => {
+    // Wait for the component to be mounted to be able to use the isLoggedIn function
+    setIsMounted(true);
+  }, []);
 
   return (
     <header className={`${styles["header"]} ${isAdminPage ? styles["header-admin"] : ""}`}>
-      {isLoggedIn() && <div className={styles["left-space"]}></div>}
+      {isMounted && isLoggedIn() && <div className={styles["left-space"]}></div>}
       <Link className={styles["title"]} href="/">
         <h1 className={titan_one.className}>
           <span>Super</span>
@@ -23,7 +30,7 @@ export default function Header() {
         </h1>
       </Link>
 
-      {isLoggedIn() && (
+      {isMounted && isLoggedIn() && (
         <div className={styles["menu"]}>
           <div className={styles["content"]}>
             <div className={styles["user"]}>
