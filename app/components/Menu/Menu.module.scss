@@ -11,8 +11,9 @@
 
   .user {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     margin-bottom: 0.5rem;
+    padding: 0 0.9rem;
 
     @include devices(large_tablet) {
       justify-content: center;

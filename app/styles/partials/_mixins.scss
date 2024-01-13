@@ -178,13 +178,26 @@
 }
 
 @mixin user-icon() {
-  background-color: $secondary-color;
-  padding: 0.4rem 0.6rem;
-  border-radius: 50px;
+  $icon-width: 15px;
+
+  position: relative;
   margin-right: 0.5rem;
   font-size: 10px;
+  text-align: center;
+  width: $icon-width;
+
+  @include after($icon-width) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: $secondary-color;
+    border-radius: 50%;
+  }
 
   .user-letter {
+    position: relative;
+    z-index: 2;
     line-height: 1;
   }
 }
