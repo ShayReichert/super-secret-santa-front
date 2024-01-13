@@ -1,61 +1,69 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import styles from "./UserWishlist.module.scss";
 import UserGiftItem from "../UserGiftItem/UserGiftItem";
 import Image from "next/image";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
+import { useGiftList } from "@/app/hook/useGiftList";
+import { useUser } from "@/app/context/UserContext";
 
 export default function UserWishlist() {
-  const [gifts, setGifts] = useState<Gift[]>([
-    { name: "Un micro-onde", isEditing: false, editingText: "" },
-    { name: "Une pomme", isEditing: false, editingText: "" },
-    { name: "Un stylo bic", isEditing: false, editingText: "" },
-  ]);
+  const { userState } = useUser();
+  const { addGift, updateGift, deleteGift } = useGiftList();
   const [newGift, setNewGift] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [editingGiftId, setEditingGiftId] = useState<number | null>(null);
+  const [editingText, setEditingText] = useState("");
 
-  const openModal = (index: number): void => {
-    setIsModalOpen(true);
-    setItemToDelete(index);
-  };
+  useEffect(() => {
+    console.log(
+      "IDs des cadeaux actuels: ",
+      userState.data?.gifts.map((gift) => gift.id)
+    );
+  }, [userState.data?.gifts]);
 
-  const closeModal = (): void => {
-    setIsModalOpen(false);
-  };
-
-  const confirmDelete = (): void => {
-    if (itemToDelete !== null) handleDelete(itemToDelete);
-    closeModal();
-  };
-
-  const handleAddGift = (e: FormEvent<HTMLFormElement>): void => {
+  const handleAddGift = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newGift.trim()) {
-      setGifts([...gifts, { name: newGift, isEditing: false, editingText: "" }]);
+      await addGift(newGift);
       setNewGift("");
     }
   };
 
-  const handleEditClick = (index: number, text: string): void => {
-    setGifts(gifts.map((gift, idx) => (idx === index ? { ...gift, isEditing: true, editingText: text } : gift)));
+  const handleEditClick = (giftId: number, text: string): void => {
+    setEditingGiftId(giftId);
+    setEditingText(text);
   };
 
-  const handleEditSubmit = (index: number): void => {
-    const currentGift = gifts[index];
-
-    if (!currentGift.editingText.trim()) {
-      setGifts(gifts.filter((_, idx) => idx !== index));
-    } else {
-      setGifts(
-        gifts.map((gift, idx) => (idx === index ? { ...gift, name: currentGift.editingText.trim(), isEditing: false, editingText: "" } : gift))
-      );
+  const handleEditSubmit = async (giftId: number): Promise<void> => {
+    if (editingText.trim()) {
+      await updateGift(giftId, editingText);
+      setEditingGiftId(null);
+      setEditingText("");
     }
   };
 
-  const handleDelete = (index: number): void => {
-    setGifts(gifts.filter((_, idx) => idx !== index));
+  const confirmDelete = async () => {
+    if (itemToDelete !== null) {
+      const giftToDelete = userState.data?.gifts.find((gift) => gift.id === itemToDelete);
+
+      if (giftToDelete) {
+        await deleteGift(giftToDelete.id);
+      }
+    }
+    closeModal();
+  };
+
+  const openModal = (giftId: number): void => {
+    setIsModalOpen(true);
+    setItemToDelete(giftId);
+  };
+
+  const closeModal = (): void => {
+    setIsModalOpen(false);
+    setItemToDelete(null);
   };
 
   return (
@@ -64,8 +72,14 @@ export default function UserWishlist() {
         <div className={styles["content"]}>
           <p>Et toi, que voudrais-tu pour Noël ?</p>
           <ul className={styles["wishlist"]}>
-            {gifts.map((gift, index) => (
-              <UserGiftItem key={index} gift={gift} index={index} onEdit={handleEditClick} onDelete={openModal} onEditSubmit={handleEditSubmit} />
+            {userState.data?.gifts.map((gift) => (
+              <UserGiftItem
+                key={gift.id}
+                gift={{ ...gift, isEditing: gift.id === editingGiftId, editingText }}
+                onEdit={handleEditClick}
+                onDelete={openModal}
+                onEditSubmit={handleEditSubmit}
+              />
             ))}
           </ul>
           <form onSubmit={handleAddGift}>

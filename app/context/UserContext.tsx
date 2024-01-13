@@ -1,12 +1,15 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import axios from "axios";
-import { getCookie } from "cookies-next";
+import { AxiosError } from "axios";
+import axiosInstance from "../services/axiosInstance";
+import { getCookie, deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const router = useRouter();
   const [userState, setUserState] = useState<UserState>({
     data: null,
     loading: true,
@@ -15,7 +18,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     fetchUserData();
-  }, [getCookie("jwt_token")]);
+  }, []);
 
   const fetchUserData = async () => {
     try {
@@ -26,18 +29,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return;
       }
 
-      const response = await axios.get("http://localhost:8080/api/user", {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-
+      const response = await axiosInstance.get("api/user");
       setUserState({ data: response.data, loading: false, error: null });
     } catch (err) {
-      if (err instanceof Error) {
-        setUserState({ data: null, loading: false, error: err });
-      } else {
-        setUserState({ data: null, loading: false, error: new Error("Une erreur est survenue") });
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 401) {
+          deleteCookie("jwt_token");
+          router.push("/login");
+        } else {
+          console.error("Une erreur est survenue:", err);
+          setUserState({ data: null, loading: false, error: err });
+        }
       }
     }
   };

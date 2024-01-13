@@ -1,9 +1,3 @@
-type Gift = {
-  name: string;
-  isEditing: boolean;
-  editingText: string;
-};
-
 type DeleteModalProps = {
   text: string;
   open: boolean;
@@ -51,4 +45,6 @@ type SantaOfGift = {
 type UserGift = {
   id: number;
   name: string;
+  isEditing?: boolean;
+  editingText?: string;
 };

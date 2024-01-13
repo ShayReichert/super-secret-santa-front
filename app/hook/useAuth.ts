@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axiosInstance from "../services/axiosInstance";
 import { setCookie, deleteCookie, getCookie } from "cookies-next";
 import { useUser } from "@/app/context/UserContext";
 
@@ -21,7 +21,7 @@ export const useAuth = () => {
 
   const login = async (userName: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:8080/api/login_check", {
+      const response = await axiosInstance.post("api/login_check", {
         username: userName,
         password: password,
       });
@@ -49,11 +49,7 @@ export const useAuth = () => {
   const fetchUserData = async () => {
     const jwt = getCookie("jwt_token");
     if (jwt) {
-      const response = await axios.get("http://localhost:8080/api/user", {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+      const response = await axiosInstance.get("api/user");
       setUserState({ data: response.data, loading: false, error: null });
     }
   };
