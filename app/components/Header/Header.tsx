@@ -6,6 +6,7 @@ import { useAuth } from "@/app/hook/useAuth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Titan_One } from "next/font/google";
+import { useUser } from "@/app/context/UserContext";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
@@ -14,6 +15,7 @@ export default function Header() {
   const isAdminPage = pathname.includes("/admin");
   const [isMounted, setIsMounted] = useState(false);
   const { isLoggedIn, logout } = useAuth();
+  const { userState } = useUser();
 
   useEffect(() => {
     // Wait for the component to be mounted to be able to use the isLoggedIn function
@@ -37,7 +39,7 @@ export default function Header() {
               <span className={`${styles["user-icon"]} ${isAdminPage ? styles["user-icon-admin"] : ""}`}>
                 <span className={styles["user-letter"]}>N</span>
               </span>
-              <span className={styles["user-name"]}>Nicole</span>
+              <span className={styles["user-name"]}>{userState.data?.userName}</span>
             </div>
             <div className={styles["log"]} onClick={logout}>
               Se déconnecter

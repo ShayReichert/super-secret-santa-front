@@ -18,3 +18,22 @@ type User = {
   editingText: string;
   editingEmail: string;
 };
+
+// USER CONTEXT
+type UserData = {
+  id: number;
+  userName: string;
+  email: string;
+  // autres champs...
+};
+
+type UserState = {
+  data: UserData | null;
+  loading: boolean;
+  error: Error | null;
+};
+
+type UserContextType = {
+  userState: UserState;
+  setUserState: React.Dispatch<React.SetStateAction<UserState>>;
+};
