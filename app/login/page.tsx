@@ -3,10 +3,10 @@ import styles from "./page.module.scss";
 import LoginForm from "./components/LoginForm/LoginForm";
 import SantaImage from "../components/SantaImage/SantaImage";
 
-// export const metadata: Metadata = {
-//   title: "Connexion | Super Secret Santa",
-//   description: "Connectez-vous à votre compte",
-// };
+export const metadata: Metadata = {
+  title: "Connexion | Super Secret Santa",
+  description: "Connectez-vous à votre compte",
+};
 
 export default function Login() {
   return (
