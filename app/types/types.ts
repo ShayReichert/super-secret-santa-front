@@ -24,7 +24,12 @@ type UserData = {
   id: number;
   userName: string;
   email: string;
-  // autres champs...
+  SantaOf: string;
+  SantaOfGiftsLists: SantaOfGift[];
+  SantaOfId: number;
+  gifts: UserGift[];
+  userGiftListId: number;
+  roles: string[];
 };
 
 type UserState = {
@@ -36,4 +41,14 @@ type UserState = {
 type UserContextType = {
   userState: UserState;
   setUserState: React.Dispatch<React.SetStateAction<UserState>>;
+};
+
+type SantaOfGift = {
+  id: number;
+  name: string;
+};
+
+type UserGift = {
+  id: number;
+  name: string;
 };

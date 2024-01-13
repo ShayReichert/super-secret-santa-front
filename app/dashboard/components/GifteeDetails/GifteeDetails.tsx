@@ -1,24 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import styles from "./GifteeDetails.module.scss";
 import { Titan_One } from "next/font/google";
 import { Caveat } from "next/font/google";
+import { useUser } from "@/app/context/UserContext";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 const caveat = Caveat({ subsets: ["latin"], weight: ["400"] });
 
 export default function GifteeDetails() {
-  const [giftee, setGiftee] = useState([
-    "Une cafetière",
-    "Un cabriolet",
-    "Un voyage en Picardie",
-    "Des chaussettes",
-    "Une cafetière",
-    "Un cabriolet",
-    "Un voyage en Picardie ptit cuicui",
-    "Des chaussettes jolies et  r",
-  ]);
+  const { userState } = useUser();
 
   return (
     <div className={styles["dashboard-wrapper"]}>
@@ -26,7 +17,7 @@ export default function GifteeDetails() {
         <div className={styles["content"]}>
           <div className={styles["title"]}>
             <p>Tu es le père Noël de</p>
-            <div className={`${styles["name"]} ${titan_one.className}`}>Alexis</div>
+            <div className={`${styles["name"]} ${titan_one.className}`}>{userState.data?.SantaOf}</div>
           </div>
 
           <div>
@@ -35,8 +26,8 @@ export default function GifteeDetails() {
 
           <div className={`${styles["giftee-list"]} ${caveat.className}`}>
             <ul>
-              {giftee.map((gift, index) => (
-                <li key={gift + index}>- {gift}</li>
+              {userState.data?.SantaOfGiftsLists.map((gift) => (
+                <li key={gift.id}>- {gift.name}</li>
               ))}
             </ul>
           </div>
