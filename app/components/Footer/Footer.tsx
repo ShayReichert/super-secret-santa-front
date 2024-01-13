@@ -3,6 +3,7 @@
 import styles from "./Footer.module.scss";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Menu from "../Menu/Menu";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -17,16 +18,7 @@ export default function Footer() {
       </div>
 
       <div className={styles["menu-mobile"]}>
-        <div className={styles["user"]}>
-          <span className={`${styles["user-icon"]} ${isAdminPage ? styles["user-icon-admin"] : ""}`}>
-            <span className={styles["user-letter"]}>N</span>
-          </span>
-          <span className={styles["user-name"]}>Nicole</span>
-        </div>
-        <Link href="/admin">
-          <div className={styles["admin"]}>Admin</div>
-        </Link>
-        <div className={styles["log"]}>Se déconnecter</div>
+        <Menu />
       </div>
 
       <div>© {new Date().getFullYear()} </div>

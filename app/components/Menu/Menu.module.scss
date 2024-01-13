@@ -1,0 +1,33 @@
+@import "../../styles/partials/mixins";
+
+.content {
+  text-align: left;
+
+  @include devices(large_tablet) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0.5rem;
+
+    @include devices(large_tablet) {
+      justify-content: center;
+    }
+
+    .user-icon {
+      @include user-icon();
+
+      &-admin {
+        background-color: $primary-color;
+      }
+    }
+  }
+
+  .log {
+    @include link();
+  }
+}

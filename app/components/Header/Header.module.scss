@@ -41,7 +41,6 @@
       @include fluid-font(30px, 40px);
     }
   }
-
   .menu {
     display: flex;
     justify-content: flex-end;
@@ -50,32 +49,6 @@
 
     @include devices(large_tablet) {
       display: none;
-    }
-
-    .content {
-      text-align: left;
-
-      .user {
-        display: flex;
-        align-items: flex-end;
-        margin-bottom: 0.5rem;
-
-        .user-icon {
-          @include user-icon();
-
-          &-admin {
-            background-color: $primary-color;
-          }
-        }
-
-        // .user-name {
-        //   @include link();
-        // }
-      }
-
-      .log {
-        @include link();
-      }
     }
   }
 }
