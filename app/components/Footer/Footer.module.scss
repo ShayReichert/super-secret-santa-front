@@ -12,12 +12,12 @@
   }
 
   .menu-desktop {
-    @include devices(large_tablet) {
-      display: none;
-    }
-
     .admin {
       margin: 1rem 0;
+
+      a {
+        @include link();
+      }
     }
   }
 

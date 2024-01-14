@@ -11,14 +11,14 @@ export default function Footer() {
 
   return (
     <footer className={`${styles["footer"]} ${isAdminPage ? styles["footer-admin"] : ""}`}>
-      <div className={styles["menu-desktop"]}>
-        <Link href="/admin">
-          <div className={styles["admin"]}>Admin</div>
-        </Link>
-      </div>
-
       <div className={styles["menu-mobile"]}>
         <Menu />
+      </div>
+
+      <div className={styles["menu-desktop"]}>
+        <div className={styles["admin"]}>
+          <Link href="/admin">Accès admin</Link>
+        </div>
       </div>
 
       <div>© {new Date().getFullYear()} </div>

@@ -195,6 +195,12 @@
     border-radius: 50%;
   }
 
+  &-admin {
+    &:after {
+      background-color: $primary-color;
+    }
+  }
+
   .user-letter {
     position: relative;
     z-index: 2;

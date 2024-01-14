@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import styles from "./UserWishlist.module.scss";
 import UserGiftItem from "../UserGiftItem/UserGiftItem";
 import Image from "next/image";
@@ -16,13 +16,6 @@ export default function UserWishlist() {
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
   const [editingGiftId, setEditingGiftId] = useState<number | null>(null);
   const [editingText, setEditingText] = useState("");
-
-  useEffect(() => {
-    console.log(
-      "IDs des cadeaux actuels: ",
-      userState.data?.gifts.map((gift) => gift.id)
-    );
-  }, [userState.data?.gifts]);
 
   const handleAddGift = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

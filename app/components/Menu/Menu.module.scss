@@ -21,10 +21,6 @@
 
     .user-icon {
       @include user-icon();
-
-      &-admin {
-        background-color: $primary-color;
-      }
     }
   }
 
