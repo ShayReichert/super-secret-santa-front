@@ -9,7 +9,7 @@ const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function LoginForm() {
   const [inputs, setInputs] = useState({
-    userName: "",
+    username: "",
     password: "",
   });
   const { authState, login } = useAuth();
@@ -25,7 +25,7 @@ export default function LoginForm() {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    setDisabled(!(inputs.userName && inputs.password));
+    setDisabledButton(!(inputs.username && inputs.password));
   }, [inputs]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +34,7 @@ export default function LoginForm() {
     const honeypot = (e.target as HTMLFormElement).querySelector('[name="bot-field"]') as HTMLInputElement;
     if (honeypot && honeypot.value) return;
 
-    await login(inputs.userName, inputs.password);
+    await login(inputs.username, inputs.password);
   };
 
   return (
@@ -55,8 +55,8 @@ export default function LoginForm() {
               type="text"
               className=""
               placeholder="Ton prénom"
-              name="userName"
-              value={inputs.userName}
+              name="username"
+              value={inputs.username}
               onChange={handleChangeInput}
               autoComplete="username"
             />
