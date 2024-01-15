@@ -1,19 +1,63 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import styles from "./AdminUserList.module.scss";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import AdminUserItem from "../AdminUserItem/AdminUserItem";
+import { useUserList } from "@/app/hook/useUserList";
 
 export default function AdminUserList() {
-  const [users, setUsers] = useState<User[]>([
-    { name: "Alexis", email: "alexis.mathiot@gmail.com", isEditing: false, editingText: "", editingEmail: "" },
-    { name: "Nicole", email: "nicole.gaillot@laposte.net", isEditing: false, editingText: "", editingEmail: "" },
-    { name: "Nathalie", email: "xxxx.xxxxxxx@gmail.com", isEditing: false, editingText: "", editingEmail: "" },
-  ]);
-  const [newUser, setNewUser] = useState<{ name: string; email: string; password: string }>({ name: "", email: "", password: "" });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { getUsers, addUser, updateUser, deleteUser } = useUserList();
+  const [users, setUsers] = useState<User[]>([]);
+  const [newUser, setNewUser] = useState<NewUser>({ username: "", email: "", password: "" });
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const fetchedUsers = await getUsers();
+      setUsers(fetchedUsers);
+    };
+
+    fetchUsers();
+  }, []);
+
+  const handleAddUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (newUser.username.trim() && newUser.password.trim() && newUser.email.trim()) {
+      const addedUser = await addUser(newUser);
+      if (addedUser) {
+        setUsers([...users, addedUser]);
+        setNewUser({ username: "", email: "", password: "" });
+      }
+    }
+  };
+
+  const handleEditSubmit = async (index: number, newName: string, newEmail: string) => {
+    if (newName.trim() && newEmail.trim()) {
+      const userToUpdate = users[index];
+      const oldName = userToUpdate.username;
+      const oldEmail = userToUpdate.email;
+
+      // Mise à jour optimiste
+      setUsers(users.map((user, idx) => (idx === index ? { ...user, username: newName, email: newEmail } : user)));
+
+      // Appel API
+      const success = await updateUser(userToUpdate.username, { username: newName, email: newEmail });
+      if (!success) {
+        // Si l'appel API échoue, rétablir les anciennes valeurs
+        setUsers(users.map((user, idx) => (idx === index ? { ...user, username: oldName, email: oldEmail } : user)));
+      }
+    }
+  };
+
+  const handleDelete = async (index: number) => {
+    const userToDelete = users[index];
+    const success = await deleteUser(userToDelete.username);
+    if (success) {
+      setUsers(users.filter((_, idx) => idx !== index));
+    }
+  };
 
   const openModal = (index: number): void => {
     setIsModalOpen(true);
@@ -29,28 +73,8 @@ export default function AdminUserList() {
     closeModal();
   };
 
-  const handleAddUser = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    if (newUser.name.trim() && newUser.email.trim()) {
-      setUsers([...users, { ...newUser, isEditing: false, editingText: "", editingEmail: "" }]);
-      setNewUser({ name: "", email: "", password: "" });
-    }
-  };
-
   const handleEditClick = (index: number): void => {
-    setUsers(users.map((user, idx) => (idx === index ? { ...user, isEditing: true, editingText: user.name, editingEmail: user.email } : user)));
-  };
-
-  const handleEditSubmit = (index: number, newName: string, newEmail: string): void => {
-    if (!newName.trim() && !newEmail.trim()) {
-      return;
-    } else {
-      setUsers(users.map((user, idx) => (idx === index ? { ...user, name: newName.trim(), email: newEmail.trim(), isEditing: false } : user)));
-    }
-  };
-
-  const handleDelete = (index: number): void => {
-    setUsers(users.filter((_, idx) => idx !== index));
+    setUsers(users.map((user, idx) => (idx === index ? { ...user, isEditing: true, editingText: user.username, editingEmail: user.email } : user)));
   };
 
   return (

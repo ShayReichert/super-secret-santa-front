@@ -47,3 +47,9 @@ type UserGift = {
   isEditing?: boolean;
   editingText?: string;
 };
+
+interface NewUser {
+  username: string;
+  email: string;
+  password: string;
+}
