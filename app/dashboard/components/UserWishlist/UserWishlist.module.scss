@@ -9,6 +9,7 @@
 
   .dashboard-background {
     @include dashboard-background($tertiary-color);
+    padding: 6rem 5rem calc($reindeer-height + 5rem);
     height: 100%;
     position: relative;
 
@@ -35,6 +36,12 @@
 
         ul {
           @include fluid-font(28px, 32px);
+        }
+
+        .no-gift {
+          text-align: center;
+          font-style: italic;
+          color: $gray500;
         }
       }
 

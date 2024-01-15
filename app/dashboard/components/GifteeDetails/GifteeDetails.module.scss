@@ -41,6 +41,12 @@
       ul {
         @include fluid-font(28px, 32px);
       }
+
+      .no-gift {
+        @include fluid-font(28px, 32px);
+        text-align: center;
+        color: $gray500;
+      }
     }
   }
 }

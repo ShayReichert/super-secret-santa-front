@@ -17,7 +17,7 @@ export default function GifteeDetails() {
         <div className={styles["content"]}>
           <div className={styles["title"]}>
             <p>Tu es le père Noël de</p>
-            <div className={`${styles["name"]} ${titan_one.className}`}>{userState.data?.SantaOf}</div>
+            <div className={`${styles["name"]} ${titan_one.className}`}>{userState.data?.SantaOf ? userState.data?.SantaOf : "..."}</div>
           </div>
 
           <div>
@@ -26,9 +26,18 @@ export default function GifteeDetails() {
 
           <div className={`${styles["giftee-list"]} ${caveat.className}`}>
             <ul>
-              {userState.data?.SantaOfGiftsLists.map((gift) => (
-                <li key={gift.id}>- {gift.name}</li>
-              ))}
+              {userState.data?.SantaOfGiftsLists && userState.data?.SantaOfGiftsLists.length > 0 ? (
+                <ul>
+                  {userState.data?.SantaOfGiftsLists.map((gift) => (
+                    <li key={gift.id}>- {gift.name}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className={styles["no-gift"]}>
+                  😱 <br />
+                  Cette personne n'a pas encore ajouté de cadeaux à sa liste
+                </p>
+              )}
             </ul>
           </div>
         </div>

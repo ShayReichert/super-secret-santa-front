@@ -65,15 +65,19 @@ export default function UserWishlist() {
         <div className={styles["content"]}>
           <p>Et toi, que voudrais-tu pour Noël ?</p>
           <ul className={styles["wishlist"]}>
-            {userState.data?.gifts.map((gift) => (
-              <UserGiftItem
-                key={gift.id}
-                gift={{ ...gift, isEditing: gift.id === editingGiftId, editingText }}
-                onEdit={handleEditClick}
-                onDelete={openModal}
-                onEditSubmit={handleEditSubmit}
-              />
-            ))}
+            {userState.data?.gifts && userState.data.gifts.length > 0 ? (
+              userState.data?.gifts.map((gift) => (
+                <UserGiftItem
+                  key={gift.id}
+                  gift={{ ...gift, isEditing: gift.id === editingGiftId, editingText }}
+                  onEdit={handleEditClick}
+                  onDelete={openModal}
+                  onEditSubmit={handleEditSubmit}
+                />
+              ))
+            ) : (
+              <p className={styles["no-gift"]}>Ajoute des cadeaux à ta liste !</p>
+            )}
           </ul>
           <form onSubmit={handleAddGift}>
             <input
