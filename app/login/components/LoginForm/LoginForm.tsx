@@ -21,8 +21,7 @@ export default function LoginForm() {
     });
   };
 
-  // Disabled button if some input are empty
-  const [disabled, setDisabled] = useState(true);
+  const [disabledButton, setDisabledButton] = useState(true);
 
   useEffect(() => {
     setDisabledButton(!(inputs.username && inputs.password));
@@ -63,7 +62,7 @@ export default function LoginForm() {
             <input type="password" className="" placeholder="Ton code secret" name="password" value={inputs.password} onChange={handleChangeInput} />
             {authState.errorMessage && <p className={styles["error-message"]}>{authState.errorMessage}</p>}
           </div>
-          <button className={styles["button"]} disabled={disabled} type="submit">
+          <button className={styles["button"]} disabled={disabledButton} type="submit">
             Connexion
           </button>
         </form>

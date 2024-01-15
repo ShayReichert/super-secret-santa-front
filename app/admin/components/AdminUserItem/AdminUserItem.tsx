@@ -69,10 +69,18 @@ export default function AdminUserItem({
       {isEditing ? (
         <>
           <td>
-            <input value={localName} onChange={handleChangeName} onKeyDown={handleKeyDown} onBlur={handleBlur} autoFocus />
+            <input
+              type="text"
+              name="editUsername"
+              value={localName}
+              onChange={handleChangeName}
+              onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
+              autoFocus
+            />
           </td>
           <td>
-            <input value={localEmail} onChange={handleChangeEmail} onKeyDown={handleKeyDown} onBlur={handleBlur} />
+            <input type="email" name="editEmail" value={localEmail} onChange={handleChangeEmail} onKeyDown={handleKeyDown} onBlur={handleBlur} />
           </td>
         </>
       ) : (

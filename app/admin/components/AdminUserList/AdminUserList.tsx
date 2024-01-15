@@ -5,6 +5,7 @@ import styles from "./AdminUserList.module.scss";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import AdminUserItem from "../AdminUserItem/AdminUserItem";
 import { useUserList } from "@/app/hook/useUserList";
+import { isValidEmail } from "@/app/services/inputValidator";
 
 export default function AdminUserList() {
   const { getUsers, addUser, updateUser, deleteUser } = useUserList();
@@ -12,6 +13,8 @@ export default function AdminUserList() {
   const [newUser, setNewUser] = useState<NewUser>({ username: "", email: "", password: "" });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [disabledButton, setDisabledButton] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,31 +25,46 @@ export default function AdminUserList() {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    setDisabledButton(!(newUser.username && newUser.password && newUser.email));
+  }, [newUser]);
+
   const handleAddUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newUser.username.trim() && newUser.password.trim() && newUser.email.trim()) {
-      const addedUser = await addUser(newUser);
-      if (addedUser) {
-        setUsers([...users, addedUser]);
+      const result = await addUser(newUser);
+
+      if (typeof result === "string") {
+        setErrors([result]);
+      } else {
+        setUsers([...users, result]);
         setNewUser({ username: "", email: "", password: "" });
+        setErrors([]);
       }
     }
   };
 
   const handleEditSubmit = async (index: number, newName: string, newEmail: string) => {
+    if (!isValidEmail(newEmail)) {
+      setErrors(["Le format de l'email n'est pas valide."]);
+      return;
+    }
+
     if (newName.trim() && newEmail.trim()) {
       const userToUpdate = users[index];
       const oldName = userToUpdate.username;
       const oldEmail = userToUpdate.email;
 
-      // Mise à jour optimiste
+      // Optimistic update
       setUsers(users.map((user, idx) => (idx === index ? { ...user, username: newName, email: newEmail } : user)));
 
-      // Appel API
       const success = await updateUser(userToUpdate.username, { username: newName, email: newEmail });
       if (!success) {
-        // Si l'appel API échoue, rétablir les anciennes valeurs
+        // If the API call fails, revert to old values
         setUsers(users.map((user, idx) => (idx === index ? { ...user, username: oldName, email: oldEmail } : user)));
+        setErrors(["Erreur lors de la mise à jour de l'utilisateur."]);
+      } else {
+        setErrors([]);
       }
     }
   };
@@ -79,7 +97,15 @@ export default function AdminUserList() {
 
   return (
     <div className={styles["admin-container"]}>
-      <p>Voici la liste des “enfants” sages qui ont le droit à un cadeau cette année :</p>
+      <p className={styles["admin-title"]}>Voici la liste des “enfants” sages qui ont le droit à un cadeau cette année :</p>
+
+      {errors.length > 0 && (
+        <div className={styles["error-message"]}>
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
 
       <div className={styles["admin-wrappers"]}>
         <div className={styles["users-wrapper"]}>
@@ -118,9 +144,8 @@ export default function AdminUserList() {
                 <div className={styles["form-group"]}>
                   <input
                     type="text"
-                    className=""
                     placeholder="Prénom"
-                    name="userName"
+                    name="username"
                     value={newUser.username}
                     onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
                     autoComplete="username"
@@ -128,7 +153,6 @@ export default function AdminUserList() {
                   {/* TODO : vérifier la force du mot de passe */}
                   <input
                     type="password"
-                    className=""
                     placeholder="Code secret"
                     name="password"
                     value={newUser.password}
@@ -137,7 +161,6 @@ export default function AdminUserList() {
                   {/* TODO : vérifier la validité de l'email */}
                   <input
                     type="email"
-                    className=""
                     placeholder="Email"
                     name="email"
                     value={newUser.email}
@@ -145,7 +168,7 @@ export default function AdminUserList() {
                     autoComplete="email"
                   />
                 </div>
-                <button type="submit" className={styles["button"]}>
+                <button type="submit" disabled={disabledButton} className={styles["button"]}>
                   AJOUTER
                 </button>
               </form>

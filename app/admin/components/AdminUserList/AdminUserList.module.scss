@@ -7,13 +7,22 @@
   padding: 4rem 3rem;
   margin: 4rem 3rem;
 
-  > p {
-    text-align: center;
-    font-weight: bold;
-  }
-
   @include devices(large_tablet) {
     margin: 0;
+  }
+
+  .admin-title {
+    text-align: center;
+    font-weight: bold;
+    text-wrap: pretty;
+  }
+
+  .error-message {
+    > p {
+      @include error-message();
+      margin-top: 2rem;
+      text-align: center;
+    }
   }
 
   .admin-wrappers {

@@ -258,3 +258,8 @@
     background-color: $link-hover;
   }
 }
+
+@mixin error-message() {
+  font-size: 14px !important;
+  color: $primary-color;
+}
