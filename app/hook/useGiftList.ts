@@ -6,7 +6,7 @@ export const useGiftList = () => {
 
   const addGift = async (giftName: string) => {
     try {
-      const response = await axiosInstance.post("api/gift", { name: giftName });
+      const response = await axiosInstance.post("api/gifts", { name: giftName });
       const newGift = response.data;
 
       setUserState((prevState) => {
@@ -30,7 +30,7 @@ export const useGiftList = () => {
 
   const updateGift = async (giftId: number, updatedName: string) => {
     try {
-      await axiosInstance.put(`api/gift/${giftId}`, { name: updatedName });
+      await axiosInstance.put(`api/gifts/${giftId}`, { name: updatedName });
 
       setUserState((prevState) => {
         if (!prevState.data) {
@@ -53,7 +53,7 @@ export const useGiftList = () => {
 
   const deleteGift = async (giftId: number) => {
     try {
-      await axiosInstance.delete(`api/gift/${giftId}`);
+      await axiosInstance.delete(`api/gifts/${giftId}`);
 
       setUserState((prevState) => {
         if (!prevState.data) {
