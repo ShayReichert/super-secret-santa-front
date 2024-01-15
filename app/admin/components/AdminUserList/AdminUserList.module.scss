@@ -98,6 +98,10 @@
               td {
                 margin: 0.5rem 0;
                 padding: 0.5rem 1rem;
+
+                &:first-of-type {
+                  font-weight: bold;
+                }
               }
             }
           }

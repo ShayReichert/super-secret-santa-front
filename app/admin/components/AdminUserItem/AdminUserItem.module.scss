@@ -16,6 +16,7 @@
   td {
     border-right: 1px solid #ddd5cd;
     padding: 1rem 2rem;
+    overflow-wrap: anywhere;
 
     @include devices(large_tablet) {
       border-right: none;
