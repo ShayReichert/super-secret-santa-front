@@ -97,8 +97,8 @@ export default function AdminUserList() {
                     className=""
                     placeholder="Prénom"
                     name="userName"
-                    value={newUser.name}
-                    onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                    value={newUser.username}
+                    onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
                     autoComplete="username"
                   />
                   {/* TODO : vérifier la force du mot de passe */}

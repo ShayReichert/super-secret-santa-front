@@ -18,13 +18,13 @@ export default function AdminUserItem({
   onEditSubmit: (index: number, newName: string, newEmail: string) => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [localName, setLocalName] = useState(user.name);
+  const [localName, setLocalName] = useState(user.username);
   const [localEmail, setLocalEmail] = useState(user.email);
 
   // Enable editing for both fields
   const handleEdit = () => {
     setIsEditing(true);
-    setLocalName(user.name);
+    setLocalName(user.username);
     setLocalEmail(user.email);
   };
 
@@ -78,7 +78,7 @@ export default function AdminUserItem({
       ) : (
         <>
           <td>
-            <span>{user.name}</span>
+            <span>{user.username}</span>
           </td>
           <td>
             <span>{user.email}</span>

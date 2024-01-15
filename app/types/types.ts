@@ -6,14 +6,13 @@ type DeleteModalProps = {
 };
 
 type User = {
-  name: string;
+  username: string;
   email: string;
   isEditing: boolean;
   editingText: string;
   editingEmail: string;
 };
 
-// USER CONTEXT
 type UserData = {
   id: number;
   userName: string;
