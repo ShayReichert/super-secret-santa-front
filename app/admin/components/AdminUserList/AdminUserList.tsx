@@ -128,6 +128,7 @@ export default function AdminUserList() {
                       onEdit={handleEditClick}
                       onDelete={openModal}
                       onEditSubmit={handleEditSubmit}
+                      updateUser={updateUser}
                     />
                   ))}
                 </tbody>

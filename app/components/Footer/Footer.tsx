@@ -20,7 +20,7 @@ export default function Footer() {
       </div>
 
       <div className={styles["menu-desktop"]}>
-        {userState.data && userState.data.roles.includes("ROLE_ADMIN") && (
+        {userState.data && userState.data.roles.includes("ROLE_ADMIN") && !isAdminPage && (
           <div className={styles["admin"]}>
             <Link href="/admin">📊 Accès admin</Link>
           </div>

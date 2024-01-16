@@ -4,14 +4,11 @@ import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
+import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import styles from "./PasswordDialog.module.scss";
-import { Titan_One } from "next/font/google";
 import { isPasswordComplex } from "@/app/services/inputValidator";
-
-const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 const PasswordDialog = ({ open, onClose, onConfirm }: PasswordDialogProps) => {
   const [newPassword, setNewPassword] = useState("");
@@ -29,14 +26,18 @@ const PasswordDialog = ({ open, onClose, onConfirm }: PasswordDialogProps) => {
     }
 
     onConfirm(newPassword);
-    setNewPassword("");
-    setError("");
+    setTimeout(() => {
+      setNewPassword("");
+      setError("");
+    }, 1000);
   };
 
   return (
-    <Dialog className={styles["dialog"]} classes={{ paper: styles["dialog-paper"] }} open={open} onClose={onClose}>
-      <DialogTitle className={`${styles["dialog-title"]} ${titan_one.className}`}>Réinitialiser le mot de passe</DialogTitle>
+    <Dialog className={styles["dialog"]} classes={{ paper: styles["dialog-paper"] }} disableScrollLock={true} open={open} onClose={onClose}>
       <DialogContent>
+        <DialogContentText className={styles["dialog-content-text"]} id="alert-dialog-description">
+          <span>Réinitialiser le mot de passe</span>
+        </DialogContentText>
         <TextField
           autoFocus
           margin="dense"

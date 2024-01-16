@@ -11,12 +11,14 @@ export default function AdminUserItem({
   onEdit,
   onDelete,
   onEditSubmit,
+  updateUser,
 }: {
   user: User;
   index: number;
   onEdit: (index: number, text: string, field: "name" | "email") => void;
   onDelete: (index: number) => void;
   onEditSubmit: (index: number, newName: string, newEmail: string) => void;
+  updateUser: (username: string, data: Partial<User>) => Promise<boolean>;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [localName, setLocalName] = useState(user.username);
@@ -28,9 +30,12 @@ export default function AdminUserItem({
   };
 
   const handlePasswordConfirm = async (newPassword: string) => {
-    // Logique pour envoyer la nouvelle demande de mot de passe à l'API
-    // ...
-    console.log(newPassword);
+    const success = await updateUser(user.username, { password: newPassword } as Partial<User>);
+    if (success) {
+      console.log("Mot de passe mis à jour avec succès pour", user.username);
+    } else {
+      console.error("Erreur lors de la mise à jour du mot de passe de", user.username);
+    }
 
     setIsPasswordDialogOpen(false);
   };

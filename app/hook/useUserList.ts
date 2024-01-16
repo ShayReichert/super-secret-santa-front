@@ -28,12 +28,9 @@ export const useUserList = () => {
     }
   };
 
-  const updateUser = async (username: string, updatedUser: { username?: string; email?: string }): Promise<boolean> => {
-    //  TODO : A effacer quand l'API sera corrigée pour ne pas modifier le mdp
-    const newUpdatedUser = { ...updatedUser, password: "password" };
-
+  const updateUser = async (username: string, updatedUser: { username?: string; email?: string; password?: string }): Promise<boolean> => {
     try {
-      await axiosInstance.put(`/api/admin/user/${username}`, newUpdatedUser);
+      await axiosInstance.put(`/api/admin/user/${username}`, updatedUser);
       return true;
     } catch (error) {
       console.error("Erreur lors de la mise à jour d'un utilisateur", error);
