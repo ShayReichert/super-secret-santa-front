@@ -3,6 +3,7 @@
 import { useState, KeyboardEvent } from "react";
 import styles from "./AdminUserItem.module.scss";
 import Image from "next/image";
+import PasswordDialog from "../PasswordDialog/PasswordDialog";
 
 export default function AdminUserItem({
   user,
@@ -20,6 +21,19 @@ export default function AdminUserItem({
   const [isEditing, setIsEditing] = useState(false);
   const [localName, setLocalName] = useState(user.username);
   const [localEmail, setLocalEmail] = useState(user.email);
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+
+  const handleChangePassword = () => {
+    setIsPasswordDialogOpen(true);
+  };
+
+  const handlePasswordConfirm = async (newPassword: string) => {
+    // Logique pour envoyer la nouvelle demande de mot de passe à l'API
+    // ...
+    console.log(newPassword);
+
+    setIsPasswordDialogOpen(false);
+  };
 
   // Enable editing for both fields
   const handleEdit = () => {
@@ -106,6 +120,10 @@ export default function AdminUserItem({
             <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
               <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
             </button>
+            <button className={styles["password-button"]} onClick={handleChangePassword} aria-label="Réinitialiser le mot de passe">
+              <Image className={styles["password-icon"]} src="/icons/password.svg" alt="Modifier" height={20} width={20} priority />
+            </button>
+            <PasswordDialog open={isPasswordDialogOpen} onClose={() => setIsPasswordDialogOpen(false)} onConfirm={handlePasswordConfirm} />
             <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
               <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} priority />
             </button>

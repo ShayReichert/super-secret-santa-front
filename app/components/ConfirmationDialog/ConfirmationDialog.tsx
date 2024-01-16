@@ -9,7 +9,7 @@ import { Titan_One } from "next/font/google";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
-export default function ConfirmationDialog({ text, open, onClose, onConfirm }: DeleteModalProps) {
+export default function ConfirmationDialog({ text, open, onClose, onConfirm }: DeleteDialogProps) {
   return (
     <Dialog
       className={styles["dialog"]}

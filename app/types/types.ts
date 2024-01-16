@@ -1,10 +1,15 @@
-type DeleteModalProps = {
+type DeleteDialogProps = {
   text: string;
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
 };
 
+interface PasswordDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: (newPassword: string) => void;
+}
 type User = {
   username: string;
   email: string;
