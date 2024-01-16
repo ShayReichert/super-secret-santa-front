@@ -4,10 +4,14 @@ import styles from "./Footer.module.scss";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Menu from "../Menu/Menu";
+import { useUser } from "@/app/context/UserContext";
 
 export default function Footer() {
   const pathname = usePathname();
   const isAdminPage = pathname.includes("/admin");
+  const { userState } = useUser();
+
+  console.log();
 
   return (
     <footer className={`${styles["footer"]} ${isAdminPage ? styles["footer-admin"] : ""}`}>
@@ -16,9 +20,11 @@ export default function Footer() {
       </div>
 
       <div className={styles["menu-desktop"]}>
-        <div className={styles["admin"]}>
-          <Link href="/admin">Accès admin</Link>
-        </div>
+        {userState.data && userState.data.roles.includes("ROLE_ADMIN") && (
+          <div className={styles["admin"]}>
+            <Link href="/admin">📊 Accès admin</Link>
+          </div>
+        )}
       </div>
 
       <div>© {new Date().getFullYear()} </div>
