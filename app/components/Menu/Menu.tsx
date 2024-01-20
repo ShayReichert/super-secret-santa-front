@@ -14,10 +14,14 @@ export default function Menu() {
   return (
     <div className={styles["content"]}>
       <div className={styles["user"]}>
-        <span className={`${styles["user-icon"]} ${isAdminPage ? styles["user-icon-admin"] : ""}`}>
-          <span className={styles["user-letter"]}>{userState.data?.userName?.charAt(0)}</span>
+        <span className={`${styles["user-icon"]} ${isAdminPage ? styles["user-icon-admin"] : ""}`} data-testid="user-icon">
+          <span className={styles["user-letter"]} data-testid="user-letter">
+            {userState.data?.userName?.charAt(0)}
+          </span>
         </span>
-        <span className={styles["user-name"]}>{userState.data?.userName}</span>
+        <span className={styles["user-name"]} data-testid="user-name">
+          {userState.data?.userName}
+        </span>
       </div>
       <div
         className={styles["log"]}
@@ -28,6 +32,7 @@ export default function Menu() {
         role="button"
         tabIndex={0}
         aria-label="Se déconnecter"
+        data-testid="logout-button"
       >
         Se déconnecter
       </div>
