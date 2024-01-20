@@ -4,12 +4,37 @@ import styles from "./GifteeDetails.module.scss";
 import { Titan_One } from "next/font/google";
 import { Caveat } from "next/font/google";
 import { useUser } from "@/app/context/UserContext";
+import Loader from "@/app/components/Loader/Loader";
+import Link from "next/link";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 const caveat = Caveat({ subsets: ["latin"], weight: ["400"] });
 
 export default function GifteeDetails() {
   const { userState } = useUser();
+
+  if (userState.loading) {
+    return (
+      <div className={styles["dashboard-wrapper"]}>
+        <div className={styles["dashboard-background"]}>
+          <Loader />
+        </div>
+      </div>
+    );
+  }
+
+  if (!userState.data) {
+    return (
+      <div className={styles["dashboard-wrapper"]}>
+        <div className={styles["dashboard-background"]}>
+          <div className={styles["error-content"]}>
+            <div className={styles["error"]}>Vous n'êtes pas connecté·e !</div>
+            <Link href="/login">Se connecter</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles["dashboard-wrapper"]}>

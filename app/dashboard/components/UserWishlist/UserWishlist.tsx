@@ -7,6 +7,7 @@ import Image from "next/image";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import { useGiftList } from "@/app/hook/useGiftList";
 import { useUser } from "@/app/context/UserContext";
+import Loader from "@/app/components/Loader/Loader";
 
 export default function UserWishlist() {
   const { userState } = useUser();
@@ -58,6 +59,20 @@ export default function UserWishlist() {
     setIsModalOpen(false);
     setItemToDelete(null);
   };
+
+  if (userState.loading) {
+    return (
+      <div className={styles["dashboard-wrapper"]}>
+        <div className={styles["dashboard-background"]}>
+          <Loader />
+        </div>
+      </div>
+    );
+  }
+
+  if (!userState.data) {
+    return <></>;
+  }
 
   return (
     <div className={styles["dashboard-wrapper"]}>

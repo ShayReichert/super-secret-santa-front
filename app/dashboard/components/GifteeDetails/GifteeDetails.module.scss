@@ -48,5 +48,17 @@
         color: $gray500;
       }
     }
+
+    .error-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: $gray500;
+
+      a {
+        @include button();
+        margin-top: 2rem;
+      }
+    }
   }
 }
