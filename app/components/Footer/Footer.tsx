@@ -11,8 +11,6 @@ export default function Footer() {
   const isAdminPage = pathname.includes("/admin");
   const { userState } = useUser();
 
-  console.log();
-
   return (
     <footer className={`${styles["footer"]} ${isAdminPage ? styles["footer-admin"] : ""}`}>
       <div className={styles["menu-mobile"]}>
