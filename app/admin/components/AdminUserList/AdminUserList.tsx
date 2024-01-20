@@ -5,7 +5,7 @@ import styles from "./AdminUserList.module.scss";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import AdminUserItem from "../AdminUserItem/AdminUserItem";
 import { useUserList } from "@/app/hook/useUserList";
-import { isValidEmail } from "@/app/services/inputValidator";
+import { isPasswordComplex, isValidEmail } from "@/app/services/inputValidator";
 import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
 
 export default function AdminUserList() {
@@ -32,16 +32,35 @@ export default function AdminUserList() {
 
   const handleAddUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (newUser.username.trim() && newUser.password.trim() && newUser.email.trim()) {
-      const result = await addUser(newUser);
 
-      if (typeof result === "string") {
-        setErrors([result]);
-      } else {
-        setUsers([...users, result]);
-        setNewUser({ username: "", email: "", password: "" });
-        setErrors([]);
-      }
+    if (!newUser.username.trim() || !newUser.email.trim()) {
+      setErrors(["Le nom d'utilisateur et l'email ne peuvent pas être vides."]);
+      return;
+    }
+
+    if (!isValidEmail(newUser.email)) {
+      setErrors(["Le format de l'email n'est pas valide."]);
+      return;
+    }
+
+    if (!newUser.password.trim()) {
+      setErrors(["Le mot de passe ne peut pas être vide."]);
+      return;
+    }
+
+    if (!isPasswordComplex(newUser.password)) {
+      setErrors(["Le mot de passe doit faire au moins 8 caractères de chiffres ET de lettres."]);
+      return;
+    }
+
+    const result = await addUser(newUser);
+
+    if (typeof result === "string") {
+      setErrors([result]);
+    } else {
+      setUsers([...users, result]);
+      setNewUser({ username: "", email: "", password: "" });
+      setErrors([]);
     }
   };
 
@@ -155,7 +174,6 @@ export default function AdminUserList() {
                     onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
                     autoComplete="username"
                   />
-                  {/* TODO : vérifier la force du mot de passe */}
                   <input
                     type="password"
                     placeholder="Code secret"
@@ -163,7 +181,6 @@ export default function AdminUserList() {
                     value={newUser.password}
                     onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                   />
-                  {/* TODO : vérifier la validité de l'email */}
                   <input
                     type="email"
                     placeholder="Email"
