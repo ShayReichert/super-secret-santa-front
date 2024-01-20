@@ -19,7 +19,16 @@ export default function Menu() {
         </span>
         <span className={styles["user-name"]}>{userState.data?.userName}</span>
       </div>
-      <div className={styles["log"]} onClick={logout}>
+      <div
+        className={styles["log"]}
+        onClick={logout}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") logout();
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Se déconnecter"
+      >
         Se déconnecter
       </div>
     </div>
