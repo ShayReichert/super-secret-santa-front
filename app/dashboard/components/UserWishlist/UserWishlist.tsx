@@ -70,10 +70,6 @@ export default function UserWishlist() {
     );
   }
 
-  if (!userState.data) {
-    return <></>;
-  }
-
   return (
     <div className={styles["dashboard-wrapper"]}>
       <div className={styles["dashboard-background"]}>
