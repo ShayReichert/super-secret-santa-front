@@ -6,6 +6,7 @@ import ConfirmationDialog from "@/app/components/ConfirmationDialog/Confirmation
 import AdminUserItem from "../AdminUserItem/AdminUserItem";
 import { useUserList } from "@/app/hook/useUserList";
 import { isValidEmail } from "@/app/services/inputValidator";
+import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
 
 export default function AdminUserList() {
   const { getUsers, addUser, updateUser, deleteUser } = useUserList();
@@ -97,6 +98,9 @@ export default function AdminUserList() {
 
   return (
     <div className={styles["admin-container"]}>
+      <div className={styles["menu-wrapper"]}>
+        <MenuListAdmin />
+      </div>
       <p className={styles["admin-title"]}>Voici la liste des “enfants” sages qui ont le droit à un cadeau cette année :</p>
 
       {errors.length > 0 && (
