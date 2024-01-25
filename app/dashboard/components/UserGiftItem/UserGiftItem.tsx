@@ -25,6 +25,7 @@ export default function UserGiftItem({
     <li className={styles["gift-item"]}>
       {gift.isEditing ? (
         <input
+          aria-label={`Modifier ${gift.name}`}
           value={gift.editingText}
           onChange={(e) => onEdit(gift.id, e.target.value)}
           onKeyDown={handleKeyDown}
