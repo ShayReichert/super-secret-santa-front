@@ -14,7 +14,6 @@ const mockGifts = [
 const addGiftMock = jest.fn();
 const updateGiftMock = jest.fn();
 const deleteGiftMock = jest.fn();
-const openModalMock = jest.fn();
 
 beforeEach(() => {
   jest.clearAllMocks();
