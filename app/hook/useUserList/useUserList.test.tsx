@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import axiosInstance from "@/app/services/axiosInstance";
-import AdminUserList from "../admin/components/AdminUserList/AdminUserList";
+import AdminUserList from "../../admin/components/AdminUserList/AdminUserList";
 
 jest.mock("../services/axiosInstance.ts");
 

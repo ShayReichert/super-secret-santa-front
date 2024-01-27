@@ -1,4 +1,4 @@
-import axiosInstance from "../services/axiosInstance";
+import axiosInstance from "../../services/axiosInstance";
 import { useUser } from "@/app/context/UserContext";
 
 export const useGiftList = () => {

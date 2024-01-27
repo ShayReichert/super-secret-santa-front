@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { useGiftList } from "./useGiftList";
-import axiosInstance from "../services/axiosInstance";
+import axiosInstance from "../../services/axiosInstance";
 import * as userContextHooks from "@/app/context/UserContext";
 
 jest.mock("../services/axiosInstance");

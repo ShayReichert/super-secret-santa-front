@@ -2,7 +2,7 @@
 
 import styles from "./Header.module.scss";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/app/hook/useAuth";
+import { useAuth } from "@/app/hook/useAuth/useAuth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Titan_One } from "next/font/google";

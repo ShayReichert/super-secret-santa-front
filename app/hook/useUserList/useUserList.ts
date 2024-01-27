@@ -1,4 +1,4 @@
-import axiosInstance from "../services/axiosInstance";
+import axiosInstance from "../../services/axiosInstance";
 import axios from "axios";
 
 export const useUserList = () => {

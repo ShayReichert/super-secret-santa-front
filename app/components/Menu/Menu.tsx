@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./Menu.module.scss";
-import { useAuth } from "@/app/hook/useAuth";
+import { useAuth } from "@/app/hook/useAuth/useAuth";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 

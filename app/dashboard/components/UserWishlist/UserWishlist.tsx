@@ -5,7 +5,7 @@ import styles from "./UserWishlist.module.scss";
 import UserGiftItem from "../UserGiftItem/UserGiftItem";
 import Image from "next/image";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
-import { useGiftList } from "@/app/hook/useGiftList";
+import { useGiftList } from "@/app/hook/useGiftList/useGiftList";
 import { useUser } from "@/app/context/UserContext";
 import Loader from "@/app/components/Loader/Loader";
 

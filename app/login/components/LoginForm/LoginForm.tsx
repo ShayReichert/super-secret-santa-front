@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from "./LoginForm.module.scss";
 import { Titan_One } from "next/font/google";
-import { useAuth } from "@/app/hook/useAuth";
+import { useAuth } from "@/app/hook/useAuth/useAuth";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 

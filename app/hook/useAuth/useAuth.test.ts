@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { useRouter } from "next/navigation";
-import axiosInstance from "../services/axiosInstance";
+import axiosInstance from "../../services/axiosInstance";
 import { setCookie, deleteCookie, getCookie } from "cookies-next";
 import { useAuth } from "./useAuth";
 

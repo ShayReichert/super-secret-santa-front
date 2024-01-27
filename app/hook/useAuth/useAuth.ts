@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axiosInstance from "../services/axiosInstance";
+import axiosInstance from "../../services/axiosInstance";
 import { setCookie, deleteCookie, getCookie } from "cookies-next";
 import { useUser } from "@/app/context/UserContext";
 

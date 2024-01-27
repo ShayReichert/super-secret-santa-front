@@ -4,7 +4,7 @@ import { useState, FormEvent, useEffect } from "react";
 import styles from "./AdminUserList.module.scss";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import AdminUserItem from "../AdminUserItem/AdminUserItem";
-import { useUserList } from "@/app/hook/useUserList";
+import { useUserList } from "@/app/hook/useUserList/useUserList";
 import { isPasswordComplex, isValidEmail } from "@/app/services/inputValidator";
 import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
 

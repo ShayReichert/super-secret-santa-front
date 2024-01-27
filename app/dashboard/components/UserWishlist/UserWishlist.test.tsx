@@ -1,6 +1,6 @@
 import { act, render, screen, fireEvent } from "@testing-library/react";
 import UserWishlist from "./UserWishlist";
-import * as giftListHooks from "@/app/hook/useGiftList";
+import * as giftListHooks from "@/app/hook/useGiftList/useGiftList";
 import * as userContextHooks from "@/app/context/UserContext";
 
 jest.mock("../../../hook/useGiftList.ts");
