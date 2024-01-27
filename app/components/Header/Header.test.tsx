@@ -9,7 +9,7 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("../Menu/Menu", () => () => <div>Menu component</div>);
 
-jest.mock("../../hook/useAuth.ts", () => ({
+jest.mock("../../hook/useAuth/useAuth.ts", () => ({
   useAuth: () => ({
     isLoggedIn: jest.fn(),
   }),
@@ -19,7 +19,7 @@ describe("Header Component", () => {
   // Test for rendering the Header component
   it("renders without crashing", () => {
     require("next/navigation").usePathname.mockReturnValue("/");
-    require("../../hook/useAuth.ts").useAuth = () => ({
+    require("../../hook/useAuth/useAuth.ts").useAuth = () => ({
       isLoggedIn: () => true,
     });
     const { getByText } = render(<Header />);
@@ -29,7 +29,7 @@ describe("Header Component", () => {
   // Test for menu visibility when logged in
   it("shows menu when logged in", () => {
     require("next/navigation").usePathname.mockReturnValue("/");
-    require("../../hook/useAuth.ts").useAuth = () => ({
+    require("../../hook/useAuth/useAuth.ts").useAuth = () => ({
       isLoggedIn: () => true,
     });
 
@@ -40,7 +40,7 @@ describe("Header Component", () => {
   // Test for no menu when not logged in
   it("does not show menu when not logged in", () => {
     require("next/navigation").usePathname.mockReturnValue("/");
-    require("../../hook/useAuth.ts").useAuth = () => ({
+    require("../../hook/useAuth/useAuth.ts").useAuth = () => ({
       isLoggedIn: () => false,
     });
 
@@ -51,7 +51,7 @@ describe("Header Component", () => {
   // Test for admin class applied on admin pages
   it("applies admin class on admin pages", () => {
     require("next/navigation").usePathname.mockReturnValue("/admin");
-    require("../../hook/useAuth.ts").useAuth = () => ({
+    require("../../hook/useAuth/useAuth.ts").useAuth = () => ({
       isLoggedIn: () => true,
     });
 

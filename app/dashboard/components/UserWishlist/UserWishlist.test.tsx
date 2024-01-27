@@ -3,7 +3,7 @@ import UserWishlist from "./UserWishlist";
 import * as giftListHooks from "@/app/hook/useGiftList/useGiftList";
 import * as userContextHooks from "@/app/context/UserContext";
 
-jest.mock("../../../hook/useGiftList.ts");
+jest.mock("../../../hook/useGiftList/useGiftList.ts");
 jest.mock("../../../context/UserContext.tsx");
 
 const mockGifts = [

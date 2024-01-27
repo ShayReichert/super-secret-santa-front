@@ -9,13 +9,13 @@ jest.mock("next/navigation", () => ({
   usePathname: jest.fn().mockReturnValue("/"),
 }));
 
-jest.mock("../../hook/useAuth", () => ({
+jest.mock("../../hook/useAuth/useAuth.ts", () => ({
   useAuth: () => ({
     logout: mockLogout,
   }),
 }));
 
-jest.mock("../../context/UserContext", () => ({
+jest.mock("../../context/UserContext.tsx", () => ({
   useUser: () => ({
     userState: {
       data: {

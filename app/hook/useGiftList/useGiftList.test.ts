@@ -3,8 +3,8 @@ import { useGiftList } from "./useGiftList";
 import axiosInstance from "../../services/axiosInstance";
 import * as userContextHooks from "@/app/context/UserContext";
 
-jest.mock("../services/axiosInstance");
-jest.mock("../context/UserContext.tsx");
+jest.mock("../../services/axiosInstance.ts");
+jest.mock("../../context/UserContext");
 
 describe("useGiftList hooks", () => {
   let setUserStateMock: jest.Mock<any, any, any>;

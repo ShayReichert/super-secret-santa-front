@@ -8,7 +8,7 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("../services/axiosInstance", () => ({
+jest.mock("../../services/axiosInstance.ts", () => ({
   post: jest.fn().mockResolvedValue({
     data: {
       token: "mockToken",
@@ -23,7 +23,7 @@ jest.mock("cookies-next", () => ({
   getCookie: jest.fn(),
 }));
 
-jest.mock("../context/UserContext.tsx", () => ({
+jest.mock("../../context/UserContext.tsx", () => ({
   useUser: () => ({
     userState: { data: null, loading: false, error: null },
     setUserState: jest.fn(),
