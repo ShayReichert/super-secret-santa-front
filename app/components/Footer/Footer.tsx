@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Menu from "../Menu/Menu";
 import { useUser } from "@/app/context/UserContext";
+import MenuEvents from "../MenuEvents/MenuEvents";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -14,6 +15,9 @@ export default function Footer() {
   return (
     <footer className={`${styles["footer"]} ${isAdminPage ? styles["footer-admin"] : ""}`}>
       <div className={styles["menu-mobile"]}>
+        <div className={styles["menu-events-mobile"]}>
+          <MenuEvents />
+        </div>
         <Menu />
       </div>
 
