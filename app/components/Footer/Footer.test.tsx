@@ -9,6 +9,8 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("../Menu/Menu", () => () => <div>Menu component</div>);
 
+jest.mock("../MenuEvents/MenuEvents", () => () => <div>Menu events component</div>);
+
 jest.mock("../../context/UserContext.tsx", () => ({
   useUser: () => ({
     userState: {

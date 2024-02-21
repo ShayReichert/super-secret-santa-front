@@ -17,7 +17,7 @@ describe("useGiftList hooks", () => {
     (userContextHooks.useUser as jest.Mock).mockImplementation(() => ({
       userState: {
         data: {
-          gifts: [{ id: 1, name: "Cadeau existant" }],
+          events: [{ id: 1, name: "Event 1", giftList: { id: 1, gifts: [{ id: 1, name: "Cadeau existant" }] } }],
         },
       },
       setUserState: setUserStateMock,
@@ -36,20 +36,20 @@ describe("useGiftList hooks", () => {
     const { result } = renderHook(() => useGiftList());
     const initialState = {
       data: {
-        gifts: [{ id: 1, name: "Cadeau existant" }],
+        events: [{ id: 1, name: "Event 1", giftList: { id: 1, gifts: [{ id: 1, name: "Cadeau existant" }] } }],
       },
     };
 
     await act(async () => {
-      await result.current.addGift("Nouveau cadeau");
+      await result.current.addGift("Nouveau cadeau", 1);
     });
 
     const updateUserStateFunction = setUserStateMock.mock.calls[0][0];
     const newState = updateUserStateFunction(initialState);
 
     // Check new state is update correctly
-    expect(newState.data.gifts).toContainEqual(newGift);
-    expect(newState.data.gifts).toContainEqual({ id: 1, name: "Cadeau existant" });
+    expect(newState.data.events[0].giftList.gifts).toContainEqual(newGift);
+    expect(newState.data.events[0].giftList.gifts).toContainEqual({ id: 1, name: "Cadeau existant" });
   });
 
   it("should update a gift and update state correctly", async () => {
@@ -60,12 +60,12 @@ describe("useGiftList hooks", () => {
     const { result } = renderHook(() => useGiftList());
     const initialState = {
       data: {
-        gifts: [{ id: 1, name: "Cadeau existant" }],
+        events: [{ id: 1, name: "Event 1", giftList: { id: 1, gifts: [{ id: 1, name: "Cadeau existant" }] } }],
       },
     };
 
     await act(async () => {
-      await result.current.updateGift(1, "Cadeau modifié");
+      await result.current.updateGift(1, "Cadeau modifié", 1);
     });
 
     expect(axiosInstance.put).toHaveBeenCalledWith(`api/gifts/1`, { name: "Cadeau modifié" });
@@ -74,8 +74,8 @@ describe("useGiftList hooks", () => {
     const newState = updateUserStateFunction(initialState);
 
     // Check new state is update correctly
-    expect(newState.data.gifts).toContainEqual(updatedGift);
-    expect(newState.data.gifts).toHaveLength(1);
+    expect(newState.data.events[0].giftList.gifts).toContainEqual(updatedGift);
+    expect(newState.data.events[0].giftList.gifts).toHaveLength(1);
   });
 
   it("should delete a gift and update state correctly", async () => {
@@ -84,15 +84,24 @@ describe("useGiftList hooks", () => {
     const { result } = renderHook(() => useGiftList());
     const initialState = {
       data: {
-        gifts: [
-          { id: 1, name: "Cadeau 1" },
-          { id: 2, name: "Cadeau 2" },
+        events: [
+          {
+            id: 1,
+            name: "Event 1",
+            giftList: {
+              id: 1,
+              gifts: [
+                { id: 1, name: "Cadeau 1" },
+                { id: 2, name: "Cadeau 2" },
+              ],
+            },
+          },
         ],
       },
     };
 
     await act(async () => {
-      await result.current.deleteGift(1);
+      await result.current.deleteGift(1, 1);
     });
 
     expect(axiosInstance.delete).toHaveBeenCalledWith(`api/gifts/1`);
@@ -101,8 +110,8 @@ describe("useGiftList hooks", () => {
     const newState = updateStateFunction(initialState);
 
     // Check new state is update correctly
-    expect(newState.data.gifts).not.toContainEqual({ id: 1, name: "Cadeau 1" });
-    expect(newState.data.gifts).toHaveLength(1);
+    expect(newState.data.events[0].giftList.gifts).not.toContainEqual({ id: 1, name: "Cadeau 1" });
+    expect(newState.data.events[0].giftList.gifts).toHaveLength(1);
   });
 });
 
@@ -123,7 +132,7 @@ describe("Error handling in useGiftList", () => {
     const { result } = renderHook(() => useGiftList());
 
     await act(async () => {
-      await result.current.addGift("Nouveau Cadeau");
+      await result.current.addGift("Nouveau Cadeau", 1);
     });
 
     expect(console.error).toHaveBeenCalledWith("Erreur lors de l'ajout d'un cadeau", error);
@@ -135,7 +144,7 @@ describe("Error handling in useGiftList", () => {
     const { result } = renderHook(() => useGiftList());
 
     await act(async () => {
-      await result.current.updateGift(1, "Cadeau Modifié");
+      await result.current.updateGift(1, "Cadeau Modifié", 1);
     });
 
     expect(console.error).toHaveBeenCalledWith("Erreur lors de la mise à jour d'un cadeau", error);
@@ -147,7 +156,7 @@ describe("Error handling in useGiftList", () => {
     const { result } = renderHook(() => useGiftList());
 
     await act(async () => {
-      await result.current.deleteGift(1);
+      await result.current.deleteGift(1, 1);
     });
 
     expect(console.error).toHaveBeenCalledWith("Erreur lors de la suppression d'un cadeau", error);
