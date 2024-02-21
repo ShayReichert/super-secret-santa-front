@@ -18,13 +18,25 @@ type User = {
   editingEmail: string;
 };
 
+type GiftList = {
+  id: number;
+  gifts: Gift[];
+};
+
+type Events = {
+  id: number;
+  name: string;
+  giftList: GiftList;
+  santaOf: string;
+  santaOfGiftList: GiftList;
+  santaOfId: number;
+};
+
 type UserData = {
   id: number;
   userName: string;
   email: string;
-  SantaOf: string;
-  SantaOfGiftsLists: SantaOfGift[];
-  SantaOfId: number;
+  events: Events[];
   gifts: UserGift[];
   userGiftListId: number;
   roles: string[];
@@ -39,9 +51,11 @@ type UserState = {
 type UserContextType = {
   userState: UserState;
   setUserState: React.Dispatch<React.SetStateAction<UserState>>;
+  currentEventId: number | null;
+  changeCurrentEvent: (eventId: number) => void;
 };
 
-type SantaOfGift = {
+type Gift = {
   id: number;
   name: string;
 };

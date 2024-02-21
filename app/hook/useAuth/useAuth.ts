@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import axiosInstance from "../../services/axiosInstance";
 import { setCookie, deleteCookie, getCookie } from "cookies-next";
 import { useUser } from "@/app/context/UserContext";
+import { cookieParams } from "@/app/services/cookieParams";
 
 interface AuthState {
   errorMessage: string;
@@ -27,14 +28,9 @@ export const useAuth = () => {
       });
       const { token } = response.data;
 
-      setCookie("jwt_token", token, {
-        maxAge: 60 * 60 * 24, // 24 hours
-        path: "/",
-        sameSite: "strict",
-        // TODO : en prod, ajouter d'autres options de sécurité si nécessaire, par exemple :
-        // secure: true, // Assurez-vous que le cookie est transmis uniquement via HTTPS
-      });
-
+      setCookie("jwt_token", token, cookieParams);
+      // TODO : en prod, ajouter d'autres options de sécurité si nécessaire, par exemple :
+      // secure: true, // Assurez-vous que le cookie est transmis uniquement via HTTPS
       await fetchUserData();
 
       router.push("/dashboard");

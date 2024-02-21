@@ -2,11 +2,11 @@ import axiosInstance from "../../services/axiosInstance";
 import { useUser } from "@/app/context/UserContext";
 
 export const useGiftList = () => {
-  const { userState, setUserState } = useUser();
+  const { setUserState } = useUser();
 
-  const addGift = async (giftName: string) => {
+  const addGift = async (giftName: string, giftListId: number) => {
     try {
-      const response = await axiosInstance.post("api/gifts", { name: giftName });
+      const response = await axiosInstance.post(`api/gifts/${giftListId}`, { name: giftName });
       const newGift = response.data;
 
       setUserState((prevState) => {
@@ -14,11 +14,24 @@ export const useGiftList = () => {
           return prevState;
         }
 
+        const updatedEvents = prevState.data.events.map((event) => {
+          if (event.giftList.id === giftListId) {
+            return {
+              ...event,
+              giftList: {
+                ...event.giftList,
+                gifts: [...event.giftList.gifts, newGift],
+              },
+            };
+          }
+          return event;
+        });
+
         return {
           ...prevState,
           data: {
             ...prevState.data,
-            gifts: [...prevState.data.gifts, newGift],
+            events: updatedEvents,
           },
         };
       });
@@ -28,7 +41,7 @@ export const useGiftList = () => {
     }
   };
 
-  const updateGift = async (giftId: number, updatedName: string) => {
+  const updateGift = async (giftId: number, updatedName: string, giftListId: number) => {
     try {
       await axiosInstance.put(`api/gifts/${giftId}`, { name: updatedName });
 
@@ -37,11 +50,26 @@ export const useGiftList = () => {
           return prevState;
         }
 
+        const updatedEvents = prevState.data.events.map((event) => {
+          if (event.giftList.id === giftListId) {
+            const updatedGifts = event.giftList.gifts.map((gift) => (gift.id === giftId ? { ...gift, name: updatedName } : gift));
+
+            return {
+              ...event,
+              giftList: {
+                ...event.giftList,
+                gifts: updatedGifts,
+              },
+            };
+          }
+          return event;
+        });
+
         return {
           ...prevState,
           data: {
             ...prevState.data,
-            gifts: prevState.data.gifts.map((gift) => (gift.id === giftId ? { ...gift, name: updatedName } : gift)),
+            events: updatedEvents,
           },
         };
       });
@@ -51,7 +79,7 @@ export const useGiftList = () => {
     }
   };
 
-  const deleteGift = async (giftId: number) => {
+  const deleteGift = async (giftId: number, giftListId: number) => {
     try {
       await axiosInstance.delete(`api/gifts/${giftId}`);
 
@@ -60,11 +88,24 @@ export const useGiftList = () => {
           return prevState;
         }
 
+        const updatedEvents = prevState.data.events.map((event) => {
+          if (event.giftList.id === giftListId) {
+            return {
+              ...event,
+              giftList: {
+                ...event.giftList,
+                gifts: event.giftList.gifts.filter((gift) => gift.id !== giftId),
+              },
+            };
+          }
+          return event;
+        });
+
         return {
           ...prevState,
           data: {
             ...prevState.data,
-            gifts: prevState.data.gifts.filter((gift) => gift.id !== giftId),
+            events: updatedEvents,
           },
         };
       });

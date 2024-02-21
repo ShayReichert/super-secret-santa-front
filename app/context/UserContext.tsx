@@ -15,6 +15,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     loading: true,
     error: null,
   });
+  const [currentEventId, setCurrentEventId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchUserData();
@@ -44,7 +45,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const value = { userState, setUserState };
+  const changeCurrentEvent = (eventId: number) => {
+    setCurrentEventId(eventId);
+  };
+
+  const value = { userState, setUserState, currentEventId, changeCurrentEvent };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

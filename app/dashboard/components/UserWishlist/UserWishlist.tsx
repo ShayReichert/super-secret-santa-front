@@ -10,19 +10,26 @@ import { useUser } from "@/app/context/UserContext";
 import Loader from "@/app/components/Loader/Loader";
 
 export default function UserWishlist() {
-  const { userState } = useUser();
+  const { userState, currentEventId } = useUser();
   const { addGift, updateGift, deleteGift } = useGiftList();
   const [newGift, setNewGift] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
   const [editingGiftId, setEditingGiftId] = useState<number | null>(null);
   const [editingText, setEditingText] = useState("");
+  const currentEvent = userState.data?.events?.find((event) => event.id === currentEventId);
+  const giftListId = currentEvent?.giftList?.id;
 
   const handleAddGift = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (newGift.trim()) {
-      await addGift(newGift);
-      setNewGift("");
+      if (giftListId !== undefined) {
+        await addGift(newGift, giftListId);
+        setNewGift("");
+      } else {
+        console.error("Erreur lors de l'ajout du cadeau : aucun événement sélectionné ou l'événement n'existe pas");
+      }
     }
   };
 
@@ -33,21 +40,25 @@ export default function UserWishlist() {
 
   const handleEditSubmit = async (giftId: number): Promise<void> => {
     if (editingText.trim()) {
-      await updateGift(giftId, editingText);
-      setEditingGiftId(null);
-      setEditingText("");
+      if (giftListId !== undefined) {
+        await updateGift(giftId, editingText, giftListId);
+        setEditingGiftId(null);
+        setEditingText("");
+      } else {
+        console.error("Erreur lors de la modification du cadeau : aucun événement sélectionné ou l'événement n'existe pas");
+      }
     }
   };
 
   const confirmDelete = async () => {
     if (itemToDelete !== null) {
-      const giftToDelete = userState.data?.gifts.find((gift) => gift.id === itemToDelete);
+      const eventWithGiftToDelete = userState.data?.events.find((event) => event.giftList.gifts.some((gift) => gift.id === itemToDelete));
 
-      if (giftToDelete) {
-        await deleteGift(giftToDelete.id);
+      if (eventWithGiftToDelete) {
+        await deleteGift(itemToDelete, eventWithGiftToDelete.giftList.id);
       }
+      closeModal();
     }
-    closeModal();
   };
 
   const openModal = (giftId: number): void => {
@@ -70,14 +81,24 @@ export default function UserWishlist() {
     );
   }
 
+  if (!currentEvent) {
+    return (
+      <div className={styles["dashboard-wrapper"]}>
+        <div className={styles["dashboard-background"]}>
+          <p>Aucun événement sélectionné (ou l'événement n'existe pas).</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles["dashboard-wrapper"]}>
       <div className={styles["dashboard-background"]}>
         <div className={styles["content"]}>
           <p>Et toi, que voudrais-tu pour Noël ?</p>
           <ul className={styles["wishlist"]}>
-            {userState.data?.gifts && userState.data.gifts.length > 0 ? (
-              userState.data?.gifts.map((gift) => (
+            {currentEvent.giftList?.gifts && currentEvent.giftList?.gifts.length > 0 ? (
+              currentEvent.giftList?.gifts.map((gift) => (
                 <UserGiftItem
                   key={gift.id}
                   gift={{ ...gift, isEditing: gift.id === editingGiftId, editingText }}

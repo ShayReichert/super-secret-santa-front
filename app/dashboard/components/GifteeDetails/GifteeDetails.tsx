@@ -10,7 +10,8 @@ const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 const caveat = Caveat({ subsets: ["latin"], weight: ["400"] });
 
 export default function GifteeDetails() {
-  const { userState } = useUser();
+  const { userState, currentEventId } = useUser();
+  const currentEvent = userState.data?.events?.find((event) => event.id === currentEventId);
 
   if (userState.loading) {
     return (
@@ -22,34 +23,42 @@ export default function GifteeDetails() {
     );
   }
 
+  if (!currentEvent) {
+    return (
+      <div className={styles["dashboard-wrapper"]}>
+        <div className={styles["dashboard-background"]}>
+          <p>Aucun événement sélectionné (ou l'événement n'existe pas).</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles["dashboard-wrapper"]}>
       <div className={styles["dashboard-background"]}>
         <div className={styles["content"]}>
           <div className={styles["title"]}>
-            <p>Tu es le père Noël de</p>
-            <div className={`${styles["name"]} ${titan_one.className}`}>{userState.data?.SantaOf ? userState.data?.SantaOf : "..."}</div>
+            <p>Tu es le Père Noël de</p>
+            <div className={`${styles["name"]} ${titan_one.className}`}>{currentEvent.santaOf ? currentEvent.santaOf : "..."}</div>
           </div>
 
           <div>
-            <p> Voici les cadeaux qui lui feraient plaisir :</p>
+            <p>Voici les cadeaux qui lui feraient plaisir :</p>
           </div>
 
           <div className={`${styles["giftee-list"]} ${caveat.className}`}>
-            <ul>
-              {userState.data?.SantaOfGiftsLists && userState.data?.SantaOfGiftsLists.length > 0 ? (
-                <ul>
-                  {userState.data?.SantaOfGiftsLists.map((gift) => (
-                    <li key={gift.id}>- {gift.name}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className={styles["no-gift"]}>
-                  😱 <br />
-                  Cette personne n'a pas encore ajouté de cadeaux à sa liste
-                </p>
-              )}
-            </ul>
+            {currentEvent.santaOfGiftList?.gifts && currentEvent.santaOfGiftList.gifts.length > 0 ? (
+              <ul>
+                {currentEvent.santaOfGiftList.gifts.map((gift) => (
+                  <li key={gift.id}>- {gift.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className={styles["no-gift"]}>
+                😱 <br />
+                Cette personne n'a pas encore ajouté de cadeaux à sa liste.
+              </p>
+            )}
           </div>
         </div>
       </div>
