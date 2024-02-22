@@ -53,7 +53,7 @@ const PasswordDialog = ({ open, onClose, onConfirm }: PasswordDialogProps) => {
           helperText={error}
         />
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={styles["buttons"]}>
         <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={handleConfirm}>
           Confirmer
         </Button>

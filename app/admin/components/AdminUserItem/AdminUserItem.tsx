@@ -122,16 +122,18 @@ export default function AdminUserItem({
       ) : (
         <td>
           <span className={styles["icons"]}>
-            <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
-              <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
-            </button>
-            <button className={styles["password-button"]} onClick={handleChangePassword} aria-label="Réinitialiser le mot de passe">
-              <Image className={styles["password-icon"]} src="/icons/password.svg" alt="Modifier" height={20} width={20} priority />
-            </button>
-            <PasswordDialog open={isPasswordDialogOpen} onClose={() => setIsPasswordDialogOpen(false)} onConfirm={handlePasswordConfirm} />
-            <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
-              <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} priority />
-            </button>
+            <span className={styles["icons-wrapper"]}>
+              <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
+                <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
+              </button>
+              <button className={styles["password-button"]} onClick={handleChangePassword} aria-label="Réinitialiser le mot de passe">
+                <Image className={styles["password-icon"]} src="/icons/password.svg" alt="Modifier" height={20} width={20} priority />
+              </button>
+              <PasswordDialog open={isPasswordDialogOpen} onClose={() => setIsPasswordDialogOpen(false)} onConfirm={handlePasswordConfirm} />
+              <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
+                <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} priority />
+              </button>
+            </span>
           </span>
         </td>
       )}

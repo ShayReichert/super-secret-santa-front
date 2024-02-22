@@ -218,39 +218,44 @@
 
 @mixin edit-buttons() {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
 
-  button {
-    @include reset-button();
+  .icons-wrapper {
+    display: flex;
+    align-items: flex-end;
 
-    img {
-      margin: 0 0.5rem;
-      opacity: 0.5;
-      cursor: pointer;
-      transition: opacity 0.2s ease-in-out;
+    button {
+      @include reset-button();
 
-      &.password-icon {
-        margin-left: 1.2rem;
+      img {
+        margin: 0 0.5rem;
+        opacity: 0.5;
+        cursor: pointer;
+        transition: opacity 0.2s ease-in-out;
 
-        @include devices(large_tablet) {
-          margin-left: 2.2rem;
+        &.password-icon {
+          margin-left: 1.2rem;
+
+          @include devices(large_tablet) {
+            margin-left: 2.2rem;
+          }
         }
-      }
 
-      &.delete-icon {
-        margin-left: 1rem;
-        transform: translateY(3px);
+        &.delete-icon {
+          margin-left: 1rem;
+          transform: translateY(3px);
 
-        @include devices(large_tablet) {
-          margin-left: 2rem;
+          @include devices(large_tablet) {
+            margin-left: 2rem;
+          }
         }
-      }
 
-      &:hover {
-        opacity: 1;
+        &:hover {
+          opacity: 1;
+        }
       }
     }
   }

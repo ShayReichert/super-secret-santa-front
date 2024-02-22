@@ -36,12 +36,14 @@ export default function UserGiftItem({
         <>
           {gift.name}
           <span className={styles["icons"]}>
-            <button className={styles["edit-button"]} onClick={() => onEdit(gift.id, gift.name)} aria-label="Modifier">
-              <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} />
-            </button>
-            <button className={styles["delete-button"]} onClick={() => onDelete(gift.id)} aria-label="Supprimer">
-              <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} />
-            </button>
+            <span className={styles["icons-wrapper"]}>
+              <button className={styles["edit-button"]} onClick={() => onEdit(gift.id, gift.name)} aria-label="Modifier">
+                <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} />
+              </button>
+              <button className={styles["delete-button"]} onClick={() => onDelete(gift.id)} aria-label="Supprimer">
+                <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} />
+              </button>
+            </span>
           </span>
         </>
       )}
