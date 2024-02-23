@@ -6,7 +6,7 @@ import { useAuth } from "@/app/hook/useAuth/useAuth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Titan_One } from "next/font/google";
-import Menu from "../Menu/Menu";
+import MenuUser from "../MenuUser/MenuUser";
 import MenuEvents from "../MenuEvents/MenuEvents";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
@@ -39,7 +39,7 @@ export default function Header() {
 
       {isMounted && isLoggedIn() && (
         <div className={styles["menu"]}>
-          <Menu />
+          <MenuUser />
         </div>
       )}
     </header>

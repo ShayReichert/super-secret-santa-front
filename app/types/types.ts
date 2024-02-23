@@ -27,9 +27,9 @@ type Events = {
   id: number;
   name: string;
   giftList: GiftList;
-  santaOf: string;
-  santaOfGiftList: GiftList;
-  santaOfId: number;
+  santaOf: string | null;
+  santaOfGiftList: GiftList | null;
+  santaOfId: number | null;
 };
 
 type UserData = {
@@ -37,8 +37,6 @@ type UserData = {
   userName: string;
   email: string;
   events: Events[];
-  gifts: UserGift[];
-  userGiftListId: number;
   roles: string[];
 };
 

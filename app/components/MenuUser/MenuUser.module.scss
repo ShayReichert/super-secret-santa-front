@@ -1,0 +1,54 @@
+@import "../../styles/partials/mixins";
+
+.content {
+  display: flex;
+  justify-content: center;
+
+  .button-events {
+    @include button-events();
+
+    @include devices(large_tablet) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      color: $white;
+      text-transform: none;
+      font-size: 16px;
+      font-family: inherit;
+
+      @include devices(large_tablet) {
+        justify-content: center;
+      }
+
+      .user-icon {
+        @include user-icon();
+      }
+    }
+
+    .log {
+      @include link();
+    }
+  }
+}
+
+.menu-open-events {
+  ul {
+    background-color: $primary-color;
+    color: $white;
+
+    li {
+      font-size: 16px;
+    }
+  }
+
+  &-admin {
+    ul {
+      background-color: $secondary-color;
+    }
+  }
+}

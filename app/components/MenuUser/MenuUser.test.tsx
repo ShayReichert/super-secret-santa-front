@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Menu from "./Menu";
+import Menu from "./MenuUser";
 import { usePathname } from "next/navigation";
 
 const mockLogout = jest.fn();
