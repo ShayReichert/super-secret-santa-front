@@ -2,10 +2,20 @@
 
 .button-events {
   @include button-events();
-  transition: background-color 0.3s ease-in-out !important;
+  transition: background-color 0.3s ease-in-out;
 
   &:hover {
-    background-color: $link-hover !important;
+    background-color: $link-hover;
+  }
+
+  svg {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  &[aria-expanded="true"] {
+    svg {
+      opacity: 0;
+    }
   }
 }
 

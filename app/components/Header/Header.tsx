@@ -23,25 +23,31 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`${styles["header"]} ${isAdminPage ? styles["header-admin"] : ""}`}>
-      {isMounted && isLoggedIn() && (
-        <div className={styles["menu-events"]}>
-          <MenuEvents />
-        </div>
-      )}
+    <>
+      <header className={`${styles["header"]} ${isAdminPage ? styles["header-admin"] : ""}`}>
+        {isMounted && isLoggedIn() && (
+          <div className={styles["menu-events"]}>
+            <MenuEvents />
+          </div>
+        )}
 
-      <Link className={styles["title"]} href="/">
-        <h1 className={titan_one.className}>
-          <span>Super</span>
-          🎄 Secret Santa 🎄
-        </h1>
-      </Link>
+        <Link className={styles["title"]} href="/">
+          <h1 className={titan_one.className}>
+            <span>Super</span>
+            🎄 Secret Santa 🎄
+          </h1>
+        </Link>
 
-      {isMounted && isLoggedIn() && (
-        <div className={styles["menu"]}>
-          <MenuUser />
-        </div>
-      )}
-    </header>
+        {isMounted && isLoggedIn() && (
+          <div className={styles["menu"]}>
+            <MenuUser />
+          </div>
+        )}
+      </header>
+
+      <div className={styles["menu-events-mobile"]}>
+        <MenuEvents />
+      </div>
+    </>
   );
 }

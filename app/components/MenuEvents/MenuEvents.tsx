@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 import { setCookie, getCookie } from "cookies-next";
 import { cookieParams } from "@/app/services/cookieParams";
+import Chevron from "../Chevron/Chevron";
 
 export default function MenuEvents() {
   const { userState, currentEventId, changeCurrentEvent } = useUser();
@@ -56,6 +57,7 @@ export default function MenuEvents() {
         onClick={({ currentTarget }) => setAnchorEl(currentTarget)}
       >
         {selectedEventName}
+        <Chevron />
       </Button>
       <Menu
         id="basic-menu"

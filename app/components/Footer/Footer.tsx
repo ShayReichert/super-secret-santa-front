@@ -12,9 +12,6 @@ export default function Footer() {
   return (
     <footer className={`${styles["footer"]} ${isAdminPage ? styles["footer-admin"] : ""}`}>
       <div className={styles["menu-mobile"]}>
-        <div className={styles["menu-events-mobile"]}>
-          <MenuEvents />
-        </div>
         <MenuUser />
       </div>
 

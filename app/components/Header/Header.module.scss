@@ -41,6 +41,7 @@
       @include fluid-font(30px, 40px);
     }
   }
+
   .menu {
     display: flex;
     justify-content: flex-end;
@@ -49,6 +50,24 @@
 
     @include devices(large_tablet) {
       display: none;
+    }
+  }
+}
+
+.menu-events-mobile {
+  display: none;
+
+  @include devices(large_tablet) {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 0;
+    background-color: $light-secondary;
+    border-bottom: 1px solid $secondary-color;
+
+    button {
+      color: black;
+      font-size: 22px;
+      font-weight: bold;
     }
   }
 }
