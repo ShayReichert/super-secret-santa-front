@@ -38,6 +38,8 @@ type UserData = {
   email: string;
   events: Events[];
   roles: string[];
+  isOrganizerOfEvent: boolean;
+  organizedEventIds: number[];
 };
 
 type UserState = {
