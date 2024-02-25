@@ -3,14 +3,16 @@
 import styles from "./Footer.module.scss";
 import { usePathname } from "next/navigation";
 import MenuUser from "../MenuUser/MenuUser";
-import MenuEvents from "../MenuEvents/MenuEvents";
+import { useUser } from "@/app/context/UserContext";
 
 export default function Footer() {
+  const { isAdministrator, canOnlyManageEvent } = useUser();
   const pathname = usePathname();
-  const isAdminPage = pathname.includes("/admin");
+  const isAdminPage = pathname.includes("/admin") && isAdministrator;
+  const isOrganizerPage = pathname.includes("/admin") && canOnlyManageEvent;
 
   return (
-    <footer className={`${styles["footer"]} ${isAdminPage ? styles["footer-admin"] : ""}`}>
+    <footer className={`${styles["footer"]} ${isAdminPage ? styles["footer-admin"] : isOrganizerPage ? styles["footer-organizer"] : ""}`}>
       <div className={styles["menu-mobile"]}>
         <MenuUser />
       </div>

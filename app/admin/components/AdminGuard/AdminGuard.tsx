@@ -16,7 +16,9 @@ const AdminGuard: React.FC<AdminGuardProps> = ({ children }) => {
 
   useEffect(() => {
     if (userState.loading === false) {
-      if (userState.data && userState.data.roles.includes("ROLE_ADMIN")) {
+      const isOrganizer = userState.data?.isOrganizerOfEvent;
+
+      if ((userState.data && userState.data.roles.includes("ROLE_ADMIN")) || isOrganizer) {
         setIsAuthorized(true);
       } else {
         router.push("/dashboard");

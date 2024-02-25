@@ -8,6 +8,10 @@
   font-size: 12px;
 
   &-admin {
+    background-color: $admin-color;
+  }
+
+  &-organizer {
     background-color: $secondary-color;
   }
 

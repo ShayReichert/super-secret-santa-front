@@ -16,6 +16,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     error: null,
   });
   const [currentEventId, setCurrentEventId] = useState<number | null>(null);
+  const isAdministrator = userState.data?.roles?.includes("ROLE_ADMIN") || false;
+  const canOnlyManageEvent = (userState.data?.isOrganizerOfEvent && !isAdministrator) || false;
 
   useEffect(() => {
     fetchUserData();
@@ -49,7 +51,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCurrentEventId(eventId);
   };
 
-  const value = { userState, setUserState, currentEventId, changeCurrentEvent };
+  const value = {
+    userState,
+    setUserState,
+    currentEventId,
+    changeCurrentEvent,
+    isAdministrator,
+    canOnlyManageEvent,
+  };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

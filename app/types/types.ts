@@ -53,6 +53,8 @@ type UserContextType = {
   setUserState: React.Dispatch<React.SetStateAction<UserState>>;
   currentEventId: number | null;
   changeCurrentEvent: (eventId: number) => void;
+  isAdministrator: boolean;
+  canOnlyManageEvent: boolean;
 };
 
 type Gift = {

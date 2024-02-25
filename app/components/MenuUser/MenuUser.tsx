@@ -15,11 +15,9 @@ export default function MenuUser() {
   const pathname = usePathname();
   const isAdminPage = pathname.includes("/admin");
   const { logout } = useAuth();
-  const { userState } = useUser();
+  const { userState, isAdministrator, canOnlyManageEvent } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const isAdministrator = userState.data?.roles.includes("ROLE_ADMIN");
-  const canOnlyManageEvent = userState.data?.isOrganizerOfEvent && !isAdministrator;
 
   return (
     <div className={styles["content"]}>
