@@ -24,6 +24,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     fetchUserData();
   }, []);
 
+  useEffect(() => {
+    const updateCurrentEvent = () => {
+      const newCurrentEvent = userState.data?.events?.find((event) => event.id === currentEventId);
+      setCurrentEvent(newCurrentEvent || null);
+    };
+
+    updateCurrentEvent();
+  }, [currentEventId, userState.data?.events]);
+
   const fetchUserData = async () => {
     try {
       const jwt = getCookie("jwt_token");
@@ -48,17 +57,16 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  useEffect(() => {
-    const updateCurrentEvent = () => {
-      const newCurrentEvent = userState.data?.events?.find((event) => event.id === currentEventId);
-      setCurrentEvent(newCurrentEvent || null);
-    };
-
-    updateCurrentEvent();
-  }, [currentEventId, userState.data?.events]);
-
   const changeCurrentEvent = (eventId: number) => {
     setCurrentEventId(eventId);
+  };
+
+  const flushAllData = () => {
+    setUserState({ data: null, loading: false, error: null });
+    setCurrentEventId(null);
+    setCurrentEvent(null);
+    deleteCookie("jwt_token");
+    deleteCookie("selectedEventId");
   };
 
   const value = {
@@ -69,6 +77,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     changeCurrentEvent,
     isAdministrator,
     canOnlyManageEvent,
+    flushAllData,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

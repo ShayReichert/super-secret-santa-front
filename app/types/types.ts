@@ -56,6 +56,7 @@ type UserContextType = {
   changeCurrentEvent: (eventId: number) => void;
   isAdministrator: boolean;
   canOnlyManageEvent: boolean;
+  flushAllData: () => void;
 };
 
 type Gift = {

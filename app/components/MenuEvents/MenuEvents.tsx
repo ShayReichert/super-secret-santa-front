@@ -72,7 +72,6 @@ export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPa
 
   if (isOrganizerPage) {
     eventsToShow = getEventsOrganizedByUser(events as Events[], userState.data?.organizedEventIds || []);
-    console.log(eventsToShow);
   } else {
     eventsToShow = userState.data?.events as EventInUser[];
   }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axiosInstance from "../../services/axiosInstance";
-import { setCookie, deleteCookie, getCookie } from "cookies-next";
+import { setCookie, getCookie } from "cookies-next";
 import { useUser } from "@/app/context/UserContext";
 import { cookieParams } from "@/app/services/cookieParams";
 
@@ -14,7 +14,7 @@ export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     errorMessage: "",
   });
-  const { setUserState } = useUser();
+  const { setUserState, flushAllData } = useUser();
 
   const isLoggedIn = () => {
     return !!getCookie("jwt_token");
@@ -30,7 +30,8 @@ export const useAuth = () => {
 
       setCookie("jwt_token", token, cookieParams);
       // TODO : en prod, ajouter d'autres options de sécurité si nécessaire, par exemple :
-      // secure: true, // Assurez-vous que le cookie est transmis uniquement via HTTPS
+      // secure: true,
+      // Assurez-vous que le cookie est transmis uniquement via HTTPS
       await fetchUserData();
 
       router.push("/dashboard");
@@ -51,9 +52,8 @@ export const useAuth = () => {
   };
 
   const logout = () => {
-    deleteCookie("jwt_token");
-    setUserState({ data: null, loading: false, error: null });
-    router.push("/login");
+    flushAllData();
+    window.location.href = "/login";
   };
 
   return { authState, isLoggedIn, login, logout };

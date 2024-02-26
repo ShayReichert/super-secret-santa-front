@@ -12,7 +12,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 
 export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
-  const pathname = usePathname();
   const { logout } = useAuth();
   const { userState, isAdministrator, canOnlyManageEvent } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

@@ -48,9 +48,11 @@ export default function Header() {
         )}
       </header>
 
-      <div className={styles["menu-events-mobile"]}>
-        <MenuEvents isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
-      </div>
+      {isMounted && isLoggedIn() && (
+        <div className={styles["menu-events-mobile"]}>
+          <MenuEvents isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
+        </div>
+      )}
     </>
   );
 }
