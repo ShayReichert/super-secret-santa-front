@@ -10,8 +10,7 @@ const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 const caveat = Caveat({ subsets: ["latin"], weight: ["400"] });
 
 export default function GifteeDetails() {
-  const { userState, currentEventId } = useUser();
-  const currentEvent = userState.data?.events?.find((event) => event.id === currentEventId);
+  const { userState, currentEvent } = useUser();
 
   if (userState.loading) {
     return (

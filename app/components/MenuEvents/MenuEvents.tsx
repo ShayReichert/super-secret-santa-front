@@ -5,18 +5,16 @@ import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { usePathname } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 import { setCookie, getCookie } from "cookies-next";
 import { cookieParams } from "@/app/services/cookieParams";
 import Chevron from "../Chevron/Chevron";
 
 export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
-  const { userState, currentEventId, changeCurrentEvent } = useUser();
-  const pathname = usePathname();
+  const { userState, currentEventId, currentEvent, changeCurrentEvent } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const selectedEventName = userState.data?.events.find((event) => event.id === currentEventId)?.name || "";
+  const selectedEventName = currentEvent?.name || "";
 
   const initializeEventSelection = () => {
     let initialEventId = currentEventId;

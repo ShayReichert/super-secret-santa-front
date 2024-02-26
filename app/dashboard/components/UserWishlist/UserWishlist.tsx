@@ -10,14 +10,13 @@ import { useUser } from "@/app/context/UserContext";
 import Loader from "@/app/components/Loader/Loader";
 
 export default function UserWishlist() {
-  const { userState, currentEventId } = useUser();
+  const { userState, currentEvent } = useUser();
   const { addGift, updateGift, deleteGift } = useGiftList();
   const [newGift, setNewGift] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
   const [editingGiftId, setEditingGiftId] = useState<number | null>(null);
   const [editingText, setEditingText] = useState("");
-  const currentEvent = userState.data?.events?.find((event) => event.id === currentEventId);
   const giftListId = currentEvent?.giftList?.id;
 
   const handleAddGift = async (e: FormEvent<HTMLFormElement>) => {
