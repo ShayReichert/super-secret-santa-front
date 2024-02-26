@@ -23,7 +23,7 @@ type GiftList = {
   gifts: Gift[];
 };
 
-type Events = {
+type EventInUser = {
   id: number;
   name: string;
   giftList: GiftList;
@@ -36,7 +36,7 @@ type UserData = {
   id: number;
   userName: string;
   email: string;
-  events: Events[];
+  events: EventInUser[];
   roles: string[];
   isOrganizerOfEvent: boolean;
   organizedEventIds: number[];
@@ -52,7 +52,7 @@ type UserContextType = {
   userState: UserState;
   setUserState: React.Dispatch<React.SetStateAction<UserState>>;
   currentEventId: number | null;
-  currentEvent: Events | null;
+  currentEvent: EventInUser | null;
   changeCurrentEvent: (eventId: number) => void;
   isAdministrator: boolean;
   canOnlyManageEvent: boolean;
@@ -75,3 +75,24 @@ interface NewUser {
   email: string;
   password: string;
 }
+
+type Events = {
+  id: number;
+  name: string;
+  users: User[];
+  organizer: OrganizerInEvents;
+  giftList: GiftList;
+  santas: any[];
+};
+
+type UserInEvents = {
+  username: string;
+  email: string;
+  roles: string[];
+};
+
+type OrganizerInEvents = {
+  username: string;
+  email: string;
+  roles: string[];
+};

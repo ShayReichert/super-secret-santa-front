@@ -16,7 +16,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     error: null,
   });
   const [currentEventId, setCurrentEventId] = useState<number | null>(null);
-  const [currentEvent, setCurrentEvent] = useState<Events | null>(null);
+  const [currentEvent, setCurrentEvent] = useState<EventInUser | null>(null);
   const isAdministrator = userState.data?.roles?.includes("ROLE_ADMIN") || false;
   const canOnlyManageEvent = (userState.data?.isOrganizerOfEvent && !isAdministrator) || false;
 

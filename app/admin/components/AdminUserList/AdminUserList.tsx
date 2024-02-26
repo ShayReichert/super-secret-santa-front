@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent, useEffect } from "react";
+import { useUser } from "@/app/context/UserContext";
 import styles from "./AdminUserList.module.scss";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import AdminUserItem from "../AdminUserItem/AdminUserItem";
@@ -9,6 +10,7 @@ import { isPasswordComplex, isValidEmail } from "@/app/services/inputValidator";
 import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
 
 export default function AdminUserList() {
+  const { currentEventId } = useUser();
   const { getUsers, addUser, updateUser, deleteUser } = useUserList();
   const [users, setUsers] = useState<User[]>([]);
   const [newUser, setNewUser] = useState<NewUser>({ username: "", email: "", password: "" });
@@ -16,6 +18,9 @@ export default function AdminUserList() {
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [disabledButton, setDisabledButton] = useState(true);
+
+  //  TODO : à la place de tous les users, récupérer la liste des users du currentEvent uniquement (avec currentEventId)
+  //  Créer dans useEvents le hook getEventDetails () avec GET api/events/2
 
   useEffect(() => {
     const fetchUsers = async () => {
