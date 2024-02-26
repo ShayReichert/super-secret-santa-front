@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <footer className={`${styles["footer"]} ${isAdminPage ? styles["footer-admin"] : isOrganizerPage ? styles["footer-organizer"] : ""}`}>
       <div className={styles["menu-mobile"]}>
-        <MenuUser />
+        <MenuUser isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
       </div>
 
       <div>© {new Date().getFullYear()} </div>

@@ -195,7 +195,8 @@
     border-radius: 50%;
   }
 
-  &-admin {
+  &-admin,
+  &-organizer {
     &:after {
       background-color: $primary-color;
     }

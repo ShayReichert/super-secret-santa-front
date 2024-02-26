@@ -30,7 +30,7 @@ export default function Header() {
       <header className={`${styles["header"]} ${isAdminPage ? styles["header-admin"] : isOrganizerPage ? styles["header-organizer"] : ""}`}>
         {isMounted && isLoggedIn() && (
           <div className={styles["menu-events"]}>
-            <MenuEvents />
+            <MenuEvents isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
           </div>
         )}
 
@@ -43,13 +43,13 @@ export default function Header() {
 
         {isMounted && isLoggedIn() && (
           <div className={styles["menu"]}>
-            <MenuUser />
+            <MenuUser isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
           </div>
         )}
       </header>
 
       <div className={styles["menu-events-mobile"]}>
-        <MenuEvents />
+        <MenuEvents isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
       </div>
     </>
   );

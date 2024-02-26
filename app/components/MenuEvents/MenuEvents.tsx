@@ -11,10 +11,9 @@ import { setCookie, getCookie } from "cookies-next";
 import { cookieParams } from "@/app/services/cookieParams";
 import Chevron from "../Chevron/Chevron";
 
-export default function MenuEvents() {
+export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
   const { userState, currentEventId, changeCurrentEvent } = useUser();
   const pathname = usePathname();
-  const isAdminPage = pathname.includes("/admin");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const selectedEventName = userState.data?.events.find((event) => event.id === currentEventId)?.name || "";
@@ -61,7 +60,9 @@ export default function MenuEvents() {
       </Button>
       <Menu
         id="basic-menu"
-        className={`${styles["menu-open-events"]} ${isAdminPage ? styles["menu-open-events-admin"] : ""}`}
+        className={`${styles["menu-open-events"]} ${
+          isAdminPage ? styles["menu-open-events-admin"] : isOrganizerPage ? styles["menu-open-events-organizer"] : ""
+        }`}
         anchorEl={anchorEl}
         disableScrollLock={true}
         open={open}

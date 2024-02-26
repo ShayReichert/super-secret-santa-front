@@ -11,9 +11,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 
-export default function MenuUser() {
+export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
   const pathname = usePathname();
-  const isAdminPage = pathname.includes("/admin");
   const { logout } = useAuth();
   const { userState, isAdministrator, canOnlyManageEvent } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -30,7 +29,10 @@ export default function MenuUser() {
         onClick={({ currentTarget }) => setAnchorEl(currentTarget)}
       >
         <div className={styles["user"]}>
-          <span className={`${styles["user-icon"]} ${isAdminPage ? styles["user-icon-admin"] : ""}`} data-testid="user-icon">
+          <span
+            className={`${styles["user-icon"]} ${isAdminPage ? styles["user-icon-admin"] : isOrganizerPage ? styles["user-icon-organizer"] : ""}`}
+            data-testid="user-icon"
+          >
             <span className={styles["user-letter"]} data-testid="user-letter">
               {userState.data?.userName?.charAt(0)}
             </span>
@@ -42,7 +44,9 @@ export default function MenuUser() {
       </Button>
       <Menu
         id="basic-menu"
-        className={`${styles["menu-open-events"]} ${isAdminPage ? styles["menu-open-events-admin"] : ""}`}
+        className={`${styles["menu-open-events"]} ${
+          isAdminPage ? styles["menu-open-events-admin"] : isOrganizerPage ? styles["menu-open-events-organizer"] : ""
+        }`}
         anchorEl={anchorEl}
         disableScrollLock={true}
         open={open}

@@ -48,6 +48,12 @@
 
   &-admin {
     ul {
+      background-color: $admin-color;
+    }
+  }
+
+  &-organizer {
+    ul {
       background-color: $secondary-color;
     }
   }
