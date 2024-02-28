@@ -9,9 +9,12 @@ import AdminUserItem from "../AdminUserItem/AdminUserItem";
 import { useUserList } from "@/app/hook/useUserList/useUserList";
 import { isPasswordComplex, isValidEmail } from "@/app/services/inputValidator";
 import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
+import { Titan_One } from "next/font/google";
+
+const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function AdminUserList() {
-  const { currentEventId } = useUser();
+  const { currentEvent, currentEventId } = useUser();
   const { addUser, updateUser, deleteUser } = useUserList();
   const { getCurrentEvent } = useEvents();
   const [users, setUsers] = useState<User[]>([]);
@@ -125,6 +128,7 @@ export default function AdminUserList() {
       <div className={styles["menu-wrapper"]}>
         <MenuListAdmin />
       </div>
+      <h2 className={titan_one.className}>{currentEvent?.name}</h2>
       <p className={styles["admin-title"]}>Voici la liste des “enfants” sages qui ont le droit à un cadeau cette année :</p>
 
       {errors.length > 0 && (

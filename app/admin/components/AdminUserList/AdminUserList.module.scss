@@ -5,7 +5,7 @@
   @include size();
   min-height: calc(100vh - 16.8rem);
   padding: 1rem 3rem 4rem;
-  margin: 4rem 3rem;
+  margin: 4rem 2rem;
 
   @include devices(large_tablet) {
     margin: 0;
@@ -15,7 +15,21 @@
   .menu-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 3rem;
+
+    @include devices(large_tablet) {
+      margin-bottom: 2rem;
+    }
+  }
+
+  h2 {
+    text-align: center;
+    font-weight: normal;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+
+    @include devices(large_tablet) {
+      display: none;
+    }
   }
 
   .admin-title {

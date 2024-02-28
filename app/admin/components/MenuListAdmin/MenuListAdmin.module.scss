@@ -1,6 +1,8 @@
 @import "../../../styles/partials/mixins";
 
 .menu {
+  z-index: 999;
+
   ul li {
     font-size: 16px;
   }
