@@ -10,9 +10,7 @@ interface PasswordDialogProps {
   onClose: () => void;
   onConfirm: (newPassword: string) => void;
 }
-type User = {
-  username: string;
-  email: string;
+type UserInAdmin = User & {
   isEditing: boolean;
   editingText: string;
   editingEmail: string;
@@ -77,16 +75,16 @@ interface NewUser {
   password: string;
 }
 
-type Events = {
+type SantaEvent = {
   id: number;
   name: string;
   users: User[];
   organizer: OrganizerInEvents;
-  giftList: GiftList;
+  giftList: any[];
   santas: any[];
 };
 
-type UserInEvents = {
+type User = {
   username: string;
   email: string;
   roles: string[];

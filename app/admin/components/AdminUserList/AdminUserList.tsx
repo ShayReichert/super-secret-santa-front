@@ -2,6 +2,7 @@
 
 import { useState, FormEvent, useEffect } from "react";
 import { useUser } from "@/app/context/UserContext";
+import { useEvents } from "@/app/hook/useEvents/useEvents";
 import styles from "./AdminUserList.module.scss";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import AdminUserItem from "../AdminUserItem/AdminUserItem";
@@ -11,7 +12,8 @@ import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
 
 export default function AdminUserList() {
   const { currentEventId } = useUser();
-  const { getUsers, addUser, updateUser, deleteUser } = useUserList();
+  const { addUser, updateUser, deleteUser } = useUserList();
+  const { getCurrentEvent } = useEvents();
   const [users, setUsers] = useState<User[]>([]);
   const [newUser, setNewUser] = useState<NewUser>({ username: "", email: "", password: "" });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -19,17 +21,15 @@ export default function AdminUserList() {
   const [errors, setErrors] = useState<string[]>([]);
   const [disabledButton, setDisabledButton] = useState(true);
 
-  //  TODO : à la place de tous les users, récupérer la liste des users du currentEvent uniquement (avec currentEventId)
-  //  Créer dans useEvents le hook getEventDetails () avec GET api/events/2
-
   useEffect(() => {
-    const fetchUsers = async () => {
-      const fetchedUsers = await getUsers();
+    const fetchUsersInCurrentEvent = async () => {
+      const fetchedCurrentEvent = await getCurrentEvent(currentEventId as number);
+      const fetchedUsers = fetchedCurrentEvent.users;
       setUsers(fetchedUsers);
     };
 
-    fetchUsers();
-  }, []);
+    fetchUsersInCurrentEvent();
+  }, [currentEventId]);
 
   useEffect(() => {
     setDisabledButton(!(newUser.username && newUser.password && newUser.email));
