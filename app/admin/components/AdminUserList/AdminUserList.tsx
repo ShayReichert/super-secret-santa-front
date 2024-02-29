@@ -18,6 +18,7 @@ export default function AdminUserList() {
   const { addUser, updateUser, deleteUser } = useUserList();
   const { getCurrentEvent } = useEvents();
   const [users, setUsers] = useState<User[]>([]);
+  const [organizer, setOrganizer] = useState<User | null>(null);
   const [newUser, setNewUser] = useState<NewUser>({ username: "", email: "", password: "" });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
@@ -25,13 +26,16 @@ export default function AdminUserList() {
   const [disabledButton, setDisabledButton] = useState(true);
 
   useEffect(() => {
-    const fetchUsersInCurrentEvent = async () => {
+    const fetchUsersAndOrganizerInCurrentEvent = async () => {
       const fetchedCurrentEvent = await getCurrentEvent(currentEventId as number);
       const fetchedUsers = fetchedCurrentEvent.users;
+      const fetchedOrganizer = fetchedCurrentEvent.organizer;
+
       setUsers(fetchedUsers);
+      setOrganizer(fetchedOrganizer);
     };
 
-    fetchUsersInCurrentEvent();
+    fetchUsersAndOrganizerInCurrentEvent();
   }, [currentEventId]);
 
   useEffect(() => {
@@ -152,17 +156,24 @@ export default function AdminUserList() {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user, index) => (
-                    <AdminUserItem
-                      key={index}
-                      user={user}
-                      index={index}
-                      onEdit={handleEditClick}
-                      onDelete={openModal}
-                      onEditSubmit={handleEditSubmit}
-                      updateUser={updateUser}
-                    />
-                  ))}
+                  {[...users]
+                    .sort((a, b) => {
+                      if (a.username === organizer?.username) return -1; // Organizer first
+                      if (b.username === organizer?.username) return 1; // Organizer first
+                      return 0;
+                    })
+                    .map((user, index) => (
+                      <AdminUserItem
+                        key={index}
+                        user={user}
+                        organizer={organizer}
+                        index={index}
+                        onEdit={handleEditClick}
+                        onDelete={openModal}
+                        onEditSubmit={handleEditSubmit}
+                        updateUser={updateUser}
+                      />
+                    ))}
                 </tbody>
               </table>
             </div>

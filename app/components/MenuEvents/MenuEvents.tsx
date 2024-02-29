@@ -10,12 +10,12 @@ import { getEventsOrganizedByUser } from "@/app/services/eventsFilter";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Chevron from "../Chevron/Chevron";
+import ChevronIcon from "../ChevronIcon/ChevronIcon";
 
 export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
   const { userState, currentEventId, currentEvent, changeCurrentEvent } = useUser();
   const { getEvents } = useEvents();
-  const [events, setEvents] = useState<Events[]>([]);
+  const [events, setEvents] = useState<SantaEvent[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const selectedEventName = currentEvent?.name || "";
@@ -68,10 +68,10 @@ export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPa
   };
 
   // Déterminez le type de données en fonction de la page
-  let eventsToShow: EventInUser[] | Events[] = [];
+  let eventsToShow: EventInUser[] | SantaEvent[] = [];
 
   if (isOrganizerPage) {
-    eventsToShow = getEventsOrganizedByUser(events as Events[], userState.data?.organizedEventIds || []);
+    eventsToShow = getEventsOrganizedByUser(events as SantaEvent[], userState.data?.organizedEventIds || []);
   } else {
     eventsToShow = userState.data?.events as EventInUser[];
   }
@@ -87,7 +87,7 @@ export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPa
         onClick={({ currentTarget }) => setAnchorEl(currentTarget)}
       >
         {selectedEventName}
-        <Chevron />
+        <ChevronIcon />
       </Button>
       <Menu
         id="basic-menu"

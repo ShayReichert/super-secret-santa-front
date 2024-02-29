@@ -237,6 +237,11 @@
         cursor: pointer;
         transition: opacity 0.2s ease-in-out;
 
+        &.organizer-icon,
+        &.organizer-icon:hover {
+          opacity: 0.2;
+        }
+
         &.password-icon {
           margin-left: 1.2rem;
 
@@ -247,7 +252,6 @@
 
         &.delete-icon {
           margin-left: 1rem;
-          transform: translateY(3px);
 
           @include devices(large_tablet) {
             margin-left: 2rem;

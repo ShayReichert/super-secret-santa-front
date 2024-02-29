@@ -1,4 +1,4 @@
-const Chevron = () => (
+const ChevronIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -13,4 +13,4 @@ const Chevron = () => (
     <path d="m6 9 6 6 6-6" />
   </svg>
 );
-export default Chevron;
+export default ChevronIcon;
