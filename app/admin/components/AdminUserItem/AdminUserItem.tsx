@@ -13,9 +13,10 @@ interface Props {
   onDelete: (index: number) => void;
   onEditSubmit: (index: number, newName: string, newEmail: string) => void;
   updateUser: (username: string, data: Partial<User>) => Promise<boolean>;
+  onSetOrganizer: (userId: number) => void;
 }
 
-export default function AdminUserItem({ user, organizer, index, onEdit, onDelete, onEditSubmit, updateUser }: Props) {
+export default function AdminUserItem({ user, organizer, index, onEdit, onDelete, onEditSubmit, updateUser, onSetOrganizer }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [localName, setLocalName] = useState(user.username);
   const [localEmail, setLocalEmail] = useState(user.email);
@@ -35,12 +36,6 @@ export default function AdminUserItem({ user, organizer, index, onEdit, onDelete
     }
 
     setIsPasswordDialogOpen(false);
-  };
-
-  const handleSetOrganizer = () => {
-    if (!isOrganizer) {
-      console.log("Changement de l'organisateur");
-    }
   };
 
   // Enable editing for both fields
@@ -128,7 +123,7 @@ export default function AdminUserItem({ user, organizer, index, onEdit, onDelete
             <span className={styles["icons-wrapper"]}>
               <button
                 className={`${styles["organizer-button"]} ${isOrganizer ? styles["isOrganizer"] : ""} `}
-                onClick={handleSetOrganizer}
+                // onClick={() => onSetOrganizer(user.id)}
                 aria-label="Attribuer le rôle d'organisateur"
               >
                 {isOrganizer ? (

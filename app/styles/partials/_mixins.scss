@@ -242,14 +242,6 @@
           opacity: 0.2;
         }
 
-        &.password-icon {
-          margin-left: 1.2rem;
-
-          @include devices(large_tablet) {
-            margin-left: 2.2rem;
-          }
-        }
-
         &.delete-icon {
           margin-left: 1rem;
 

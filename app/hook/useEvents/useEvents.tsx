@@ -24,5 +24,14 @@ export const useEvents = () => {
     }
   };
 
-  return { getEvents, getCurrentEvent };
+  const setOrganizerOfEvent = async (eventId: number, userId: number): Promise<void> => {
+    try {
+      await axiosInstance.post(`/api/events/organizer/${userId}/${eventId}`);
+    } catch (error) {
+      console.error("Erreur lors de la modification de l'organisateur de l'évènement", error);
+      throw new Error("Erreur lors de la modification de l'organisateur de l'évènement");
+    }
+  };
+
+  return { getEvents, getCurrentEvent, setOrganizerOfEvent };
 };

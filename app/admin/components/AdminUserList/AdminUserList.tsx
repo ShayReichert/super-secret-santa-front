@@ -16,7 +16,7 @@ const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 export default function AdminUserList() {
   const { currentEvent, currentEventId } = useUser();
   const { addUser, updateUser, deleteUser } = useUserList();
-  const { getCurrentEvent } = useEvents();
+  const { getCurrentEvent, setOrganizerOfEvent } = useEvents();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
   const [newUser, setNewUser] = useState<NewUser>({ username: "", email: "", password: "" });
@@ -73,6 +73,21 @@ export default function AdminUserList() {
       setUsers([...users, result]);
       setNewUser({ username: "", email: "", password: "" });
       setErrors([]);
+    }
+  };
+
+  const handleSetOrganizer = async (userId: number) => {
+    if (!currentEventId) {
+      console.error("Aucun évènement courant n'est défini");
+      return;
+    }
+
+    try {
+      await setOrganizerOfEvent(currentEventId, userId);
+      //  TODO : terminer cette fonction quand l'API retournera un user.id dans users
+      // Rafraîchir la liste des utilisateurs ou de mettre à jour l'état local pour refléter le changement
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de l'organisateur·ice", error);
     }
   };
 
@@ -172,6 +187,7 @@ export default function AdminUserList() {
                         onDelete={openModal}
                         onEditSubmit={handleEditSubmit}
                         updateUser={updateUser}
+                        onSetOrganizer={handleSetOrganizer}
                       />
                     ))}
                 </tbody>

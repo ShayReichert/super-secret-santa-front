@@ -25,7 +25,7 @@ export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPa
     const storedEventId = getCookie("selectedEventId");
 
     if (isOrganizerPage) {
-      // On affiche automatiquement le premier event duquel l'utilisateur est organisateur
+      // Display the first event the user is an organizer of
       const organizedEventsIds = userState.data?.organizedEventIds || [];
       if (!organizedEventsIds.includes(initialEventId!) && organizedEventsIds.length > 0) {
         initialEventId = organizedEventsIds[0];
@@ -46,7 +46,7 @@ export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPa
 
   useEffect(initializeEventSelection, [userState.data?.events, currentEventId, changeCurrentEvent, isOrganizerPage]);
 
-  // Récupérer la liste de tous les évènements
+  // Fetch all events
   useEffect(() => {
     const fetchEvents = async () => {
       const fetchedEvents = await getEvents();
@@ -67,7 +67,7 @@ export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPa
     setAnchorEl(null);
   };
 
-  // Déterminez le type de données en fonction de la page
+  // Find the data type based on the page
   let eventsToShow: EventInUser[] | SantaEvent[] = [];
 
   if (isOrganizerPage) {

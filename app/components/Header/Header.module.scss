@@ -64,13 +64,11 @@
   @include devices(large_tablet) {
     display: flex;
     justify-content: center;
-    padding: 3rem 0;
-    background-color: $light-secondary;
-    border-bottom: 1px solid $secondary-color;
+    padding: 1rem 0;
 
     button {
       color: black;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: bold;
     }
   }
