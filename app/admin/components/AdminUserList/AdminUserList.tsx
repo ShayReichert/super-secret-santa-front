@@ -1,29 +1,31 @@
 "use client";
 
+import styles from "./AdminUserList.module.scss";
+import { Titan_One } from "next/font/google";
 import { useState, FormEvent, useEffect } from "react";
 import { useUser } from "@/app/context/UserContext";
 import { useEvents } from "@/app/hook/useEvents/useEvents";
-import styles from "./AdminUserList.module.scss";
-import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
-import AdminUserItem from "../AdminUserItem/AdminUserItem";
 import { useUserList } from "@/app/hook/useUserList/useUserList";
-import { isPasswordComplex, isValidEmail } from "@/app/services/inputValidator";
+import AdminUserItem from "../AdminUserItem/AdminUserItem";
 import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
-import { Titan_One } from "next/font/google";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
+import CreateUserDialog from "../CreateUserDialog/CreateUserDialog";
+import { isValidEmail } from "@/app/services/inputValidator";
+import useDraw from "@/app/hook/useDraw";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function AdminUserList() {
   const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
   const { addUser, updateUser, deleteUser } = useUserList();
-  const { getCurrentEvent, setOrganizerOfEvent } = useEvents();
+  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent } = useEvents();
+  const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
-  const [newUser, setNewUser] = useState<NewUser>({ username: "", email: "", password: "" });
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
-  const [disabledButton, setDisabledButton] = useState(true);
+  const [isCreateUserDialogOpen, setIsCreateUserDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsersAndOrganizerInCurrentEvent = async () => {
@@ -37,42 +39,39 @@ export default function AdminUserList() {
     fetchUsersAndOrganizerInCurrentEvent();
   }, [currentEventId]);
 
-  useEffect(() => {
-    setDisabledButton(!(newUser.username && newUser.password && newUser.email));
-  }, [newUser]);
-
-  const handleAddUser = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!newUser.username.trim() || !newUser.email.trim()) {
-      setErrors(["Le nom d'utilisateur et l'email ne peuvent pas être vides."]);
-      return;
+  const handlePerformDraw = () => {
+    if (currentEventId) {
+      performDraw(currentEventId);
     }
+  };
 
-    if (!isValidEmail(newUser.email)) {
-      setErrors(["Le format de l'email n'est pas valide."]);
-      return;
-    }
+  const handleOpenCreateUserDialog = () => {
+    setIsCreateUserDialogOpen(true);
+  };
 
-    if (!newUser.password.trim()) {
-      setErrors(["Le mot de passe ne peut pas être vide."]);
-      return;
-    }
+  const handleCloseCreateUserDialog = () => {
+    setIsCreateUserDialogOpen(false);
+  };
 
-    if (!isPasswordComplex(newUser.password)) {
-      setErrors(["Le mot de passe doit faire au moins 8 caractères de chiffres ET de lettres."]);
-      return;
-    }
+  const handleAddUser = async (newUserData: NewUser) => {
+    const result = await addUser(newUserData);
 
-    const result = await addUser(newUser);
-
-    if (typeof result === "string") {
+    if (typeof result === "object" && result.id) {
+      try {
+        if (currentEventId) {
+          await setUserToEvent(currentEventId, result.id);
+        }
+        setUsers((prevUsers) => [...prevUsers, result]);
+        handleCloseCreateUserDialog();
+        setErrors([]);
+      } catch (error) {
+        console.error("Erreur lors de l'ajout de l'utilisateur à l'événement", error);
+      }
+    } else if (typeof result === "string") {
       setErrors([result]);
-    } else {
-      setUsers([...users, result]);
-      setNewUser({ username: "", email: "", password: "" });
-      setErrors([]);
     }
+
+    handleCloseCreateUserDialog();
   };
 
   const handleSetOrganizer = async (userId: number) => {
@@ -135,24 +134,24 @@ export default function AdminUserList() {
     }
   };
 
-  const openModal = (index: number): void => {
+  const openDeleteDialog = (index: number): void => {
     const userToDelete = users[index];
 
     if (isAdministrator && userToDelete.id === userState.data?.id) {
       alert("Vous ne pouvez pas vous supprimer vous-même.");
     } else {
-      setIsModalOpen(true);
+      setIsDeleteDialogOpen(true);
       setItemToDelete(index);
     }
   };
 
-  const closeModal = (): void => {
-    setIsModalOpen(false);
+  const closeDeleteDialog = (): void => {
+    setIsDeleteDialogOpen(false);
   };
 
   const confirmDelete = (): void => {
     if (itemToDelete !== null) handleDelete(itemToDelete);
-    closeModal();
+    closeDeleteDialog();
   };
 
   const handleEditClick = (index: number): void => {
@@ -162,7 +161,7 @@ export default function AdminUserList() {
   return (
     <div className={styles["admin-container"]}>
       <div className={styles["menu-wrapper"]}>
-        <MenuListAdmin />
+        <MenuListAdmin onPerformDraw={handlePerformDraw} drawState={drawState} onAddUser={handleOpenCreateUserDialog} />
       </div>
       <h2 className={titan_one.className}>{currentEvent?.name}</h2>
       <p className={styles["admin-title"]}>Voici la liste des “enfants” sages qui ont le droit à un cadeau cette année :</p>
@@ -195,7 +194,7 @@ export default function AdminUserList() {
                       organizer={organizer}
                       index={index}
                       onEdit={handleEditClick}
-                      onDelete={openModal}
+                      onDelete={openDeleteDialog}
                       onEditSubmit={handleEditSubmit}
                       updateUser={updateUser}
                       isAdministrator={isAdministrator}
@@ -206,45 +205,15 @@ export default function AdminUserList() {
               </table>
             </div>
           </div>
-          <ConfirmationDialog text="Es-tu sûr·e de vouloir supprimer ce “user” ?" open={isModalOpen} onClose={closeModal} onConfirm={confirmDelete} />
+          <ConfirmationDialog
+            text="Es-tu sûr·e de vouloir supprimer ce “user” ?"
+            open={isDeleteDialogOpen}
+            onClose={closeDeleteDialog}
+            onConfirm={confirmDelete}
+          />
         </div>
 
-        <div className={styles["add-user-wrapper"]}>
-          <div className={styles["add-user-background"]}>
-            <div className={styles["content"]}>
-              <form onSubmit={handleAddUser}>
-                <div className={styles["form-group"]}>
-                  <input
-                    type="text"
-                    placeholder="Prénom"
-                    name="username"
-                    value={newUser.username}
-                    onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
-                    autoComplete="username"
-                  />
-                  <input
-                    type="password"
-                    placeholder="Code secret"
-                    name="password"
-                    value={newUser.password}
-                    onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    value={newUser.email}
-                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                    autoComplete="email"
-                  />
-                </div>
-                <button type="submit" disabled={disabledButton} className={styles["button"]}>
-                  AJOUTER
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
+        <CreateUserDialog open={isCreateUserDialogOpen} onClose={handleCloseCreateUserDialog} onConfirm={handleAddUser} />
       </div>
     </div>
   );

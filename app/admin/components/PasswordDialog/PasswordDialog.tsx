@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -54,11 +54,11 @@ const PasswordDialog = ({ open, onClose, onConfirm }: PasswordDialogProps) => {
         />
       </DialogContent>
       <DialogActions className={styles["buttons"]}>
-        <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={handleConfirm}>
-          Confirmer
-        </Button>
         <Button className={`${styles["button"]} ${styles["cancel-button"]}`} onClick={onClose}>
           Annuler
+        </Button>
+        <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={handleConfirm}>
+          Confirmer
         </Button>
       </DialogActions>
     </Dialog>

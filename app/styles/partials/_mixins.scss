@@ -230,6 +230,7 @@
 
     button {
       @include reset-button();
+      margin-left: 1rem;
 
       img {
         margin: 0 0.5rem;
@@ -244,7 +245,7 @@
         }
 
         &.delete-icon {
-          margin-left: 1rem;
+          margin-left: 1.5rem;
 
           @include devices(large_tablet) {
             margin-left: 2rem;

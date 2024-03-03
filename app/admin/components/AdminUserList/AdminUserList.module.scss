@@ -52,6 +52,7 @@
 
   .admin-wrappers {
     display: flex;
+    justify-content: center;
     max-width: $max-width;
     margin: auto;
     padding: 2rem 0 calc($santa-height / 2 + 5rem);
@@ -64,6 +65,7 @@
 
     .users-wrapper {
       @include dashboard-wrapper();
+      width: 100%;
       padding: 5rem 0 0;
 
       @include devices(large_tablet) {
@@ -71,7 +73,7 @@
       }
 
       .content {
-        max-width: 60rem;
+        max-width: 80rem;
         margin: auto;
 
         table.users {

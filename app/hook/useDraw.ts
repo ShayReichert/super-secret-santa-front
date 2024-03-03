@@ -8,10 +8,10 @@ const useDraw = () => {
     successMessage: "",
   });
 
-  const performDraw = async () => {
+  const performDraw = async (eventId: number) => {
     setDrawState({ ...drawState, isLoading: true });
     try {
-      const response = await axiosInstance.get("/api/admin/users/setsanta");
+      const response = await axiosInstance.get(`/api/admin/users/setsanta/${eventId}`);
       const message = response.data;
 
       if (message === "Pères Noel attribués") {

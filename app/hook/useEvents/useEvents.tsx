@@ -33,5 +33,14 @@ export const useEvents = () => {
     }
   };
 
-  return { getEvents, getCurrentEvent, setOrganizerOfEvent };
+  const setUserToEvent = async (eventId: number, userId: number): Promise<void> => {
+    try {
+      await axiosInstance.get(`/api/events/add/${userId}/${eventId}`);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout d'un utilisateur à l'évènement", error);
+      throw new Error("Erreur lors de l'ajout d'un utilisateur à l'évènement");
+    }
+  };
+
+  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent };
 };

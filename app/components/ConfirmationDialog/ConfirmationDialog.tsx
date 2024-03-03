@@ -29,11 +29,11 @@ export default function ConfirmationDialog({ text, open, onClose, onConfirm }: D
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={onConfirm} color="primary" autoFocus>
-          OUI, SUPPRIMER
-        </Button>
         <Button className={`${styles["button"]} ${styles["cancel-button"]}`} onClick={onClose}>
           NE PAS SUPPRIMER
+        </Button>
+        <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={onConfirm} color="primary" autoFocus>
+          OUI, SUPPRIMER
         </Button>
       </DialogActions>
     </Dialog>

@@ -8,12 +8,16 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Image from "next/image";
-import useDraw from "@/app/hook/useDraw";
 
-export default function MenuListAdmin() {
+interface Props {
+  onPerformDraw: () => void;
+  drawState: { isLoading: boolean; error: string; successMessage: string };
+  onAddUser: () => void;
+}
+
+export default function MenuListAdmin({ onAddUser, onPerformDraw, drawState }: Props) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
-  const { drawState, performDraw } = useDraw();
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -64,8 +68,9 @@ export default function MenuListAdmin() {
                   ) : drawState.successMessage ? (
                     <MenuItem disabled>{drawState.successMessage} !</MenuItem>
                   ) : (
-                    <MenuItem onClick={performDraw}>Faire le tirage au sort</MenuItem>
+                    <MenuItem onClick={onPerformDraw}>Faire le tirage au sort</MenuItem>
                   )}
+                  <MenuItem onClick={onAddUser}>Créer un·e nouvelle participant·e</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

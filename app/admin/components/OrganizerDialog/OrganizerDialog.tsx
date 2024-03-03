@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -46,11 +45,11 @@ const OrganizerDialog = ({ open, onClose, onConfirm, userName, isAdministrator }
         </DialogContentText>
       </DialogContent>
       <DialogActions className={styles["buttons"]}>
-        <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={handleConfirm}>
-          Confirmer
-        </Button>
         <Button className={`${styles["button"]} ${styles["cancel-button"]}`} onClick={onClose}>
           Annuler
+        </Button>
+        <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={handleConfirm}>
+          Confirmer
         </Button>
       </DialogActions>
     </Dialog>
