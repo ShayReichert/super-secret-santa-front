@@ -14,7 +14,7 @@ import { Titan_One } from "next/font/google";
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function AdminUserList() {
-  const { currentEvent, currentEventId, isAdministrator } = useUser();
+  const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
   const { addUser, updateUser, deleteUser } = useUserList();
   const { getCurrentEvent, setOrganizerOfEvent } = useEvents();
   const [users, setUsers] = useState<User[]>([]);
@@ -129,15 +129,21 @@ export default function AdminUserList() {
 
   const handleDelete = async (index: number) => {
     const userToDelete = users[index];
-    const success = await deleteUser(userToDelete.username);
+    const success = await deleteUser(userToDelete.id);
     if (success) {
       setUsers(users.filter((_, idx) => idx !== index));
     }
   };
 
   const openModal = (index: number): void => {
-    setIsModalOpen(true);
-    setItemToDelete(index);
+    const userToDelete = users[index];
+
+    if (isAdministrator && userToDelete.id === userState.data?.id) {
+      alert("Vous ne pouvez pas vous supprimer vous-même.");
+    } else {
+      setIsModalOpen(true);
+      setItemToDelete(index);
+    }
   };
 
   const closeModal = (): void => {
@@ -182,26 +188,20 @@ export default function AdminUserList() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[...users]
-                    .sort((a, b) => {
-                      if (a.username === organizer?.username) return -1; // Organizer first
-                      if (b.username === organizer?.username) return 1; // Organizer first
-                      return 0;
-                    })
-                    .map((user, index) => (
-                      <AdminUserItem
-                        key={index}
-                        user={user}
-                        organizer={organizer}
-                        index={index}
-                        onEdit={handleEditClick}
-                        onDelete={openModal}
-                        onEditSubmit={handleEditSubmit}
-                        updateUser={updateUser}
-                        isAdministrator={isAdministrator}
-                        onSetOrganizer={handleSetOrganizer}
-                      />
-                    ))}
+                  {users.map((user, index) => (
+                    <AdminUserItem
+                      key={index}
+                      user={user}
+                      organizer={organizer}
+                      index={index}
+                      onEdit={handleEditClick}
+                      onDelete={openModal}
+                      onEditSubmit={handleEditSubmit}
+                      updateUser={updateUser}
+                      isAdministrator={isAdministrator}
+                      onSetOrganizer={handleSetOrganizer}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>

@@ -38,9 +38,9 @@ export const useUserList = () => {
     }
   };
 
-  const deleteUser = async (username: string): Promise<boolean> => {
+  const deleteUser = async (id: number): Promise<boolean> => {
     try {
-      await axiosInstance.delete(`/api/admin/user/${username}`);
+      await axiosInstance.delete(`/api/admin/user/${id}`);
       return true;
     } catch (error) {
       console.error("Erreur lors de la suppression d'un utilisateur", error);

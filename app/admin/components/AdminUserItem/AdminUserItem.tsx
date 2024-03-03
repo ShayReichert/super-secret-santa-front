@@ -145,17 +145,18 @@ export default function AdminUserItem({
         <td>
           <span className={styles["icons"]}>
             <span className={styles["icons-wrapper"]}>
+              {/* Bouton Attribuer le rôle organisateur */}
               <button
                 className={`${styles["organizer-button"]} ${isOrganizer ? styles["isOrganizer"] : ""} `}
                 onClick={handleOpenOrganizerDialog}
                 aria-label="Attribuer le rôle d'organisateur"
               >
                 {isOrganizer ? (
-                  <Image className={styles["organizer-icon"]} src="/icons/star-full.svg" alt="Organisateur" height={20} width={20} priority />
+                  <Image className={styles["organizer-icon"]} src="/icons/star.svg" alt="Organisateur" height={20} width={20} priority />
                 ) : (
                   <Image
                     className={styles["set-organizer-icon"]}
-                    src="/icons/star.svg"
+                    src="/icons/star-full.svg"
                     alt="Attribuer le rôle d'organisateur"
                     height={20}
                     width={20}
@@ -170,23 +171,32 @@ export default function AdminUserItem({
                 userName={user.username}
                 isAdministrator={isAdministrator}
               />
-              <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
-                <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
-              </button>
-              <button className={styles["password-button"]} onClick={handleChangePassword} aria-label="Réinitialiser le mot de passe">
-                <Image
-                  className={styles["password-icon"]}
-                  src="/icons/password.svg"
-                  alt="Réinitialiser le mot de passe"
-                  height={20}
-                  width={20}
-                  priority
-                />
-              </button>
+              {/* Bouton Modifier */}
+              {isAdministrator && (
+                <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
+                  <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
+                </button>
+              )}
+              {/* Bouton Réinitialiser le mot de passe */}
+              {isAdministrator && (
+                <button className={styles["password-button"]} onClick={handleChangePassword} aria-label="Réinitialiser le mot de passe">
+                  <Image
+                    className={styles["password-icon"]}
+                    src="/icons/password.svg"
+                    alt="Réinitialiser le mot de passe"
+                    height={20}
+                    width={20}
+                    priority
+                  />
+                </button>
+              )}
               <PasswordDialog open={isPasswordDialogOpen} onClose={() => setIsPasswordDialogOpen(false)} onConfirm={handlePasswordConfirm} />
-              <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
-                <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={20} width={20} priority />
-              </button>
+              {/* Bouton Supprimer */}
+              {isAdministrator && (
+                <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
+                  <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={20} width={20} priority />
+                </button>
+              )}
             </span>
           </span>
         </td>
