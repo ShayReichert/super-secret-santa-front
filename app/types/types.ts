@@ -79,18 +79,13 @@ type SantaEvent = {
   id: number;
   name: string;
   users: User[];
-  organizer: OrganizerInEvents;
+  organizer: User;
   giftList: any[];
   santas: any[];
 };
 
 type User = {
-  username: string;
-  email: string;
-  roles: string[];
-};
-
-type OrganizerInEvents = {
+  id: number;
   username: string;
   email: string;
   roles: string[];

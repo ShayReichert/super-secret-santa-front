@@ -26,7 +26,7 @@ export const useEvents = () => {
 
   const setOrganizerOfEvent = async (eventId: number, userId: number): Promise<void> => {
     try {
-      await axiosInstance.post(`/api/events/organizer/${userId}/${eventId}`);
+      await axiosInstance.get(`/api/events/organizer/${userId}/${eventId}`);
     } catch (error) {
       console.error("Erreur lors de la modification de l'organisateur de l'évènement", error);
       throw new Error("Erreur lors de la modification de l'organisateur de l'évènement");

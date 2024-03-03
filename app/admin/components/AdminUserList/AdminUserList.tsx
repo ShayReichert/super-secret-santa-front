@@ -14,7 +14,7 @@ import { Titan_One } from "next/font/google";
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function AdminUserList() {
-  const { currentEvent, currentEventId } = useUser();
+  const { currentEvent, currentEventId, isAdministrator } = useUser();
   const { addUser, updateUser, deleteUser } = useUserList();
   const { getCurrentEvent, setOrganizerOfEvent } = useEvents();
   const [users, setUsers] = useState<User[]>([]);
@@ -30,7 +30,6 @@ export default function AdminUserList() {
       const fetchedCurrentEvent = await getCurrentEvent(currentEventId as number);
       const fetchedUsers = fetchedCurrentEvent.users;
       const fetchedOrganizer = fetchedCurrentEvent.organizer;
-
       setUsers(fetchedUsers);
       setOrganizer(fetchedOrganizer);
     };
@@ -77,17 +76,29 @@ export default function AdminUserList() {
   };
 
   const handleSetOrganizer = async (userId: number) => {
+    const isOrganizer = organizer?.id === userId;
+
     if (!currentEventId) {
       console.error("Aucun évènement courant n'est défini");
       return;
     }
 
-    try {
-      await setOrganizerOfEvent(currentEventId, userId);
-      //  TODO : terminer cette fonction quand l'API retournera un user.id dans users
-      // Rafraîchir la liste des utilisateurs ou de mettre à jour l'état local pour refléter le changement
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour de l'organisateur·ice", error);
+    if (!isOrganizer) {
+      const previousOrganizer = organizer;
+      const newOrganizer = users.find((user) => user.id === userId);
+      setOrganizer(newOrganizer || null); // Optimistic update
+
+      try {
+        await setOrganizerOfEvent(currentEventId, userId);
+
+        if (!isAdministrator) {
+          window.location.href = "/dashboard";
+        }
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour de l'organisateur", error);
+        setOrganizer(previousOrganizer);
+        setErrors(["Erreur lors de la mise à jour de l'organisateur."]);
+      }
     }
   };
 
@@ -105,7 +116,7 @@ export default function AdminUserList() {
       // Optimistic update
       setUsers(users.map((user, idx) => (idx === index ? { ...user, username: newName, email: newEmail } : user)));
 
-      const success = await updateUser(userToUpdate.username, { username: newName, email: newEmail });
+      const success = await updateUser(userToUpdate.id, { username: newName, email: newEmail });
       if (!success) {
         // If the API call fails, revert to old values
         setUsers(users.map((user, idx) => (idx === index ? { ...user, username: oldName, email: oldEmail } : user)));
@@ -187,6 +198,7 @@ export default function AdminUserList() {
                         onDelete={openModal}
                         onEditSubmit={handleEditSubmit}
                         updateUser={updateUser}
+                        isAdministrator={isAdministrator}
                         onSetOrganizer={handleSetOrganizer}
                       />
                     ))}

@@ -240,6 +240,7 @@
         &.organizer-icon,
         &.organizer-icon:hover {
           opacity: 0.2;
+          cursor: default;
         }
 
         &.delete-icon {

@@ -3,7 +3,6 @@
 import styles from "./MenuUser.module.scss";
 import { useState } from "react";
 import { useAuth } from "@/app/hook/useAuth/useAuth";
-import { usePathname } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 import Link from "next/link";
 import Button from "@mui/material/Button";

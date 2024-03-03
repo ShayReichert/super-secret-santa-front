@@ -28,9 +28,9 @@ export const useUserList = () => {
     }
   };
 
-  const updateUser = async (username: string, updatedUser: { username?: string; email?: string; password?: string }): Promise<boolean> => {
+  const updateUser = async (id: number, updatedUser: { username?: string; email?: string; password?: string }): Promise<boolean> => {
     try {
-      await axiosInstance.put(`/api/admin/user/${username}`, updatedUser);
+      await axiosInstance.put(`/api/admin/user/${id}`, updatedUser);
       return true;
     } catch (error) {
       console.error("Erreur lors de la mise à jour d'un utilisateur", error);

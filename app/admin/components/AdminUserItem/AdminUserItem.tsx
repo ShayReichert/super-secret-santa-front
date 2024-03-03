@@ -4,6 +4,7 @@ import { useState, KeyboardEvent } from "react";
 import styles from "./AdminUserItem.module.scss";
 import Image from "next/image";
 import PasswordDialog from "../PasswordDialog/PasswordDialog";
+import OrganizerDialog from "../OrganizerDialog/OrganizerDialog";
 
 interface Props {
   user: User;
@@ -12,23 +13,46 @@ interface Props {
   onEdit: (index: number, text: string, field: "name" | "email") => void;
   onDelete: (index: number) => void;
   onEditSubmit: (index: number, newName: string, newEmail: string) => void;
-  updateUser: (username: string, data: Partial<User>) => Promise<boolean>;
+  updateUser: (id: number, data: Partial<User>) => Promise<boolean>;
+  isAdministrator: boolean;
   onSetOrganizer: (userId: number) => void;
 }
 
-export default function AdminUserItem({ user, organizer, index, onEdit, onDelete, onEditSubmit, updateUser, onSetOrganizer }: Props) {
+export default function AdminUserItem({
+  user,
+  organizer,
+  index,
+  onEdit,
+  onDelete,
+  onEditSubmit,
+  updateUser,
+  isAdministrator,
+  onSetOrganizer,
+}: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [localName, setLocalName] = useState(user.username);
   const [localEmail, setLocalEmail] = useState(user.email);
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+  const [isOrganizerDialogOpen, setIsOrganizerDialogOpen] = useState(false);
   const isOrganizer = organizer?.username === user.username;
+
+  const handleOpenOrganizerDialog = () => {
+    if (!isOrganizer) {
+      setIsOrganizerDialogOpen(true);
+    }
+  };
 
   const handleChangePassword = () => {
     setIsPasswordDialogOpen(true);
   };
 
+  const handleOrganizerConfirm = async () => {
+    onSetOrganizer(user.id);
+    setIsOrganizerDialogOpen(false);
+  };
+
   const handlePasswordConfirm = async (newPassword: string) => {
-    const success = await updateUser(user.username, { password: newPassword } as Partial<User>);
+    const success = await updateUser(user.id, { password: newPassword } as Partial<User>);
     if (success) {
       console.log("Mot de passe mis à jour avec succès pour", user.username);
     } else {
@@ -82,7 +106,7 @@ export default function AdminUserItem({ user, organizer, index, onEdit, onDelete
   };
 
   return (
-    <tr className={styles["user-item"]}>
+    <tr className={`${styles["user-item"]} ${isOrganizer ? styles["organizer"] : ""}`}>
       {isEditing ? (
         <>
           <td>
@@ -123,7 +147,7 @@ export default function AdminUserItem({ user, organizer, index, onEdit, onDelete
             <span className={styles["icons-wrapper"]}>
               <button
                 className={`${styles["organizer-button"]} ${isOrganizer ? styles["isOrganizer"] : ""} `}
-                // onClick={() => onSetOrganizer(user.id)}
+                onClick={handleOpenOrganizerDialog}
                 aria-label="Attribuer le rôle d'organisateur"
               >
                 {isOrganizer ? (
@@ -139,6 +163,13 @@ export default function AdminUserItem({ user, organizer, index, onEdit, onDelete
                   />
                 )}
               </button>
+              <OrganizerDialog
+                open={isOrganizerDialogOpen}
+                onClose={() => setIsOrganizerDialogOpen(false)}
+                onConfirm={handleOrganizerConfirm}
+                userName={user.username}
+                isAdministrator={isAdministrator}
+              />
               <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
                 <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
               </button>
