@@ -41,7 +41,7 @@ export default function UserGiftItem({
                 <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} />
               </button>
               <button className={styles["delete-button"]} onClick={() => onDelete(gift.id)} aria-label="Supprimer">
-                <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={26} width={26} />
+                <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={20} width={20} />
               </button>
             </span>
           </span>
