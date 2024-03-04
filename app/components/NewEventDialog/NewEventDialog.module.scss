@@ -1,0 +1,48 @@
+@import "../../styles/partials/mixins";
+
+.dialog {
+  background: rgba(114, 114, 114, 0.57);
+
+  .dialog-paper {
+    background-color: $tertiary-color;
+    border-radius: $border-radius;
+    padding: 4rem;
+
+    @include devices(large_tablet) {
+      margin: 1rem;
+      padding: 4rem 0;
+    }
+
+    .dialog-content-text {
+      font-size: 20px;
+      width: 30rem;
+      color: $black;
+      margin-bottom: 1rem;
+
+      @include devices(large_tablet) {
+        width: 100%;
+      }
+    }
+
+    input {
+      @include default-input();
+    }
+
+    p,
+    label {
+      font-size: 13px;
+    }
+
+    .buttons {
+      justify-content: center;
+
+      .confirm-button {
+        @include button();
+      }
+
+      .cancel-button {
+        @include button($gray500);
+      }
+    }
+  }
+}

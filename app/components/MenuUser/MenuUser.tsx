@@ -9,12 +9,25 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
+import NewEventDialog from "../NewEventDialog/NewEventDialog";
 
 export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
   const { logout } = useAuth();
   const { userState, isAdministrator, canOnlyManageEvent } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const open = Boolean(anchorEl);
+
+  const handleCreateEvent = () => {
+    setIsEventDialogOpen(true);
+  };
+
+  const handleCreateEventConfirm = (newEventName: string) => {
+    console.log("Créer un nouvel événement", newEventName);
+    // TODO : call API to create new event
+    // Styliser le bouton de menu "Créer un nouvel event"
+    setIsEventDialogOpen(false);
+  };
 
   return (
     <div className={styles["content"]}>
@@ -53,7 +66,13 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem>📆 Créer un nouvel événement</MenuItem>
+        <MenuItem>
+          <a onClick={handleCreateEvent} aria-label="Créer un nouvel évènement">
+            📆 Créer un nouvel événement
+          </a>
+        </MenuItem>
+
+        <NewEventDialog open={isEventDialogOpen} onClose={() => setIsEventDialogOpen(false)} onConfirm={handleCreateEventConfirm} />
 
         {userState.data && isAdministrator && (
           <div>
