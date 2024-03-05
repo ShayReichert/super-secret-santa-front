@@ -42,5 +42,18 @@ export const useEvents = () => {
     }
   };
 
-  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent };
+  const createEvent = async (eventName: string): Promise<SantaEvent | undefined> => {
+    try {
+      const response = await axiosInstance.post<SantaEvent>("/api/events", { name: eventName });
+      if (response.data && response.data.id) {
+        return response.data;
+      }
+      return undefined;
+    } catch (error) {
+      console.error("Erreur lors de la création de l'évènement", error);
+      return undefined;
+    }
+  };
+
+  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, createEvent };
 };

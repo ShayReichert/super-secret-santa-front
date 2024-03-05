@@ -2,16 +2,16 @@
 
 import styles from "./AdminUserList.module.scss";
 import { Titan_One } from "next/font/google";
-import { useState, FormEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@/app/context/UserContext";
-import { useEvents } from "@/app/hook/useEvents/useEvents";
 import { useUserList } from "@/app/hook/useUserList/useUserList";
+import { useEvents } from "@/app/hook/useEvents/useEvents";
+import useDraw from "@/app/hook/useDraw";
 import AdminUserItem from "../AdminUserItem/AdminUserItem";
 import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import CreateUserDialog from "../CreateUserDialog/CreateUserDialog";
 import { isValidEmail } from "@/app/services/inputValidator";
-import useDraw from "@/app/hook/useDraw";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 

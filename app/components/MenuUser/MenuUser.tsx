@@ -10,8 +10,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import NewEventDialog from "../NewEventDialog/NewEventDialog";
+import { useEvents } from "@/app/hook/useEvents/useEvents";
 
 export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
+  const { createEvent, setUserToEvent } = useEvents();
   const { logout } = useAuth();
   const { userState, isAdministrator, canOnlyManageEvent } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -22,11 +24,30 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
     setIsEventDialogOpen(true);
   };
 
-  const handleCreateEventConfirm = (newEventName: string) => {
-    console.log("Créer un nouvel événement", newEventName);
-    // TODO : call API to create new event
-    // Styliser le bouton de menu "Créer un nouvel event"
-    setIsEventDialogOpen(false);
+  const handleCreateEventConfirm = async (newEventName: string) => {
+    try {
+      const newEvent = await createEvent(newEventName);
+
+      if (newEvent && newEvent.id) {
+        const userId = userState.data?.id;
+
+        if (userId) {
+          await setUserToEvent(newEvent.id, userId);
+          console.log("Organisateur ajouté à l'événement:", newEventName);
+        } else {
+          console.error("Erreur: ID utilisateur non trouvé.");
+        }
+
+        setIsEventDialogOpen(false);
+        setAnchorEl(null);
+        // TODO : improve update of events in menu
+        window.location.href = "/admin";
+      } else {
+        console.error("Erreur lors de la création de l'événement", newEventName);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la création ou de l'ajout de l'organisateur à l'événement", error);
+    }
   };
 
   return (
