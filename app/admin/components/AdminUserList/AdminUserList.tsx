@@ -11,13 +11,14 @@ import AdminUserItem from "../AdminUserItem/AdminUserItem";
 import MenuListAdmin from "../MenuListAdmin/MenuListAdmin";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog/ConfirmationDialog";
 import CreateUserDialog from "../CreateUserDialog/CreateUserDialog";
+import AddUsersDialog from "../AddUsersDialog/AddUsersDialog";
 import { isValidEmail } from "@/app/services/inputValidator";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function AdminUserList() {
   const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
-  const { addUser, updateUser, deleteUser } = useUserList();
+  const { createUser, updateUser, deleteUser } = useUserList();
   const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent } = useEvents();
   const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
@@ -26,6 +27,7 @@ export default function AdminUserList() {
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [isCreateUserDialogOpen, setIsCreateUserDialogOpen] = useState(false);
+  const [isAddUsersDialogOpen, setIsAddUsersDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsersAndOrganizerInCurrentEvent = async () => {
@@ -49,12 +51,20 @@ export default function AdminUserList() {
     setIsCreateUserDialogOpen(true);
   };
 
+  const handleOpenAddUsersDialog = () => {
+    setIsAddUsersDialogOpen(true);
+  };
+
   const handleCloseCreateUserDialog = () => {
     setIsCreateUserDialogOpen(false);
   };
 
-  const handleAddUser = async (newUserData: NewUser) => {
-    const result = await addUser(newUserData);
+  const handleCloseAddUsersDialog = () => {
+    setIsAddUsersDialogOpen(false);
+  };
+
+  const handleCreateUser = async (newUserData: NewUser) => {
+    const result = await createUser(newUserData);
 
     if (typeof result === "object" && result.id) {
       try {
@@ -72,6 +82,12 @@ export default function AdminUserList() {
     }
 
     handleCloseCreateUserDialog();
+  };
+
+  const handleAddUser = async (newUsersData: NewUser[]) => {
+    console.log("newUsersData", newUsersData);
+
+    handleCloseAddUsersDialog();
   };
 
   const handleSetOrganizer = async (userId: number) => {
@@ -161,7 +177,12 @@ export default function AdminUserList() {
   return (
     <div className={styles["admin-container"]}>
       <div className={styles["menu-wrapper"]}>
-        <MenuListAdmin onPerformDraw={handlePerformDraw} drawState={drawState} onAddUser={handleOpenCreateUserDialog} />
+        <MenuListAdmin
+          onCreateUser={handleOpenCreateUserDialog}
+          onAddUsers={handleOpenAddUsersDialog}
+          onPerformDraw={handlePerformDraw}
+          drawState={drawState}
+        />
       </div>
       <h2 className={titan_one.className}>{currentEvent?.name}</h2>
       <p className={styles["admin-title"]}>Voici la liste des “enfants” sages qui ont le droit à un cadeau cette année :</p>
@@ -213,7 +234,8 @@ export default function AdminUserList() {
           />
         </div>
 
-        <CreateUserDialog open={isCreateUserDialogOpen} onClose={handleCloseCreateUserDialog} onConfirm={handleAddUser} />
+        <CreateUserDialog open={isCreateUserDialogOpen} onClose={handleCloseCreateUserDialog} onConfirm={handleCreateUser} />
+        <AddUsersDialog open={isAddUsersDialogOpen} onClose={handleCloseAddUsersDialog} onConfirm={handleAddUser} />
       </div>
     </div>
   );

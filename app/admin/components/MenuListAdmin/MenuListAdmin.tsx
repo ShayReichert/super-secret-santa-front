@@ -10,12 +10,13 @@ import MenuList from "@mui/material/MenuList";
 import Image from "next/image";
 
 interface Props {
+  onCreateUser: () => void;
+  onAddUsers: () => void;
   onPerformDraw: () => void;
   drawState: { isLoading: boolean; error: string; successMessage: string };
-  onAddUser: () => void;
 }
 
-export default function MenuListAdmin({ onAddUser, onPerformDraw, drawState }: Props) {
+export default function MenuListAdmin({ onCreateUser, onAddUsers, onPerformDraw, drawState }: Props) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -61,6 +62,8 @@ export default function MenuListAdmin({ onAddUser, onPerformDraw, drawState }: P
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button" onKeyDown={handleListKeyDown}>
+                  <MenuItem onClick={onAddUsers}>Ajouter des participant·es</MenuItem>
+                  <MenuItem onClick={onCreateUser}>Créer un·e nouvelle participant·e</MenuItem>
                   {drawState.isLoading ? (
                     <MenuItem disabled>Chargement...</MenuItem>
                   ) : drawState.error ? (
@@ -70,7 +73,6 @@ export default function MenuListAdmin({ onAddUser, onPerformDraw, drawState }: P
                   ) : (
                     <MenuItem onClick={onPerformDraw}>Faire le tirage au sort</MenuItem>
                   )}
-                  <MenuItem onClick={onAddUser}>Créer un·e nouvelle participant·e</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

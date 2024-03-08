@@ -12,7 +12,7 @@ export const useUserList = () => {
     }
   };
 
-  const addUser = async (newUser: { username: string; email: string; password: string }): Promise<User | string> => {
+  const createUser = async (newUser: { username: string; email: string; password: string }): Promise<User | string> => {
     try {
       const response = await axiosInstance.post<User>("/api/signin", newUser);
       return response.data;
@@ -48,5 +48,5 @@ export const useUserList = () => {
     }
   };
 
-  return { getUsers, addUser, updateUser, deleteUser };
+  return { getUsers, createUser, updateUser, deleteUser };
 };
