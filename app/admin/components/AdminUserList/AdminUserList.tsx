@@ -84,10 +84,35 @@ export default function AdminUserList() {
     handleCloseCreateUserDialog();
   };
 
-  const handleAddUser = async (newUsersData: NewUser[]) => {
-    console.log("newUsersData", newUsersData);
+  const handleAddUser = async (UsersId: number[]) => {
+    if (currentEventId === null || currentEventId === undefined) {
+      console.error("L'ID de l'événement courant n'est pas défini.");
+      return;
+    }
+
+    if (UsersId.length === 0) {
+      console.error("Aucun utilisateur n'a été sélectionné.");
+      return;
+    }
+
+    const addUserPromises = UsersId.map(async (id) => {
+      try {
+        await setUserToEvent(currentEventId, id);
+        console.log(`Utilisateur avec l'ID ${id} ajouté à l'événement.`);
+      } catch (error) {
+        console.error(`Erreur lors de l'ajout de l'utilisateur avec l'ID ${id} à l'événement`, error);
+      }
+    });
+
+    try {
+      await Promise.all(addUserPromises);
+      console.log("Tous les utilisateurs ont été ajoutés à l'événement.");
+    } catch (error) {
+      console.error("Erreur lors de l'ajout des utilisateurs à l'événement", error);
+    }
 
     handleCloseAddUsersDialog();
+    window.location.href = "/admin";
   };
 
   const handleSetOrganizer = async (userId: number) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./AddUsersDialog.module.scss";
 import { Theme, useTheme } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
@@ -15,11 +15,14 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
+import { extractUsers } from "@/app/services/eventsFilter";
+import { useUser } from "@/app/context/UserContext";
+import { useEvents } from "@/app/hook/useEvents/useEvents";
 
 interface AddUsersDialoggProps {
   open: boolean;
   onClose: () => void;
-  onConfirm: (Users) => void; // TODO : mettre le bon type quand les users sélectionnés seront les bons
+  onConfirm: (selectedUserIds: number[]) => void;
 }
 
 const ITEM_HEIGHT = 48;
@@ -33,40 +36,65 @@ const MenuProps = {
   },
 };
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
-
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
+function getStyles(username: string, userName: readonly string[], theme: Theme) {
   return {
-    fontWeight: personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+    fontWeight: userName.indexOf(username) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
   };
 }
 
 const AddUsersDialog = ({ open, onClose, onConfirm }: AddUsersDialoggProps) => {
   const theme = useTheme();
-  const [personName, setPersonName] = useState<string[]>([]);
+  const [userName, setUserName] = useState<string[]>([]);
+  const { userState, isAdministrator, currentEventId } = useUser();
+  const { getEvents } = useEvents();
+  const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  useEffect(() => {
+    const fetchEventsAndUsers = async () => {
+      setIsLoading(true);
+      try {
+        const fetchedEvents = await getEvents();
+        if (fetchedEvents && currentEventId !== undefined) {
+          const fetchedUsers = extractUsers(fetchedEvents, currentEventId, userState.data?.organizedEventIds, isAdministrator);
+          setUsers(fetchedUsers);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des événements ou des utilisateurs", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (userState.data?.events) {
+      fetchEventsAndUsers();
+    }
+  }, [userState.data?.events, currentEventId, isAdministrator]);
+
+  const handleChange = (event: SelectChangeEvent<typeof userName>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(typeof value === "string" ? value.split(",") : value);
+    setUserName(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleConfirm = () => {
-    onConfirm(personName);
+    const selectedUserIds: number[] = [];
+
+    userName.forEach((selectedUsername) => {
+      const user = users.find((user) => user.username === selectedUsername);
+      if (user) {
+        selectedUserIds.push(user.id);
+      }
+    });
+
+    onConfirm(selectedUserIds);
     onClose();
   };
+
+  if (isLoading) {
+    return <div>Chargement...</div>;
+  }
 
   return (
     <Dialog
@@ -76,47 +104,70 @@ const AddUsersDialog = ({ open, onClose, onConfirm }: AddUsersDialoggProps) => {
       onClose={onClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogContent>
-        <DialogContentText className={styles["dialog-content-text"]}>
-          Sélectionne les participant·es que tu souhaites ajouter à l’évènement :
-        </DialogContentText>
+      {users.length > 0 ? (
+        <>
+          <DialogContent>
+            <DialogContentText className={styles["dialog-content-text"]}>
+              Sélectionne les participant·es que tu souhaites ajouter à l’évènement :
+            </DialogContentText>
 
-        <FormControl sx={{ m: 1, width: 400 }}>
-          <InputLabel id="multiple-chip-label">Participant·es</InputLabel>
-          <Select
-            labelId="multiple-chip-label"
-            id="multiple-chip"
-            className={styles["multiple-chip"]}
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput id="select-multiple-chip" label="Sélectionne les participant·es" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
+            <FormControl sx={{ m: 1, width: 400 }}>
+              <InputLabel id="multiple-chip-label">Participant·es</InputLabel>
+              <Select
+                labelId="multiple-chip-label"
+                id="multiple-chip"
+                className={styles["multiple-chip"]}
+                multiple
+                value={userName}
+                onChange={handleChange}
+                input={<OutlinedInput id="select-multiple-chip" label="Sélectionne les participant·es" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+                {users.map((user) => (
+                  <MenuItem
+                    className={styles["multiple-chip-menu-item"]}
+                    key={user.id}
+                    value={user.username}
+                    style={getStyles(user.username, userName, theme)}
+                  >
+                    {user.username}
+                  </MenuItem>
                 ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {names.map((name) => (
-              <MenuItem className={styles["multiple-chip-menu-item"]} key={name} value={name} style={getStyles(name, personName, theme)}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </DialogContent>
-
-      <DialogActions className={styles["buttons"]}>
-        <Button className={`${styles["button"]} ${styles["cancel-button"]}`} onClick={onClose}>
-          Annuler
-        </Button>
-        <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={handleConfirm}>
-          Créer
-        </Button>
-      </DialogActions>
+              </Select>
+            </FormControl>
+          </DialogContent>
+          <DialogActions className={styles["buttons"]}>
+            <Button className={`${styles["button"]} ${styles["cancel-button"]}`} onClick={onClose}>
+              Annuler
+            </Button>
+            <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={handleConfirm}>
+              Ajouter
+            </Button>
+          </DialogActions>
+        </>
+      ) : (
+        <>
+          <DialogContent>
+            <div>Aucun participant déjà existant ne peut être ajouté à cet évènement ! </div>
+            <br />
+            <div>
+              <small>Tu peux cependant "Créer un·e nouvelle participant·e"</small>
+            </div>
+          </DialogContent>
+          <DialogActions className={styles["buttons"]}>
+            <Button className={`${styles["button"]} ${styles["cancel-button"]}`} onClick={onClose}>
+              Annuler
+            </Button>
+          </DialogActions>
+        </>
+      )}
     </Dialog>
   );
 };

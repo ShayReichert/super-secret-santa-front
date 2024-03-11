@@ -40,7 +40,7 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
 
         setIsEventDialogOpen(false);
         setAnchorEl(null);
-        // TODO : improve update of events in menu
+        // TODO : improve update of events in menu ?
         window.location.href = "/admin";
       } else {
         console.error("Erreur lors de la création de l'événement", newEventName);
