@@ -55,5 +55,14 @@ export const useEvents = () => {
     }
   };
 
-  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, createEvent };
+  const deleteEvent = async (eventId: number): Promise<void> => {
+    try {
+      await axiosInstance.delete(`/api/events/${eventId}`);
+    } catch (error) {
+      console.error("Erreur lors de la suppression de l'évènement", error);
+      throw new Error("Erreur lors de la suppression de l'évènement");
+    }
+  };
+
+  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, createEvent, deleteEvent };
 };

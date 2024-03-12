@@ -11,6 +11,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import NewEventDialog from "../NewEventDialog/NewEventDialog";
 import { useEvents } from "@/app/hook/useEvents/useEvents";
+import { setCookie } from "cookies-next";
+import { cookieParams } from "@/app/services/cookieParams";
 
 export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
   const { createEvent, setUserToEvent } = useEvents();
@@ -33,13 +35,13 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
 
         if (userId) {
           await setUserToEvent(newEvent.id, userId);
-          console.log("Organisateur ajouté à l'événement:", newEventName);
         } else {
           console.error("Erreur: ID utilisateur non trouvé.");
         }
 
         setIsEventDialogOpen(false);
         setAnchorEl(null);
+        setCookie("selectedEventId", newEvent.id.toString(), cookieParams);
         // TODO : improve update of events in menu ?
         window.location.href = "/admin";
       } else {

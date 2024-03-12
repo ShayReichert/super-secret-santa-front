@@ -10,13 +10,14 @@ import MenuList from "@mui/material/MenuList";
 import Image from "next/image";
 
 interface Props {
+  onDeleteEvent: () => void;
   onCreateUser: () => void;
   onAddUsers: () => void;
   onPerformDraw: () => void;
   drawState: { isLoading: boolean; error: string; successMessage: string };
 }
 
-export default function MenuListAdmin({ onCreateUser, onAddUsers, onPerformDraw, drawState }: Props) {
+export default function MenuListAdmin({ onDeleteEvent, onCreateUser, onAddUsers, onPerformDraw, drawState }: Props) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -73,6 +74,7 @@ export default function MenuListAdmin({ onCreateUser, onAddUsers, onPerformDraw,
                   ) : (
                     <MenuItem onClick={onPerformDraw}>Faire le tirage au sort</MenuItem>
                   )}
+                  <MenuItem onClick={onDeleteEvent}>Supprimer cet évènement</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

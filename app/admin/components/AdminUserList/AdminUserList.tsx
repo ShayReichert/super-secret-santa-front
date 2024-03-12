@@ -13,21 +13,23 @@ import ConfirmationDialog from "@/app/components/ConfirmationDialog/Confirmation
 import CreateUserDialog from "../CreateUserDialog/CreateUserDialog";
 import AddUsersDialog from "../AddUsersDialog/AddUsersDialog";
 import { isValidEmail } from "@/app/services/inputValidator";
+import { deleteCookie } from "cookies-next";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function AdminUserList() {
   const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
   const { createUser, updateUser, deleteUser } = useUserList();
-  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent } = useEvents();
+  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent } = useEvents();
   const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
+  const [isDeleteUserDialogOpen, setIsDeleteUserDialogOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [isCreateUserDialogOpen, setIsCreateUserDialogOpen] = useState(false);
   const [isAddUsersDialogOpen, setIsAddUsersDialogOpen] = useState(false);
+  const [isDeleteEventDialogOpen, setIsDeleteEventDialogOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUsersAndOrganizerInCurrentEvent = async () => {
@@ -47,6 +49,7 @@ export default function AdminUserList() {
     }
   };
 
+  // Open
   const handleOpenCreateUserDialog = () => {
     setIsCreateUserDialogOpen(true);
   };
@@ -55,12 +58,36 @@ export default function AdminUserList() {
     setIsAddUsersDialogOpen(true);
   };
 
+  const handleOpenDeleteUserDialog = (index: number): void => {
+    const userToDelete = users[index];
+
+    if (isAdministrator && userToDelete.id === userState.data?.id) {
+      alert("Vous ne pouvez pas vous supprimer vous-même.");
+    } else {
+      setIsDeleteUserDialogOpen(true);
+      setItemToDelete(index);
+    }
+  };
+
+  const handleOpenDeleteEventDialog = () => {
+    setIsDeleteEventDialogOpen(true);
+  };
+
+  // Close
   const handleCloseCreateUserDialog = () => {
     setIsCreateUserDialogOpen(false);
   };
 
   const handleCloseAddUsersDialog = () => {
     setIsAddUsersDialogOpen(false);
+  };
+
+  const handleCloseDeleteUserDialog = (): void => {
+    setIsDeleteUserDialogOpen(false);
+  };
+
+  const handleCloseDeleteEventDialog = () => {
+    setIsDeleteEventDialogOpen(false);
   };
 
   const handleCreateUser = async (newUserData: NewUser) => {
@@ -175,34 +202,30 @@ export default function AdminUserList() {
     }
   };
 
-  const openDeleteDialog = (index: number): void => {
-    const userToDelete = users[index];
-
-    if (isAdministrator && userToDelete.id === userState.data?.id) {
-      alert("Vous ne pouvez pas vous supprimer vous-même.");
-    } else {
-      setIsDeleteDialogOpen(true);
-      setItemToDelete(index);
-    }
-  };
-
-  const closeDeleteDialog = (): void => {
-    setIsDeleteDialogOpen(false);
-  };
-
-  const confirmDelete = (): void => {
+  const confirmDeleteUser = (): void => {
     if (itemToDelete !== null) handleDelete(itemToDelete);
-    closeDeleteDialog();
+    handleCloseDeleteUserDialog();
   };
 
   const handleEditClick = (index: number): void => {
     setUsers(users.map((user, idx) => (idx === index ? { ...user, isEditing: true, editingText: user.username, editingEmail: user.email } : user)));
   };
 
+  const confirmDeleteEvent = (): void => {
+    if (currentEventId) {
+      deleteEvent(currentEventId);
+    }
+
+    handleCloseDeleteEventDialog();
+    deleteCookie("selectedEventId");
+    window.location.href = "/admin";
+  };
+
   return (
     <div className={styles["admin-container"]}>
       <div className={styles["menu-wrapper"]}>
         <MenuListAdmin
+          onDeleteEvent={handleOpenDeleteEventDialog}
           onCreateUser={handleOpenCreateUserDialog}
           onAddUsers={handleOpenAddUsersDialog}
           onPerformDraw={handlePerformDraw}
@@ -240,7 +263,7 @@ export default function AdminUserList() {
                       organizer={organizer}
                       index={index}
                       onEdit={handleEditClick}
-                      onDelete={openDeleteDialog}
+                      onDelete={handleOpenDeleteUserDialog}
                       onEditSubmit={handleEditSubmit}
                       updateUser={updateUser}
                       isAdministrator={isAdministrator}
@@ -252,15 +275,21 @@ export default function AdminUserList() {
             </div>
           </div>
           <ConfirmationDialog
-            text="Es-tu sûr·e de vouloir supprimer ce “user” ?"
-            open={isDeleteDialogOpen}
-            onClose={closeDeleteDialog}
-            onConfirm={confirmDelete}
+            text="Es-tu sûr·e de vouloir supprimer cet utilisateur·ice ?"
+            open={isDeleteUserDialogOpen}
+            onClose={handleCloseDeleteUserDialog}
+            onConfirm={confirmDeleteUser}
           />
         </div>
 
         <CreateUserDialog open={isCreateUserDialogOpen} onClose={handleCloseCreateUserDialog} onConfirm={handleCreateUser} />
         <AddUsersDialog open={isAddUsersDialogOpen} onClose={handleCloseAddUsersDialog} onConfirm={handleAddUser} />
+        <ConfirmationDialog
+          text="Es-tu sûr·e de vouloir supprimer cet évènement ?"
+          open={isDeleteEventDialogOpen}
+          onClose={handleCloseDeleteEventDialog}
+          onConfirm={confirmDeleteEvent}
+        />
       </div>
     </div>
   );
