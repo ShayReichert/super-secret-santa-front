@@ -64,5 +64,14 @@ export const useEvents = () => {
     }
   };
 
-  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, createEvent, deleteEvent };
+  const removeUserToEvent = async (eventId: number, userId: number): Promise<void> => {
+    try {
+      await axiosInstance.get(`/api/events/remove/${userId}/${eventId}`);
+    } catch (error) {
+      console.error("Erreur lors de la suppression d'un·e utilisateur·ice à l'évènement", error);
+      throw new Error("Erreur lors de la suppression d'un·e utilisateur·ice à l'évènement");
+    }
+  };
+
+  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, createEvent, deleteEvent, removeUserToEvent };
 };

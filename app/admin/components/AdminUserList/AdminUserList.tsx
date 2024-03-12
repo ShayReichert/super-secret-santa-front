@@ -20,16 +20,18 @@ const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 export default function AdminUserList() {
   const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
   const { createUser, updateUser, deleteUser } = useUserList();
-  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent } = useEvents();
+  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent } = useEvents();
   const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
   const [isDeleteUserDialogOpen, setIsDeleteUserDialogOpen] = useState<boolean>(false);
-  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [userToDelete, setUserToDelete] = useState<number | null>(null);
+  const [userToRemove, setUserToRemove] = useState<number | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [isCreateUserDialogOpen, setIsCreateUserDialogOpen] = useState(false);
   const [isAddUsersDialogOpen, setIsAddUsersDialogOpen] = useState(false);
   const [isDeleteEventDialogOpen, setIsDeleteEventDialogOpen] = useState<boolean>(false);
+  const [isRemoveUserDialogOpen, setIsRemoveUserDialogOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUsersAndOrganizerInCurrentEvent = async () => {
@@ -65,12 +67,24 @@ export default function AdminUserList() {
       alert("Vous ne pouvez pas vous supprimer vous-même.");
     } else {
       setIsDeleteUserDialogOpen(true);
-      setItemToDelete(index);
+      setUserToDelete(index);
     }
   };
 
   const handleOpenDeleteEventDialog = () => {
     setIsDeleteEventDialogOpen(true);
+  };
+
+  const handleOpenRemoveUserDialog = (index: number): void => {
+    const userToRemove = users[index];
+    const isOrganizer = userState.data?.isOrganizerOfEvent;
+
+    if (isOrganizer && userToRemove.id === userState.data?.id) {
+      alert("En tant qu'organisateur·ice, vous ne pouvez pas vous retirer vous-même de l'événement.");
+    } else {
+      setIsRemoveUserDialogOpen(true);
+      setUserToRemove(userToRemove.id);
+    }
   };
 
   // Close
@@ -90,6 +104,11 @@ export default function AdminUserList() {
     setIsDeleteEventDialogOpen(false);
   };
 
+  const handleCloseRemoveUserDialog = (): void => {
+    setIsRemoveUserDialogOpen(false);
+  };
+
+  // API logics
   const handleCreateUser = async (newUserData: NewUser) => {
     const result = await createUser(newUserData);
 
@@ -197,13 +216,14 @@ export default function AdminUserList() {
   const handleDelete = async (index: number) => {
     const userToDelete = users[index];
     const success = await deleteUser(userToDelete.id);
+
     if (success) {
       setUsers(users.filter((_, idx) => idx !== index));
     }
   };
 
   const confirmDeleteUser = (): void => {
-    if (itemToDelete !== null) handleDelete(itemToDelete);
+    if (userToDelete !== null) handleDelete(userToDelete);
     handleCloseDeleteUserDialog();
   };
 
@@ -219,6 +239,20 @@ export default function AdminUserList() {
     handleCloseDeleteEventDialog();
     deleteCookie("selectedEventId");
     window.location.href = "/admin";
+  };
+
+  const confirmRemoveUser = async (): Promise<void> => {
+    if (userToRemove !== null && currentEventId) {
+      try {
+        await removeUserToEvent(currentEventId, userToRemove);
+        setUsers((currentUsers) => currentUsers.filter((user) => user.id !== userToRemove));
+      } catch (error) {
+        console.error(`Erreur lors de la suppression de l'utilisateur avec l'ID ${userToRemove} de l'événement`, error);
+        setErrors(["Erreur lors de la suppression de l'utilisateur de l'événement."]);
+      }
+
+      handleCloseRemoveUserDialog();
+    }
   };
 
   return (
@@ -264,6 +298,7 @@ export default function AdminUserList() {
                       index={index}
                       onEdit={handleEditClick}
                       onDelete={handleOpenDeleteUserDialog}
+                      onRemove={handleOpenRemoveUserDialog}
                       onEditSubmit={handleEditSubmit}
                       updateUser={updateUser}
                       isAdministrator={isAdministrator}
@@ -275,7 +310,7 @@ export default function AdminUserList() {
             </div>
           </div>
           <ConfirmationDialog
-            text="Es-tu sûr·e de vouloir supprimer cet utilisateur·ice ?"
+            text="Cet utilisateur·ice sera définitivement supprimé·e de l'application. Es-tu sûr·e de vouloir continuer ?"
             open={isDeleteUserDialogOpen}
             onClose={handleCloseDeleteUserDialog}
             onConfirm={confirmDeleteUser}
@@ -283,12 +318,21 @@ export default function AdminUserList() {
         </div>
 
         <CreateUserDialog open={isCreateUserDialogOpen} onClose={handleCloseCreateUserDialog} onConfirm={handleCreateUser} />
+
         <AddUsersDialog open={isAddUsersDialogOpen} onClose={handleCloseAddUsersDialog} onConfirm={handleAddUser} />
+
         <ConfirmationDialog
           text="Es-tu sûr·e de vouloir supprimer cet évènement ?"
           open={isDeleteEventDialogOpen}
           onClose={handleCloseDeleteEventDialog}
           onConfirm={confirmDeleteEvent}
+        />
+
+        <ConfirmationDialog
+          text="Es-tu sûr·e de vouloir retirer cet utilisateur·ice de l'évènement ?"
+          open={isRemoveUserDialogOpen}
+          onClose={handleCloseRemoveUserDialog}
+          onConfirm={confirmRemoveUser}
         />
       </div>
     </div>

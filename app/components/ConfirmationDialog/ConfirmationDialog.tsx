@@ -28,12 +28,12 @@ export default function ConfirmationDialog({ text, open, onClose, onConfirm }: D
           <span>{text}</span>
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={styles["buttons"]}>
         <Button className={`${styles["button"]} ${styles["cancel-button"]}`} onClick={onClose}>
-          NE PAS SUPPRIMER
+          ANNULER
         </Button>
         <Button className={`${styles["button"]} ${styles["confirm-button"]}`} onClick={onConfirm} color="primary" autoFocus>
-          OUI, SUPPRIMER
+          OUI
         </Button>
       </DialogActions>
     </Dialog>

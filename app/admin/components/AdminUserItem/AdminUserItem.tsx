@@ -12,6 +12,7 @@ interface Props {
   index: number;
   onEdit: (index: number, text: string, field: "name" | "email") => void;
   onDelete: (index: number) => void;
+  onRemove: (index: number) => void;
   onEditSubmit: (index: number, newName: string, newEmail: string) => void;
   updateUser: (id: number, data: Partial<User>) => Promise<boolean>;
   isAdministrator: boolean;
@@ -24,6 +25,7 @@ export default function AdminUserItem({
   index,
   onEdit,
   onDelete,
+  onRemove,
   onEditSubmit,
   updateUser,
   isAdministrator,
@@ -191,6 +193,10 @@ export default function AdminUserItem({
                 </button>
               )}
               <PasswordDialog open={isPasswordDialogOpen} onClose={() => setIsPasswordDialogOpen(false)} onConfirm={handlePasswordConfirm} />
+              {/* Bouton Retirer de l'évènement */}
+              <button className={styles["remove-button"]} onClick={() => onRemove(index)} aria-label="Retirer de l'évènement">
+                <Image className={styles["remove-icon"]} src="/icons/remove.svg" alt="Retirer de l'évènement" height={18} width={18} priority />
+              </button>
               {/* Bouton Supprimer */}
               {isAdministrator && (
                 <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
