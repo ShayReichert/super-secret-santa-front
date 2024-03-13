@@ -92,6 +92,10 @@ const AddUsersDialog = ({ open, onClose, onConfirm }: AddUsersDialoggProps) => {
     onClose();
   };
 
+  if (!open) {
+    return null;
+  }
+
   if (isLoading) {
     return <div>Chargement...</div>;
   }

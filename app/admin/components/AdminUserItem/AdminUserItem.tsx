@@ -5,6 +5,7 @@ import styles from "./AdminUserItem.module.scss";
 import Image from "next/image";
 import PasswordDialog from "../PasswordDialog/PasswordDialog";
 import OrganizerDialog from "../OrganizerDialog/OrganizerDialog";
+import Tooltip from "@mui/material/Tooltip";
 
 interface Props {
   user: User;
@@ -148,24 +149,26 @@ export default function AdminUserItem({
           <span className={styles["icons"]}>
             <span className={styles["icons-wrapper"]}>
               {/* Bouton Attribuer le rôle organisateur */}
-              <button
-                className={`${styles["organizer-button"]} ${isOrganizer ? styles["isOrganizer"] : ""} `}
-                onClick={handleOpenOrganizerDialog}
-                aria-label="Attribuer le rôle d'organisateur"
-              >
-                {isOrganizer ? (
-                  <Image className={styles["organizer-icon"]} src="/icons/star.svg" alt="Organisateur" height={20} width={20} priority />
-                ) : (
-                  <Image
-                    className={styles["set-organizer-icon"]}
-                    src="/icons/star-full.svg"
-                    alt="Attribuer le rôle d'organisateur"
-                    height={20}
-                    width={20}
-                    priority
-                  />
-                )}
-              </button>
+              <Tooltip title="Attribuer le rôle organisateur">
+                <button
+                  className={`${styles["organizer-button"]} ${isOrganizer ? styles["isOrganizer"] : ""} `}
+                  onClick={handleOpenOrganizerDialog}
+                  aria-label="Attribuer le rôle d'organisateur"
+                >
+                  {isOrganizer ? (
+                    <Image className={styles["organizer-icon"]} src="/icons/star.svg" alt="Organisateur" height={20} width={20} priority />
+                  ) : (
+                    <Image
+                      className={styles["set-organizer-icon"]}
+                      src="/icons/star-full.svg"
+                      alt="Attribuer le rôle d'organisateur"
+                      height={20}
+                      width={20}
+                      priority
+                    />
+                  )}
+                </button>
+              </Tooltip>
               <OrganizerDialog
                 open={isOrganizerDialogOpen}
                 onClose={() => setIsOrganizerDialogOpen(false)}
@@ -173,35 +176,44 @@ export default function AdminUserItem({
                 userName={user.username}
                 isAdministrator={isAdministrator}
               />
+
               {/* Bouton Modifier */}
               {isAdministrator && (
-                <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
-                  <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
-                </button>
+                <Tooltip title="Modifier">
+                  <button className={styles["edit-button"]} onClick={handleEdit} aria-label="Modifier">
+                    <Image className={styles["edit-icon"]} src="/icons/edit.svg" alt="Modifier" height={20} width={20} priority />
+                  </button>
+                </Tooltip>
               )}
               {/* Bouton Réinitialiser le mot de passe */}
               {isAdministrator && (
-                <button className={styles["password-button"]} onClick={handleChangePassword} aria-label="Réinitialiser le mot de passe">
-                  <Image
-                    className={styles["password-icon"]}
-                    src="/icons/password.svg"
-                    alt="Réinitialiser le mot de passe"
-                    height={20}
-                    width={20}
-                    priority
-                  />
-                </button>
+                <Tooltip title="Réinitialiser le mot de passe">
+                  <button className={styles["password-button"]} onClick={handleChangePassword} aria-label="Réinitialiser le mot de passe">
+                    <Image
+                      className={styles["password-icon"]}
+                      src="/icons/password.svg"
+                      alt="Réinitialiser le mot de passe"
+                      height={20}
+                      width={20}
+                      priority
+                    />
+                  </button>
+                </Tooltip>
               )}
               <PasswordDialog open={isPasswordDialogOpen} onClose={() => setIsPasswordDialogOpen(false)} onConfirm={handlePasswordConfirm} />
               {/* Bouton Retirer de l'évènement */}
-              <button className={styles["remove-button"]} onClick={() => onRemove(index)} aria-label="Retirer de l'évènement">
-                <Image className={styles["remove-icon"]} src="/icons/remove.svg" alt="Retirer de l'évènement" height={18} width={18} priority />
-              </button>
+              <Tooltip title="Retirer de l'évènement">
+                <button className={styles["remove-button"]} onClick={() => onRemove(index)} aria-label="Retirer de l'évènement">
+                  <Image className={styles["remove-icon"]} src="/icons/remove.svg" alt="Retirer de l'évènement" height={18} width={18} priority />
+                </button>
+              </Tooltip>
               {/* Bouton Supprimer */}
               {isAdministrator && (
-                <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
-                  <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={20} width={20} priority />
-                </button>
+                <Tooltip title="Supprimer">
+                  <button className={styles["delete-button"]} onClick={() => onDelete(index)} aria-label="Supprimer">
+                    <Image className={styles["delete-icon"]} src="/icons/delete.svg" alt="Supprimer" height={20} width={20} priority />
+                  </button>
+                </Tooltip>
               )}
             </span>
           </span>
