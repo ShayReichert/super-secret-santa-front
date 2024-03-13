@@ -14,13 +14,14 @@ import CreateUserDialog from "../CreateUserDialog/CreateUserDialog";
 import AddUsersDialog from "../AddUsersDialog/AddUsersDialog";
 import { isValidEmail } from "@/app/services/inputValidator";
 import { deleteCookie } from "cookies-next";
+import RenameEventDialog from "../RenameEventDialog/RenameEventDialog";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function AdminUserList() {
   const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
   const { createUser, updateUser, deleteUser } = useUserList();
-  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent } = useEvents();
+  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent, renameEvent } = useEvents();
   const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
@@ -32,6 +33,7 @@ export default function AdminUserList() {
   const [isAddUsersDialogOpen, setIsAddUsersDialogOpen] = useState(false);
   const [isDeleteEventDialogOpen, setIsDeleteEventDialogOpen] = useState<boolean>(false);
   const [isRemoveUserDialogOpen, setIsRemoveUserDialogOpen] = useState<boolean>(false);
+  const [isRenameEventDialogOpen, setIsRenameEventDialogOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUsersAndOrganizerInCurrentEvent = async () => {
@@ -51,7 +53,7 @@ export default function AdminUserList() {
     }
   };
 
-  // Open
+  // Open Dialogs
   const handleOpenCreateUserDialog = () => {
     setIsCreateUserDialogOpen(true);
   };
@@ -87,7 +89,11 @@ export default function AdminUserList() {
     }
   };
 
-  // Close
+  const handleOpenRenameEventDialog = () => {
+    setIsRenameEventDialogOpen(true);
+  };
+
+  // Close Dialogs
   const handleCloseCreateUserDialog = () => {
     setIsCreateUserDialogOpen(false);
   };
@@ -106,6 +112,10 @@ export default function AdminUserList() {
 
   const handleCloseRemoveUserDialog = (): void => {
     setIsRemoveUserDialogOpen(false);
+  };
+
+  const handleCloseRenameEventDialog = (): void => {
+    setIsRenameEventDialogOpen(false);
   };
 
   // API logics
@@ -213,17 +223,23 @@ export default function AdminUserList() {
     }
   };
 
-  const handleDelete = async (index: number) => {
-    const userToDelete = users[index];
-    const success = await deleteUser(userToDelete.id);
-
-    if (success) {
-      setUsers(users.filter((_, idx) => idx !== index));
+  const handleDeleteUser = async () => {
+    if (userToDelete !== null && userToDelete >= 0 && userToDelete < users.length) {
+      const userIdToDelete = users[userToDelete].id;
+      try {
+        const success = await deleteUser(userIdToDelete);
+        if (success) {
+          setUsers((currentUsers) => currentUsers.filter((_, idx) => idx !== userToDelete));
+        } else {
+          console.error(`Échec de la suppression de l'utilisateur avec l'ID ${userIdToDelete}.`);
+        }
+      } catch (error) {
+        console.error(`Erreur lors de la tentative de suppression de l'utilisateur avec l'ID ${userIdToDelete}:`, error);
+      }
+    } else {
+      console.error("Index de l'utilisateur à supprimer est invalide ou non défini.");
     }
-  };
 
-  const confirmDeleteUser = (): void => {
-    if (userToDelete !== null) handleDelete(userToDelete);
     handleCloseDeleteUserDialog();
   };
 
@@ -231,7 +247,7 @@ export default function AdminUserList() {
     setUsers(users.map((user, idx) => (idx === index ? { ...user, isEditing: true, editingText: user.username, editingEmail: user.email } : user)));
   };
 
-  const confirmDeleteEvent = (): void => {
+  const handleDeleteEvent = (): void => {
     if (currentEventId) {
       deleteEvent(currentEventId);
     }
@@ -241,7 +257,7 @@ export default function AdminUserList() {
     window.location.href = "/admin";
   };
 
-  const confirmRemoveUser = async (): Promise<void> => {
+  const handleRemoveUser = async (): Promise<void> => {
     if (userToRemove !== null && currentEventId) {
       try {
         await removeUserToEvent(currentEventId, userToRemove);
@@ -255,10 +271,27 @@ export default function AdminUserList() {
     }
   };
 
+  const handleRenameEvent = async (newEventName: string): Promise<void> => {
+    if (currentEventId) {
+      try {
+        await renameEvent(currentEventId, newEventName);
+        console.log("L'événement a été renommé avec succès :", newEventName);
+        handleCloseRenameEventDialog();
+        window.location.href = "/admin";
+      } catch (error) {
+        console.error("Erreur lors de la tentative de renommage de l'événement :", error);
+        setErrors(["Erreur lors de la modification du nom de l'événement."]);
+      }
+    } else {
+      console.error("L'ID de l'événement courant n'est pas défini.");
+    }
+  };
+
   return (
     <div className={styles["admin-container"]}>
       <div className={styles["menu-wrapper"]}>
         <MenuListAdmin
+          onRenameEvent={handleOpenRenameEventDialog}
           onDeleteEvent={handleOpenDeleteEventDialog}
           onCreateUser={handleOpenCreateUserDialog}
           onAddUsers={handleOpenAddUsersDialog}
@@ -313,7 +346,7 @@ export default function AdminUserList() {
             text="Cet utilisateur·ice sera définitivement supprimé·e de l'application. Es-tu sûr·e de vouloir continuer ?"
             open={isDeleteUserDialogOpen}
             onClose={handleCloseDeleteUserDialog}
-            onConfirm={confirmDeleteUser}
+            onConfirm={handleDeleteUser}
           />
         </div>
 
@@ -325,14 +358,21 @@ export default function AdminUserList() {
           text="Es-tu sûr·e de vouloir supprimer cet évènement ?"
           open={isDeleteEventDialogOpen}
           onClose={handleCloseDeleteEventDialog}
-          onConfirm={confirmDeleteEvent}
+          onConfirm={handleDeleteEvent}
         />
 
         <ConfirmationDialog
           text="Es-tu sûr·e de vouloir retirer cet utilisateur·ice de l'évènement ?"
           open={isRemoveUserDialogOpen}
           onClose={handleCloseRemoveUserDialog}
-          onConfirm={confirmRemoveUser}
+          onConfirm={handleRemoveUser}
+        />
+
+        <RenameEventDialog
+          open={isRenameEventDialogOpen}
+          onClose={handleCloseRenameEventDialog}
+          onConfirm={handleRenameEvent}
+          currentEventName={currentEvent?.name || null}
         />
       </div>
     </div>

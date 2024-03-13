@@ -73,5 +73,14 @@ export const useEvents = () => {
     }
   };
 
-  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, createEvent, deleteEvent, removeUserToEvent };
+  const renameEvent = async (eventId: number, newName: string): Promise<void> => {
+    try {
+      await axiosInstance.put(`/api/events/${eventId}`, { name: newName });
+    } catch (error) {
+      console.error("Erreur lors de la modification du nom de l'évènement", error);
+      throw new Error("Erreur lors de la modification du nom de l'évènement");
+    }
+  };
+
+  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, createEvent, deleteEvent, removeUserToEvent, renameEvent };
 };

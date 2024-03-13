@@ -8,8 +8,10 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Image from "next/image";
+import Divider from "@mui/material/Divider";
 
 interface Props {
+  onRenameEvent: () => void;
   onDeleteEvent: () => void;
   onCreateUser: () => void;
   onAddUsers: () => void;
@@ -17,7 +19,7 @@ interface Props {
   drawState: { isLoading: boolean; error: string; successMessage: string };
 }
 
-export default function MenuListAdmin({ onDeleteEvent, onCreateUser, onAddUsers, onPerformDraw, drawState }: Props) {
+export default function MenuListAdmin({ onRenameEvent, onDeleteEvent, onCreateUser, onAddUsers, onPerformDraw, drawState }: Props) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -65,6 +67,8 @@ export default function MenuListAdmin({ onDeleteEvent, onCreateUser, onAddUsers,
                 <MenuList autoFocusItem={open} id="composition-menu" aria-labelledby="composition-button" onKeyDown={handleListKeyDown}>
                   <MenuItem onClick={onAddUsers}>Ajouter des participant·es</MenuItem>
                   <MenuItem onClick={onCreateUser}>Créer un·e nouvelle participant·e</MenuItem>
+                  <Divider component="li" />
+                  <MenuItem onClick={onRenameEvent}>Modifier le nom de cet évènement</MenuItem>
                   {drawState.isLoading ? (
                     <MenuItem disabled>Chargement...</MenuItem>
                   ) : drawState.error ? (
@@ -74,6 +78,7 @@ export default function MenuListAdmin({ onDeleteEvent, onCreateUser, onAddUsers,
                   ) : (
                     <MenuItem onClick={onPerformDraw}>Faire le tirage au sort</MenuItem>
                   )}
+                  <Divider component="li" />
                   <MenuItem onClick={onDeleteEvent}>Supprimer cet évènement</MenuItem>
                 </MenuList>
               </ClickAwayListener>
