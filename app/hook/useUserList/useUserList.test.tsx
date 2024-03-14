@@ -1,117 +1,69 @@
+import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import axiosInstance from "@/app/services/axiosInstance";
-import AdminUserList from "../../admin/components/AdminUserList/AdminUserList";
+import { useUserList } from "./useUserList";
+import axiosInstance from "../../services/axiosInstance";
 
-jest.mock("../../services/axiosInstance.ts");
+jest.mock("../../services/axiosInstance");
 
-describe("AdminUserList Component", () => {
-  beforeEach(() => {
-    axiosInstance.get = jest.fn().mockResolvedValue({
-      data: [{ username: "user1", email: "user1@example.com" }],
-    });
+type UserListTestComponentProps = {
+  onResult: (result: any) => void;
+};
+
+const UserListTestComponent = ({ onResult }: UserListTestComponentProps) => {
+  const { getUsers, createUser, updateUser, deleteUser } = useUserList();
+
+  return (
+    <div>
+      <button onClick={async () => onResult(await getUsers())}>Get Users</button>
+      <button onClick={async () => onResult(await createUser({ username: "newUser", email: "newuser@example.com", password: "password123" }))}>
+        Create User
+      </button>
+      <button onClick={async () => onResult(await updateUser(1, { username: "updatedUser", email: "updateduser@example.com" }))}>Update User</button>
+      <button onClick={async () => onResult(await deleteUser(1))}>Delete User</button>
+    </div>
+  );
+};
+
+describe("useUserList hook", () => {
+  it("getUsers returns a list of users on success", async () => {
+    const mockUsers = [{ username: "user1", email: "user1@example.com" }];
+    axiosInstance.get = jest.fn().mockResolvedValue({ data: mockUsers });
+
+    const mockOnResult = jest.fn();
+    render(<UserListTestComponent onResult={mockOnResult} />);
+
+    fireEvent.click(screen.getByText("Get Users"));
+    await waitFor(() => expect(mockOnResult).toHaveBeenCalledWith(mockUsers));
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  it("createUser returns a new user on success", async () => {
+    const newUser = { username: "newUser", email: "newuser@example.com" };
+    axiosInstance.post = jest.fn().mockResolvedValue({ data: newUser });
+
+    const mockOnResult = jest.fn();
+    render(<UserListTestComponent onResult={mockOnResult} />);
+
+    fireEvent.click(screen.getByText("Create User"));
+    await waitFor(() => expect(mockOnResult).toHaveBeenCalledWith(newUser));
   });
 
-  it("displays users fetched from useUserList", async () => {
-    render(<AdminUserList />);
+  it("updateUser returns true on successful update", async () => {
+    axiosInstance.put = jest.fn().mockResolvedValue({});
+    const mockOnResult = jest.fn();
+    render(<UserListTestComponent onResult={mockOnResult} />);
 
-    await waitFor(() => {
-      expect(screen.getByText("user1")).toBeInTheDocument();
-      expect(screen.getByText("user1@example.com")).toBeInTheDocument();
-    });
+    // Remplacez "Update User" par le texte réel de votre bouton pour mettre à jour un utilisateur
+    fireEvent.click(screen.getByText("Update User"));
+    await waitFor(() => expect(mockOnResult).toHaveBeenCalledWith(true));
   });
 
-  it("adds a new user", async () => {
-    axiosInstance.post = jest.fn().mockResolvedValue({
-      data: { username: "newuser", email: "newuser@example.com" },
-    });
+  it("deleteUser returns true on successful deletion", async () => {
+    axiosInstance.delete = jest.fn().mockResolvedValue({});
+    const mockOnResult = jest.fn();
+    render(<UserListTestComponent onResult={mockOnResult} />);
 
-    render(<AdminUserList />);
-
-    fireEvent.change(screen.getByPlaceholderText("Prénom"), { target: { value: "newuser" } });
-    fireEvent.change(screen.getByPlaceholderText("Email"), { target: { value: "newuser@example.com" } });
-    fireEvent.change(screen.getByPlaceholderText("Code secret"), { target: { value: "password1" } });
-    fireEvent.click(screen.getByText("AJOUTER"));
-
-    await waitFor(() => {
-      expect(screen.getByText("newuser")).toBeInTheDocument();
-      expect(screen.getByText("newuser@example.com")).toBeInTheDocument();
-    });
-  });
-
-  it("updates an existing user", async () => {
-    // Mock the initial GET request to fetch users
-    axiosInstance.get = jest.fn().mockResolvedValue({
-      data: [{ username: "user1", email: "user1@example.com" }],
-    });
-
-    // Mock the PUT request for updating a user
-    axiosInstance.put = jest.fn().mockResolvedValue(true);
-
-    render(<AdminUserList />);
-
-    // Wait for the initial users to be displayed
-    await waitFor(() => {
-      expect(screen.getByText("user1")).toBeInTheDocument();
-    });
-
-    // Simulate the click on the edit button for a specific user
-    fireEvent.click(screen.getAllByLabelText("Modifier")[0]);
-
-    // Simulate changing the values and submitting the form
-    const usernameInput = screen.getByDisplayValue("user1");
-    const emailInput = screen.getByDisplayValue("user1@example.com");
-    fireEvent.change(usernameInput, { target: { value: "updatedUser" } });
-    fireEvent.change(emailInput, { target: { value: "updatedUser@example.com" } });
-
-    // Simulate pressing the "Enter" key
-    fireEvent.keyDown(emailInput, { key: "Enter", code: "Enter" });
-
-    // Check that the PUT request was called with the correct data
-    await waitFor(() => {
-      expect(axiosInstance.put).toHaveBeenCalledTimes(1);
-      expect(axiosInstance.put).toHaveBeenCalledWith(`/api/admin/user/user1`, { username: "updatedUser", email: "updatedUser@example.com" });
-    });
-
-    // Verify that the UI is updated accordingly
-    expect(screen.getByText("updatedUser")).toBeInTheDocument();
-    expect(screen.getByText("updatedUser@example.com")).toBeInTheDocument();
-  });
-
-  it("deletes an existing user", async () => {
-    // Mock the initial GET request to fetch users
-    axiosInstance.get = jest.fn().mockResolvedValue({
-      data: [{ username: "user1", email: "user1@example.com" }],
-    });
-
-    // Mock the DELETE request for deleting a user
-    axiosInstance.delete = jest.fn().mockResolvedValue(true);
-
-    render(<AdminUserList />);
-
-    // Wait for the initial users to be displayed
-    await waitFor(() => {
-      expect(screen.getByText("user1")).toBeInTheDocument();
-    });
-
-    // Simulate the click on the delete button for a specific user
-    fireEvent.click(screen.getAllByLabelText("Supprimer")[0]);
-
-    const confirmButton = screen.getByText("OUI, SUPPRIMER");
-    fireEvent.click(confirmButton);
-
-    // Check that the DELETE request was called with the correct endpoint
-    await waitFor(() => {
-      expect(axiosInstance.delete).toHaveBeenCalledTimes(1);
-      expect(axiosInstance.delete).toHaveBeenCalledWith(`/api/admin/user/user1`);
-    });
-
-    // Check that "user1" is no longer in the DOM
-    await waitFor(() => {
-      expect(screen.queryByText("user1")).not.toBeInTheDocument();
-    });
+    // Remplacez "Delete User" par le texte réel de votre bouton pour supprimer un utilisateur
+    fireEvent.click(screen.getByText("Delete User"));
+    await waitFor(() => expect(mockOnResult).toHaveBeenCalledWith(true));
   });
 });

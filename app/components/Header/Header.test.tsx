@@ -1,63 +1,102 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Header from "./Header";
+import * as AuthHook from "@/app/hook/useAuth/useAuth";
+import * as NavigationHook from "next/navigation";
+import * as UserContext from "@/app/context/UserContext";
 
-// Mocks for dependencies
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-jest.mock("../Menu/Menu", () => () => <div>Menu component</div>);
-
-jest.mock("../MenuEvents/MenuEvents", () => () => <div>Menu events component</div>);
-
-jest.mock("../../hook/useAuth/useAuth.ts", () => ({
-  useAuth: () => ({
-    isLoggedIn: jest.fn(),
-  }),
+jest.mock("../../context/UserContext.tsx", () => ({
+  useUser: jest.fn(),
 }));
 
+jest.mock("../../hook/useAuth/useAuth.ts", () => ({
+  useAuth: jest.fn(),
+}));
+
+jest.mock("../MenuUser/MenuUser", () => () => <div>MenuUser component</div>);
+jest.mock("../MenuEvents/MenuEvents", () => () => <div>MenuEvents component</div>);
+
 describe("Header Component", () => {
-  // Test for rendering the Header component
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders without crashing", () => {
-    require("next/navigation").usePathname.mockReturnValue("/");
-    require("../../hook/useAuth/useAuth.ts").useAuth = () => ({
+    jest.spyOn(NavigationHook, "usePathname").mockReturnValue("/");
+
+    (AuthHook.useAuth as jest.Mock).mockImplementation(() => ({
       isLoggedIn: () => true,
-    });
-    const { getByText } = render(<Header />);
-    expect(getByText("🎄 Secret Santa 🎄")).toBeInTheDocument();
+    }));
+    (UserContext.useUser as jest.Mock).mockImplementation(() => ({
+      isAdministrator: false,
+      canOnlyManageEvent: false,
+    }));
+
+    render(<Header />);
+    expect(screen.getByText("🎄 Secret Santa 🎄")).toBeInTheDocument();
   });
 
-  // Test for menu visibility when logged in
-  it("shows menu when logged in", () => {
-    require("next/navigation").usePathname.mockReturnValue("/");
-    require("../../hook/useAuth/useAuth.ts").useAuth = () => ({
+  it("shows MenuUser and MenuEvents when logged in", () => {
+    jest.spyOn(NavigationHook, "usePathname").mockReturnValue("/");
+    (AuthHook.useAuth as jest.Mock).mockImplementation(() => ({
       isLoggedIn: () => true,
-    });
+    }));
+    (UserContext.useUser as jest.Mock).mockImplementation(() => ({
+      isAdministrator: false,
+      canOnlyManageEvent: false,
+    }));
 
-    const { getByText } = render(<Header />);
-    expect(getByText("Menu component")).toBeInTheDocument();
+    render(<Header />);
+    expect(screen.getByText("MenuUser component")).toBeInTheDocument();
+    const menuEventsComponents = screen.queryAllByText("MenuEvents component");
+    expect(menuEventsComponents.length).toBeGreaterThan(0);
   });
 
-  // Test for no menu when not logged in
-  it("does not show menu when not logged in", () => {
-    require("next/navigation").usePathname.mockReturnValue("/");
-    require("../../hook/useAuth/useAuth.ts").useAuth = () => ({
+  it("does not show MenuUser and MenuEvents when not logged in", () => {
+    jest.spyOn(NavigationHook, "usePathname").mockReturnValue("/");
+    (AuthHook.useAuth as jest.Mock).mockImplementation(() => ({
       isLoggedIn: () => false,
-    });
+    }));
+    (UserContext.useUser as jest.Mock).mockImplementation(() => ({
+      isAdministrator: false,
+      canOnlyManageEvent: false,
+    }));
 
-    const { queryByText } = render(<Header />);
-    expect(queryByText("Menu component")).not.toBeInTheDocument();
+    render(<Header />);
+    expect(screen.queryByText("MenuUser component")).not.toBeInTheDocument();
+    const menuEventsComponents = screen.queryAllByText("MenuEvents component");
+    expect(menuEventsComponents.length).toBe(0);
   });
 
-  // Test for admin class applied on admin pages
-  it("applies admin class on admin pages", () => {
-    require("next/navigation").usePathname.mockReturnValue("/admin");
-    require("../../hook/useAuth/useAuth.ts").useAuth = () => ({
+  it("applies admin class on admin pages for administrators", () => {
+    jest.spyOn(NavigationHook, "usePathname").mockReturnValue("/admin");
+    (AuthHook.useAuth as jest.Mock).mockImplementation(() => ({
       isLoggedIn: () => true,
-    });
+    }));
+    (UserContext.useUser as jest.Mock).mockImplementation(() => ({
+      isAdministrator: true,
+      canOnlyManageEvent: false,
+    }));
 
     const { container } = render(<Header />);
     expect(container.firstChild).toHaveClass("header-admin");
+  });
+
+  it("applies organizer class on admin pages for organizers", () => {
+    jest.spyOn(NavigationHook, "usePathname").mockReturnValue("/admin");
+    (AuthHook.useAuth as jest.Mock).mockImplementation(() => ({
+      isLoggedIn: () => true,
+    }));
+    (UserContext.useUser as jest.Mock).mockImplementation(() => ({
+      isAdministrator: false,
+      canOnlyManageEvent: true,
+    }));
+
+    const { container } = render(<Header />);
+    expect(container.firstChild).toHaveClass("header-organizer");
   });
 });

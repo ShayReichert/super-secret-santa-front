@@ -13,17 +13,17 @@ describe("ConfirmationDialog Component", () => {
     expect(getByText(dialogText)).toBeInTheDocument();
   });
 
-  it("calls onConfirm when 'OUI, SUPPRIMER' is clicked", () => {
+  it("calls onConfirm when 'OUI' is clicked", () => {
     const { getByText } = render(<ConfirmationDialog text={dialogText} open={true} onClose={mockOnClose} onConfirm={mockOnConfirm} />);
 
-    fireEvent.click(getByText("OUI, SUPPRIMER"));
+    fireEvent.click(getByText("OUI"));
     expect(mockOnConfirm).toHaveBeenCalled();
   });
 
-  it("calls onClose when 'NE PAS SUPPRIMER' is clicked", () => {
+  it("calls onClose when 'ANNULER' is clicked", () => {
     const { getByText } = render(<ConfirmationDialog text={dialogText} open={true} onClose={mockOnClose} onConfirm={mockOnConfirm} />);
 
-    fireEvent.click(getByText("NE PAS SUPPRIMER"));
+    fireEvent.click(getByText("ANNULER"));
     expect(mockOnClose).toHaveBeenCalled();
   });
 });

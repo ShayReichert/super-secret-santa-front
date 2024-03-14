@@ -26,6 +26,7 @@ beforeEach(() => {
       data: { events: mockEvents },
     },
     currentEventId: 1,
+    currentEvent: mockEvents[0],
   }));
 
   (giftListHooks.useGiftList as jest.Mock).mockImplementation(() => ({

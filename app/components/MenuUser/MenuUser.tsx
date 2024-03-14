@@ -61,6 +61,7 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={({ currentTarget }) => setAnchorEl(currentTarget)}
+        data-testid="menu-button"
       >
         <div className={styles["user"]}>
           <span
