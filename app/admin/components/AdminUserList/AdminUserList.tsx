@@ -51,6 +51,9 @@ export default function AdminUserList() {
     if (currentEventId) {
       performDraw(currentEventId);
     }
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 500);
   };
 
   // Open Dialogs
