@@ -35,7 +35,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/components/Header/Header",
-    "app/dashboard/components/UserGiftItem/UserGiftItem.test.tsx"
+    "app/dashboard/components/UserGiftItem/UserGiftItem.test.tsx",
+    "app/components/MenuEvents/MenuEvents"
   ],
   "exclude": [
     "node_modules"
