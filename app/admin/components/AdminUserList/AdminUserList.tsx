@@ -21,7 +21,7 @@ const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 export default function AdminUserList() {
   const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
   const { createUser, updateUser, deleteUser } = useUserList();
-  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent, renameEvent } = useEvents();
+  const { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent, renameEvent } = useEvents();
   const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
@@ -80,15 +80,31 @@ export default function AdminUserList() {
     setIsDeleteEventDialogOpen(true);
   };
 
-  const handleOpenRemoveUserDialog = (index: number): void => {
+  const handleOpenRemoveUserDialog = async (index: number): Promise<void> => {
     const userToRemove = users[index];
     const isOrganizer = userState.data?.isOrganizerOfEvent;
 
     if (isOrganizer && userToRemove.id === userState.data?.id) {
       alert("En tant qu'organisateur·ice, vous ne pouvez pas vous retirer vous-même de l'événement.");
-    } else {
+      return;
+    }
+
+    try {
+      const events = await getEvents();
+      const userEventIds = new Set(events.filter((event) => event.users.some((user) => user.id === userToRemove.id)).map((event) => event.id));
+      const isUserOnlyInOneEvent = userEventIds.size === 1;
+
+      if (isUserOnlyInOneEvent) {
+        alert(
+          "Tu ne peux pas retirer cet utilisateur de l'événement car il n'est présent dans aucun autre événement. Pour pouvoir le retirer, crée un autre événement et ajoute-le à celui-ci."
+        );
+        return;
+      }
+
       setIsRemoveUserDialogOpen(true);
       setUserToRemove(userToRemove.id);
+    } catch (error) {
+      console.error("Erreur lors de la vérification de la participation de l'utilisateur", error);
     }
   };
 
