@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ChevronIcon from "../ChevronIcon/ChevronIcon";
 
 export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
-  const { userState, currentEventId, currentEvent, changeCurrentEvent } = useUser();
+  const { userState, currentEventId, currentEvent, isAdministrator, changeCurrentEvent } = useUser();
   const { getEvents } = useEvents();
   const [events, setEvents] = useState<SantaEvent[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -70,7 +70,9 @@ export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPa
   // Find the data type based on the page
   let eventsToShow: EventInUser[] | SantaEvent[] = [];
 
-  if (isOrganizerPage) {
+  if (isAdministrator && isAdminPage) {
+    eventsToShow = events;
+  } else if (isOrganizerPage) {
     eventsToShow = getEventsOrganizedByUser(events as SantaEvent[], userState.data?.organizedEventIds || []);
   } else {
     eventsToShow = userState.data?.events as EventInUser[];
