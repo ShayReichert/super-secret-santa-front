@@ -54,7 +54,7 @@ const RenameEventDialog = ({ open, onClose, onConfirm, currentEventName }: Renam
     >
       <DialogContent>
         <DialogContentText id="dialog-content-text" className={styles["dialog-content-text"]}>
-          Renommer l'événement
+          {`Renommer l'événement`}
         </DialogContentText>
         <TextField
           autoFocus

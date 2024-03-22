@@ -23,7 +23,7 @@
 
     h1 {
       @include fluid-font(40px, 60px);
-      background-color: $secondary-color;
+      background-color: $primary-color;
       color: $white;
       padding: 2rem 4rem;
       border-radius: $border-radius;

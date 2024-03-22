@@ -162,7 +162,7 @@ const AddUsersDialog = ({ open, onClose, onConfirm }: AddUsersDialoggProps) => {
             <div>Aucun participant déjà existant ne peut être ajouté à cet évènement ! </div>
             <br />
             <div>
-              <small>Tu peux cependant "Créer un·e nouvelle participant·e"</small>
+              <small>{`Tu peux cependant "Créer un·e nouvelle participant·e"`}</small>
             </div>
           </DialogContent>
           <DialogActions className={styles["buttons"]}>

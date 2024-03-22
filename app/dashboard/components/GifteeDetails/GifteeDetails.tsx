@@ -26,7 +26,7 @@ export default function GifteeDetails() {
     return (
       <div className={styles["dashboard-wrapper"]}>
         <div className={styles["dashboard-background"]}>
-          <p>Aucun événement sélectionné (ou l'événement n'existe pas).</p>
+          <p> {`Aucun événement sélectionné (ou l'événement n'existe pas).`}</p>
         </div>
       </div>
     );
@@ -55,7 +55,7 @@ export default function GifteeDetails() {
             ) : (
               <p className={styles["no-gift"]}>
                 😱 <br />
-                Cette personne n'a pas encore ajouté de cadeaux à sa liste.
+                {`Cette personne n'a pas encore ajouté de cadeaux à sa liste.`}
               </p>
             )}
           </div>
