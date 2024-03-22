@@ -149,7 +149,7 @@ export default function AdminUserItem({
           <span className={styles["icons"]}>
             <span className={styles["icons-wrapper"]}>
               {/* Bouton Attribuer le rôle organisateur */}
-              <Tooltip title="Attribuer le rôle organisateur">
+              <Tooltip title={isOrganizer ? "Cette personne est déjà organisateur·ice" : "Attribuer le rôle organisateur"}>
                 <button
                   className={`${styles["organizer-button"]} ${isOrganizer ? styles["isOrganizer"] : ""} `}
                   onClick={handleOpenOrganizerDialog}
