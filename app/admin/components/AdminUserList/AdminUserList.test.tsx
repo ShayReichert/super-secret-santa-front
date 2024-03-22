@@ -1,6 +1,6 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import AdminUserList from "./AdminUserList"; // Ajustez le chemin d'importation selon votre structure de fichiers
+import AdminUserList from "./AdminUserList";
 import { useUser } from "@/app/context/UserContext";
 import { useUserList } from "@/app/hook/useUserList/useUserList";
 import { useEvents } from "@/app/hook/useEvents/useEvents";
@@ -54,8 +54,8 @@ describe("<AdminUserList />", () => {
 
     // Attendre que les données des utilisateurs soient chargées et affichées
     for (const user of mockUsers) {
-      await waitFor(() => expect(screen.getByText(user.username)).toBeInTheDocument());
-      await waitFor(() => expect(screen.getByText(user.email)).toBeInTheDocument());
+      await screen.findByText(user.username);
+      await screen.findByText(user.email);
     }
   });
 });

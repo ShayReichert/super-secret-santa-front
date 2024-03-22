@@ -88,6 +88,6 @@ describe("<UserWishlist />", () => {
     render(<UserWishlist />);
     fireEvent.click(screen.getAllByLabelText("Supprimer")[0]);
 
-    await waitFor(() => expect(screen.getByText("Es-tu sûr·e de vouloir supprimer ce cadeau ?")).toBeInTheDocument());
+    expect(await screen.findByText("Es-tu sûr·e de vouloir supprimer ce cadeau ?")).toBeInTheDocument();
   });
 });

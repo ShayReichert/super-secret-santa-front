@@ -33,7 +33,7 @@ describe("Menu Component", () => {
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     fireEvent.click(button);
 
-    expect(screen.queryByRole("menu")).toBeInTheDocument();
+    expect(screen.getByRole("menu")).toBeInTheDocument();
   });
 
   it("opens the NewEventDialog when 'Create New Event' is clicked", () => {
