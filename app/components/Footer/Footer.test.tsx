@@ -7,7 +7,11 @@ jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-jest.mock("../MenuUser/MenuUser", () => () => <div>Menu component</div>);
+jest.mock("../MenuUser/MenuUser", () => {
+  const MenuUserMock = () => <div>Menu component</div>;
+  MenuUserMock.displayName = "MenuUser";
+  return MenuUserMock;
+});
 
 jest.mock("../../context/UserContext", () => ({
   useUser: jest.fn(),
@@ -38,7 +42,6 @@ describe("Footer Component", () => {
 
     render(<Footer />);
 
-    // Attendre que le composant soit monté et que isLoggedIn soit invoqué
     await waitFor(() => {
       expect(screen.getByText("Menu component")).toBeInTheDocument();
     });
