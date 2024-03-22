@@ -1,9 +1,9 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 
-const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/",
-});
+const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
+const axiosInstance = axios.create({ baseURL });
 
 axiosInstance.interceptors.request.use(
   (config) => {
