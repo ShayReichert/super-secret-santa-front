@@ -5,7 +5,7 @@ import ConfirmationDialog from "./ConfirmationDialog";
 describe("ConfirmationDialog Component", () => {
   const mockOnClose = jest.fn();
   const mockOnConfirm = jest.fn();
-  const dialogText = "Êtes-vous sûr de vouloir supprimer cet élément ?";
+  const dialogText = "Es-tu sûr de vouloir supprimer cet élément ?";
 
   it("renders correctly", () => {
     const { getByText } = render(<ConfirmationDialog text={dialogText} open={true} onClose={mockOnClose} onConfirm={mockOnConfirm} />);

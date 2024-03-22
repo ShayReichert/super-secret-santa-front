@@ -5,7 +5,7 @@ import SantaImage from "../components/SantaImage/SantaImage";
 
 export const metadata: Metadata = {
   title: "Connexion | Super Secret Santa",
-  description: "Connectez-vous à votre compte",
+  description: "Connecte-toi à ton compte",
 };
 
 export default function Login() {

@@ -69,7 +69,7 @@ export default function AdminUserList() {
     const userToDelete = users[index];
 
     if (isAdministrator && userToDelete.id === userState.data?.id) {
-      alert("Vous ne pouvez pas vous supprimer vous-même.");
+      alert("Tu ne peux pas te supprimer toi-même.");
     } else {
       setIsDeleteUserDialogOpen(true);
       setUserToDelete(index);
@@ -85,7 +85,7 @@ export default function AdminUserList() {
     const isOrganizer = userState.data?.isOrganizerOfEvent;
 
     if (isOrganizer && userToRemove.id === userState.data?.id) {
-      alert("En tant qu'organisateur·ice, vous ne pouvez pas vous retirer vous-même de l'événement.");
+      alert("En tant qu'organisateur·ice, tu ne peux pas te retirer toi-même de l'événement.");
       return;
     }
 
