@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Footer from "./Footer";
 
@@ -7,26 +7,21 @@ jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-jest.mock("../MenuUser/MenuUser", () => {
-  const MenuUserMock = () => <div>Menu component</div>;
-  MenuUserMock.displayName = "MenuUser";
-  return MenuUserMock;
-});
-
-jest.mock("../MenuEvents/MenuEvents", () => {
-  const MenuEventsMock = () => <div>Menu events component</div>;
-  MenuEventsMock.displayName = "MenuEvents";
-  return MenuEventsMock;
-});
+jest.mock("../MenuUser/MenuUser", () => () => <div>Menu component</div>);
 
 jest.mock("../../context/UserContext", () => ({
   useUser: jest.fn(),
 }));
 
+jest.mock("../../hook/useAuth/useAuth", () => ({
+  useAuth: jest.fn(),
+}));
+
 describe("Footer Component", () => {
-  it("renders without crashing", () => {
+  it("renders without crashing", async () => {
     const usePathnameMock = require("next/navigation").usePathname;
     const useUserMock = require("../../context/UserContext").useUser;
+    const useAuthMock = require("../../hook/useAuth/useAuth").useAuth;
 
     // Configurer les valeurs de retour des mocks
     usePathnameMock.mockReturnValue("/");
@@ -37,9 +32,17 @@ describe("Footer Component", () => {
         },
       },
     });
+    useAuthMock.mockReturnValue({
+      isLoggedIn: () => true,
+    });
 
     render(<Footer />);
-    expect(screen.getByText("Menu component")).toBeInTheDocument();
+
+    // Attendre que le composant soit monté et que isLoggedIn soit invoqué
+    await waitFor(() => {
+      expect(screen.getByText("Menu component")).toBeInTheDocument();
+    });
+
     expect(screen.getByText("Alexis et Shay")).toBeInTheDocument();
   });
 });

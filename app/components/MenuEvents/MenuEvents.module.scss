@@ -1,8 +1,11 @@
 @import "../../styles/partials/mixins";
 
 .button-events {
-  @include button-events();
   transition: background-color 0.3s ease-in-out;
+
+  @media only screen and (min-width: $large_tablet) {
+    @include button-events();
+  }
 
   &:hover {
     background-color: $link-hover;
