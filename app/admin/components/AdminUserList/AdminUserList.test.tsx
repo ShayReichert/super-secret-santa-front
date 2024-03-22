@@ -54,10 +54,8 @@ describe("<AdminUserList />", () => {
 
     // Attendre que les données des utilisateurs soient chargées et affichées
     for (const user of mockUsers) {
-      await waitFor(() => {
-        expect(screen.getByText(user.username)).toBeInTheDocument();
-        expect(screen.getByText(user.email)).toBeInTheDocument();
-      });
+      await waitFor(() => expect(screen.getByText(user.username)).toBeInTheDocument());
+      await waitFor(() => expect(screen.getByText(user.email)).toBeInTheDocument());
     }
   });
 });

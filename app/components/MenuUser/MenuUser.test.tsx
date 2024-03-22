@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Menu from "./MenuUser";
 import { usePathname } from "next/navigation";
@@ -27,35 +27,35 @@ jest.mock("../../context/UserContext.tsx", () => ({
 
 describe("Menu Component", () => {
   it("opens the menu correctly", async () => {
-    const { getByTestId, queryByRole } = render(<Menu />);
-    const button = getByTestId("menu-button");
+    render(<Menu />);
+    const button = screen.getByTestId("menu-button");
 
-    expect(queryByRole("menu")).not.toBeInTheDocument();
+    expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     fireEvent.click(button);
 
-    expect(queryByRole("menu")).toBeInTheDocument();
+    expect(screen.queryByRole("menu")).toBeInTheDocument();
   });
 
   it("opens the NewEventDialog when 'Create New Event' is clicked", () => {
-    const { getByText, getByTestId } = render(<Menu />);
+    render(<Menu />);
 
-    fireEvent.click(getByTestId("menu-button"));
-    fireEvent.click(getByText("📆 Créer un nouvel événement"));
+    fireEvent.click(screen.getByTestId("menu-button"));
+    fireEvent.click(screen.getByText("📆 Créer un nouvel événement"));
 
-    expect(getByText("Créer un nouvel événement")).toBeInTheDocument();
+    expect(screen.getByText("Créer un nouvel événement")).toBeInTheDocument();
   });
 
   it("renders user name correctly", () => {
-    const { getByTestId } = render(<Menu />);
+    render(<Menu />);
 
-    expect(getByTestId("user-name")).toHaveTextContent("JohnDoe");
+    expect(screen.getByTestId("user-name")).toHaveTextContent("JohnDoe");
   });
 
   it("handles logout correctly", () => {
-    const { getByTestId } = render(<Menu />);
-    fireEvent.click(getByTestId("menu-button"));
+    render(<Menu />);
+    fireEvent.click(screen.getByTestId("menu-button"));
 
-    const logoutButton = getByTestId("logout-button");
+    const logoutButton = screen.getByTestId("logout-button");
     fireEvent.click(logoutButton);
 
     expect(mockLogout).toHaveBeenCalled();
@@ -64,8 +64,8 @@ describe("Menu Component", () => {
   it("changes style on admin pages", () => {
     (usePathname as jest.Mock).mockReturnValue("/admin");
 
-    const { getByTestId } = render(<Menu isAdminPage={true} />);
-    const userIcon = getByTestId("user-icon");
+    render(<Menu isAdminPage={true} />);
+    const userIcon = screen.getByTestId("user-icon");
 
     expect(userIcon).toHaveClass("user-icon-admin");
   });

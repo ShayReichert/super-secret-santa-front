@@ -1,4 +1,5 @@
-import { render, act, waitFor } from "@testing-library/react";
+import { render, waitFor, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { UserProvider, useUser } from "./UserContext";
 import axiosInstance from "../services/axiosInstance";
 
@@ -25,17 +26,14 @@ describe("UserContext", () => {
       },
     });
 
-    let getByText: (arg0: string) => any;
-    act(() => {
-      ({ getByText } = render(
-        <UserProvider>
-          <MockComponent />
-        </UserProvider>
-      ));
-    });
+    render(
+      <UserProvider>
+        <MockComponent />
+      </UserProvider>
+    );
 
     await waitFor(() => {
-      expect(getByText("User data")).toBeInTheDocument();
+      expect(screen.getByText("User data")).toBeInTheDocument();
     });
   });
 });

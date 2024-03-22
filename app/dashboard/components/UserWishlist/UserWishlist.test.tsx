@@ -1,4 +1,5 @@
-import { act, render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import UserWishlist from "./UserWishlist";
 import * as giftListHooks from "@/app/hook/useGiftList/useGiftList";
 import * as userContextHooks from "@/app/context/UserContext";
@@ -66,12 +67,10 @@ describe("<UserWishlist />", () => {
     const input = screen.getByPlaceholderText("Ajoute un cadeau");
     const addButton = screen.getByRole("button", { name: "AJOUTER" });
 
-    await act(async () => {
-      fireEvent.change(input, { target: { value: "Nouveau Cadeau" } });
-      fireEvent.click(addButton);
-    });
+    fireEvent.change(input, { target: { value: "Nouveau Cadeau" } });
+    fireEvent.click(addButton);
 
-    expect(addGiftMock).toHaveBeenCalledWith("Nouveau Cadeau", 1);
+    await waitFor(() => expect(addGiftMock).toHaveBeenCalledWith("Nouveau Cadeau", 1));
   });
 
   it("allows a gift to be edited", async () => {
@@ -79,21 +78,16 @@ describe("<UserWishlist />", () => {
     fireEvent.click(screen.getAllByLabelText("Modifier")[0]);
     const input = screen.getByDisplayValue(mockGifts[0].name);
 
-    await act(async () => {
-      fireEvent.change(input, { target: { value: "Cadeau Edité" } });
-      fireEvent.keyDown(input, { key: "Enter" });
-    });
+    fireEvent.change(input, { target: { value: "Cadeau Edité" } });
+    fireEvent.keyDown(input, { key: "Enter" });
 
-    expect(updateGiftMock).toHaveBeenCalledWith(mockGifts[0].id, "Cadeau Edité", 1);
+    await waitFor(() => expect(updateGiftMock).toHaveBeenCalledWith(mockGifts[0].id, "Cadeau Edité", 1));
   });
 
   it("opens confirmation dialog on delete button click", async () => {
     render(<UserWishlist />);
+    fireEvent.click(screen.getAllByLabelText("Supprimer")[0]);
 
-    await act(async () => {
-      fireEvent.click(screen.getAllByLabelText("Supprimer")[0]);
-    });
-
-    expect(screen.getByText("Es-tu sûr·e de vouloir supprimer ce cadeau ?")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Es-tu sûr·e de vouloir supprimer ce cadeau ?")).toBeInTheDocument());
   });
 });

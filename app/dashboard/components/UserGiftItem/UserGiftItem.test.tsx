@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import UserGiftItem from "./UserGiftItem";
 
 const mockGift = {
@@ -9,7 +10,7 @@ const mockGift = {
   editingText: "Chouette carnet",
 };
 
-const TestWrapper = ({ gift }: { gift: UserGift }) => {
+const TestWrapper = ({ gift }: { gift: typeof mockGift }) => {
   const [testGift, setTestGift] = useState(gift);
 
   const mockOnEdit = (giftId: number, text: string) => {
@@ -23,22 +24,21 @@ const TestWrapper = ({ gift }: { gift: UserGift }) => {
 };
 
 describe("<UserGiftItem />", () => {
-  beforeEach(() => {
-    render(<TestWrapper gift={mockGift} />);
-  });
-
   it("renders gift item correctly", () => {
+    render(<TestWrapper gift={mockGift} />);
     expect(screen.getByText(mockGift.name)).toBeInTheDocument();
     expect(screen.getByLabelText("Modifier")).toBeInTheDocument();
     expect(screen.getByLabelText("Supprimer")).toBeInTheDocument();
   });
 
   it("enters edit mode on edit button click", () => {
+    render(<TestWrapper gift={mockGift} />);
     fireEvent.click(screen.getByLabelText("Modifier"));
     expect(screen.getByDisplayValue(mockGift.editingText)).toBeInTheDocument();
   });
 
   it("calls onEditSubmit on enter key press", () => {
+    render(<TestWrapper gift={mockGift} />);
     fireEvent.click(screen.getByLabelText("Modifier"));
     const input = screen.getByDisplayValue(mockGift.editingText);
     fireEvent.keyDown(input, { key: "Enter" });
@@ -46,6 +46,7 @@ describe("<UserGiftItem />", () => {
   });
 
   it("calls onDelete on delete button click", () => {
+    render(<TestWrapper gift={mockGift} />);
     const deleteButton = screen.getByLabelText("Supprimer");
     fireEvent.click(deleteButton);
     expect(deleteButton).toBeInTheDocument();

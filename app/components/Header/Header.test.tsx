@@ -1,24 +1,34 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Header from "./Header";
-import * as AuthHook from "@/app/hook/useAuth/useAuth";
 import * as NavigationHook from "next/navigation";
-import * as UserContext from "@/app/context/UserContext";
+import * as AuthHook from "../../hook/useAuth/useAuth";
+import * as UserContext from "../../context/UserContext";
 
+// Mocks for dependencies
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-jest.mock("../../context/UserContext.tsx", () => ({
+jest.mock("../../context/UserContext", () => ({
   useUser: jest.fn(),
 }));
 
-jest.mock("../../hook/useAuth/useAuth.ts", () => ({
+jest.mock("../../hook/useAuth/useAuth", () => ({
   useAuth: jest.fn(),
 }));
 
-jest.mock("../MenuUser/MenuUser", () => () => <div>MenuUser component</div>);
-jest.mock("../MenuEvents/MenuEvents", () => () => <div>MenuEvents component</div>);
+jest.mock("../MenuUser/MenuUser", () => {
+  const MenuUserMock = () => <div>MenuUser component</div>;
+  MenuUserMock.displayName = "MenuUser";
+  return MenuUserMock;
+});
+
+jest.mock("../MenuEvents/MenuEvents", () => {
+  const MenuEventsMock = () => <div>MenuEvents component</div>;
+  MenuEventsMock.displayName = "MenuEvents";
+  return MenuEventsMock;
+});
 
 describe("Header Component", () => {
   beforeEach(() => {
@@ -82,8 +92,8 @@ describe("Header Component", () => {
       canOnlyManageEvent: false,
     }));
 
-    const { container } = render(<Header />);
-    expect(container.firstChild).toHaveClass("header-admin");
+    render(<Header />);
+    expect(screen.getByTestId("header")).toHaveClass("header-admin");
   });
 
   it("applies organizer class on admin pages for organizers", () => {
@@ -96,7 +106,7 @@ describe("Header Component", () => {
       canOnlyManageEvent: true,
     }));
 
-    const { container } = render(<Header />);
-    expect(container.firstChild).toHaveClass("header-organizer");
+    render(<Header />);
+    expect(screen.getByTestId("header")).toHaveClass("header-organizer");
   });
 });

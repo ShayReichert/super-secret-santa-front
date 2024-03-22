@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Footer from "./Footer";
 
@@ -7,32 +7,39 @@ jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-jest.mock("../MenuUser/MenuUser", () => () => <div>Menu component</div>);
+jest.mock("../MenuUser/MenuUser", () => {
+  const MenuUserMock = () => <div>Menu component</div>;
+  MenuUserMock.displayName = "MenuUser";
+  return MenuUserMock;
+});
 
-jest.mock("../MenuEvents/MenuEvents", () => () => <div>Menu events component</div>);
+jest.mock("../MenuEvents/MenuEvents", () => {
+  const MenuEventsMock = () => <div>Menu events component</div>;
+  MenuEventsMock.displayName = "MenuEvents";
+  return MenuEventsMock;
+});
 
-jest.mock("../../context/UserContext.tsx", () => ({
-  useUser: () => ({
-    userState: {
-      data: {
-        roles: ["ROLE_USER"],
-      },
-    },
-  }),
+jest.mock("../../context/UserContext", () => ({
+  useUser: jest.fn(),
 }));
 
 describe("Footer Component", () => {
-  // Test for rendering the Footer component
   it("renders without crashing", () => {
-    require("next/navigation").usePathname.mockReturnValue("/");
-    require("../../context/UserContext.tsx").useUser = () => ({
+    const usePathnameMock = require("next/navigation").usePathname;
+    const useUserMock = require("../../context/UserContext").useUser;
+
+    // Configurer les valeurs de retour des mocks
+    usePathnameMock.mockReturnValue("/");
+    useUserMock.mockReturnValue({
       userState: {
         data: {
           roles: ["ROLE_ADMIN"],
         },
       },
     });
-    const { getByText } = render(<Footer />);
-    expect(getByText("Alexis et Shay")).toBeInTheDocument();
+
+    render(<Footer />);
+    expect(screen.getByText("Menu component")).toBeInTheDocument();
+    expect(screen.getByText("Alexis et Shay")).toBeInTheDocument();
   });
 });

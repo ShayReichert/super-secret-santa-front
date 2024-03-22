@@ -27,7 +27,10 @@ export default function Header() {
 
   return (
     <>
-      <header className={`${styles["header"]} ${isAdminPage ? styles["header-admin"] : isOrganizerPage ? styles["header-organizer"] : ""}`}>
+      <header
+        className={`${styles["header"]} ${isAdminPage ? styles["header-admin"] : isOrganizerPage ? styles["header-organizer"] : ""}`}
+        data-testid="header"
+      >
         {isMounted && isLoggedIn() && (
           <div className={styles["menu-events"]}>
             <MenuEvents isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
