@@ -13,6 +13,8 @@ export default function LoginForm() {
     password: "",
   });
   const { authState, login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(true);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs({
@@ -20,8 +22,6 @@ export default function LoginForm() {
       [e.target.name]: e.target.value,
     });
   };
-
-  const [disabledButton, setDisabledButton] = useState(true);
 
   useEffect(() => {
     setDisabledButton(!(inputs.username && inputs.password));
@@ -33,7 +33,9 @@ export default function LoginForm() {
     const honeypot = (e.target as HTMLFormElement).querySelector('[name="bot-field"]') as HTMLInputElement;
     if (honeypot && honeypot.value) return;
 
+    setIsLoading(true);
     await login(inputs.username, inputs.password);
+    setIsLoading(false);
   };
 
   return (
@@ -62,8 +64,9 @@ export default function LoginForm() {
             <input type="password" className="" placeholder="Ton code secret" name="password" value={inputs.password} onChange={handleChangeInput} />
             {authState.errorMessage && <p className={styles["error-message"]}>{authState.errorMessage}</p>}
           </div>
-          <button className={styles["button"]} disabled={disabledButton} type="submit">
-            Connexion
+
+          <button className={styles["button"]} disabled={disabledButton || isLoading} type="submit">
+            {isLoading ? "Connexion..." : "Connexion"}
           </button>
         </form>
       </div>
