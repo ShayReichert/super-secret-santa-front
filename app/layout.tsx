@@ -10,9 +10,9 @@ const raleway = Raleway({ subsets: ["latin"], weight: ["300", "400", "700"] });
 export const metadata: Metadata = {
   title: "Super Secret Santa",
   description: "Plaisir d'offrir, joie de décevoir",
-  // openGraph: {
-  //   ...{ images: ["/images/pere_noel.webp"] },
-  // },
+  openGraph: {
+    images: "/opengraph_image.webp",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
