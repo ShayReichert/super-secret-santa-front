@@ -56,6 +56,21 @@
           @include default-input();
         }
 
+        .forgot-password {
+          margin: 0 0 1.5rem 0.5rem;
+          font-size: 12px;
+          color: $gray500;
+          cursor: pointer;
+        }
+
+        .cancel-password {
+          margin: 2rem 0 1.5rem 0;
+          font-size: 14px;
+          text-align: center;
+          color: $gray500;
+          cursor: pointer;
+        }
+
         .error-message {
           @include error-message();
         }
@@ -63,6 +78,21 @@
 
       .button {
         @include button();
+      }
+    }
+
+    .confirm-password {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .text {
+        text-align: center;
+      }
+
+      .button {
+        @include button();
+        margin-top: 3rem;
       }
     }
   }
