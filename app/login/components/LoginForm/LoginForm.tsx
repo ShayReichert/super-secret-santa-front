@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import styles from "./LoginForm.module.scss";
 import { Titan_One } from "next/font/google";
 import { useAuth } from "@/app/hook/useAuth/useAuth";
+import { useUserList } from "@/app/hook/useUserList/useUserList";
+import CreateUserDialog from "@/app/admin/components/CreateUserDialog/CreateUserDialog";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
@@ -18,6 +20,8 @@ export default function LoginForm() {
   const [disabledButton, setDisabledButton] = useState(true);
   const [resetPasswordMode, setResetPasswordMode] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [isCreateUserDialogOpen, setIsCreateUserDialogOpen] = useState(false);
+  const { createUser } = useUserList();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs({
@@ -50,6 +54,15 @@ export default function LoginForm() {
       await login(inputs.username, inputs.password);
     }
     setIsLoading(false);
+  };
+
+  const handleOpenCreateUserDialog = () => {
+    setIsCreateUserDialogOpen(true);
+  };
+
+  const handleCreateUser = async (newUserData: NewUser) => {
+    const result = await createUser(newUserData);
+    setIsCreateUserDialogOpen(false);
   };
 
   return (
@@ -130,6 +143,13 @@ export default function LoginForm() {
                   <button className={styles["button"]} disabled={disabledButton || isLoading} type="submit">
                     {isLoading ? "Connexion..." : "Connexion"}
                   </button>
+                  <p className={styles["create-account"]}>
+                    Tu n’as pas de compte ?{" "}
+                    <a href="#" onClick={handleOpenCreateUserDialog}>
+                      Créer un compte
+                    </a>
+                  </p>
+                  <CreateUserDialog open={isCreateUserDialogOpen} onClose={() => setIsCreateUserDialogOpen(false)} onConfirm={handleCreateUser} />
                 </>
               )}
             </div>

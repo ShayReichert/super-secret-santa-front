@@ -1,7 +1,7 @@
-import Login from "./login/page";
+import Welcome from "./welcome/page";
 
 const Home = () => {
-  return <Login />;
+  return <Welcome />;
 };
 
 export default Home;

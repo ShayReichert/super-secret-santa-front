@@ -57,10 +57,19 @@
         }
 
         .forgot-password {
-          margin: 0 0 1.5rem 0.5rem;
+          margin: 0 0 2.5rem 0.5rem;
           font-size: 12px;
+          text-decoration: underline;
           color: $gray500;
           cursor: pointer;
+
+          a {
+            transition: opacity 0.3s;
+
+            &:hover {
+              opacity: 0.8;
+            }
+          }
         }
 
         .cancel-password {
@@ -69,6 +78,14 @@
           text-align: center;
           color: $gray500;
           cursor: pointer;
+
+          a {
+            transition: opacity 0.3s;
+
+            &:hover {
+              opacity: 0.8;
+            }
+          }
         }
 
         .error-message {
@@ -78,6 +95,21 @@
 
       .button {
         @include button();
+      }
+
+      .create-account {
+        margin-top: 0.5rem;
+        font-size: 14px;
+        color: $gray500;
+
+        a {
+          text-decoration: underline;
+          transition: opacity 0.3s;
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
       }
     }
 

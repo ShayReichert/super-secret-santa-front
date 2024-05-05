@@ -53,7 +53,7 @@ const CreateUserDialog = ({ open, onClose, onConfirm }: CreateUserDialogProps) =
       aria-labelledby="form-dialog-title"
     >
       <DialogContent>
-        <DialogContentText className={styles["dialog-content-text"]}>Créer un nouveau / nouvelle participant·e</DialogContentText>
+        <DialogContentText className={styles["dialog-content-text"]}>Création d'un nouveau compte</DialogContentText>
         <TextField
           autoFocus
           className={styles["dialog-input"]}
