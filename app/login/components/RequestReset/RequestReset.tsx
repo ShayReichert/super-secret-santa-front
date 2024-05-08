@@ -21,6 +21,7 @@ export default function RequestReset({ onEmailSent, onCancel, setEmail }: Props)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await requestPasswordReset(email);
       setEmail(email);
@@ -28,6 +29,7 @@ export default function RequestReset({ onEmailSent, onCancel, setEmail }: Props)
     } catch (error: any) {
       setErrorMessage(error.message);
     }
+    setIsLoading(false);
   };
 
   return (
