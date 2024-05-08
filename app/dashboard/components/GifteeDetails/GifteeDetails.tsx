@@ -5,6 +5,8 @@ import { Titan_One } from "next/font/google";
 import { Caveat } from "next/font/google";
 import { useUser } from "@/app/context/UserContext";
 import Loader from "@/app/components/Loader/Loader";
+import Image from "next/image";
+import { extractUrls } from "@/app/services/extractUrls";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 const caveat = Caveat({ subsets: ["latin"], weight: ["400"] });
@@ -48,9 +50,28 @@ export default function GifteeDetails() {
           <div className={`${styles["giftee-list"]} ${caveat.className}`}>
             {currentEvent.santaOfGiftList?.gifts && currentEvent.santaOfGiftList.gifts.length > 0 ? (
               <ul>
-                {currentEvent.santaOfGiftList.gifts.map((gift) => (
-                  <li key={gift.id}>- {gift.name}</li>
-                ))}
+                {currentEvent.santaOfGiftList.gifts.map((gift) => {
+                  const { newText, urls } = extractUrls(gift.name);
+                  return (
+                    <li key={gift.id}>
+                      {urls.length > 0 ? (
+                        <>
+                          <a href={urls[0]} target="_blank" rel="noopener noreferrer" className={styles["icon-wrapper"]}>
+                            <Image src="/icons/link.svg" alt="Link" width={20} height={20} />
+                          </a>
+                          {newText}
+                        </>
+                      ) : (
+                        <>
+                          <span className={styles["icon-wrapper"]}>
+                            <Image src="/icons/dot.svg" alt="Dot" width={5} height={10} />
+                          </span>
+                          {newText}
+                        </>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
               <p className={styles["no-gift"]}>

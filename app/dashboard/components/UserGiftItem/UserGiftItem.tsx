@@ -3,6 +3,7 @@
 import { KeyboardEvent } from "react";
 import styles from "./UserGiftItem.module.scss";
 import Image from "next/image";
+import { extractUrls } from "@/app/services/extractUrls";
 
 export default function UserGiftItem({
   gift,
@@ -21,6 +22,8 @@ export default function UserGiftItem({
     }
   };
 
+  const { newText, urls } = extractUrls(gift.name);
+
   return (
     <li className={styles["gift-item"]}>
       {gift.isEditing ? (
@@ -34,7 +37,18 @@ export default function UserGiftItem({
         />
       ) : (
         <>
-          {gift.name}
+          <span className={styles["gift"]}>
+            {urls.length > 0 ? (
+              <a href={urls[0]} target="_blank" rel="noopener noreferrer" className={styles["icon-wrapper"]}>
+                <Image src="/icons/link.svg" alt="Link" width={20} height={20} />
+              </a>
+            ) : (
+              <span className={styles["icon-wrapper"]}>
+                <Image src="/icons/dot.svg" alt="Dot" width={5} height={10} />
+              </span>
+            )}
+            {newText}
+          </span>
           <span className={styles["icons"]}>
             <span className={styles["icons-wrapper"]}>
               <button className={styles["edit-button"]} onClick={() => onEdit(gift.id, gift.name)} aria-label="Modifier">

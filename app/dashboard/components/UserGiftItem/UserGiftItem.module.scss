@@ -16,6 +16,17 @@
     }
   }
 
+  .gift {
+    display: flex;
+
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+      width: 2rem;
+      margin-right: 0.5rem;
+    }
+  }
+
   input {
     @include default-input();
   }
