@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import styles from "./page.module.scss";
-import LoginForm from "./components/LoginForm/LoginForm";
+import LoginWrapper from "./components/LoginWrapper/LoginWrapper";
 import SantaImage from "../components/SantaImage/SantaImage";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Login() {
   return (
     <main id="main" className={styles["main"]}>
-      <LoginForm />
+      <LoginWrapper />
       <SantaImage />
     </main>
   );

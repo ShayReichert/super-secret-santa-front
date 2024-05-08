@@ -15,7 +15,7 @@ export default function Welcome() {
   return (
     <main id="main" className={styles["main"]}>
       <div className={styles["content"]}>
-        <h1 className={titan_one.className}>La super app de Père Noël secret en ligne</h1>
+        <h1 className={titan_one.className}>Bienvenue !</h1>
         <div className={styles["text"]}>
           <p>Tu veux organiser un Père Noël secret mais tu ne sais pas comment faire ?</p>
           <ul>
@@ -29,7 +29,7 @@ export default function Welcome() {
               <span>3. Fais le tirage au sort et partage les résultats !</span>
             </li>
           </ul>
-          <p> Tu pourras gérer tous tes évènements au même endroit : Noël en famille, entre ami·es, au travail, etc</p>
+          <p> Tu pourras gérer tous tes noëls au même endroit : Noël en famille, entre ami·es, au travail, etc</p>
         </div>
 
         <Link className={styles["button"]} href="/login">
