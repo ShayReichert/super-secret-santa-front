@@ -1,5 +1,4 @@
 import axiosInstance from "../../services/axiosInstance";
-// import axios from "axios";
 
 export const useEvents = () => {
   const getEvents = async (): Promise<SantaEvent[]> => {
@@ -16,7 +15,6 @@ export const useEvents = () => {
   const getCurrentEvent = async (id: number): Promise<SantaEvent> => {
     try {
       const response = await axiosInstance.get<SantaEvent>(`/api/events/${id}`);
-
       return response.data;
     } catch (error) {
       console.error("Erreur lors de la récupération des détails de l'évènement courant", error);
@@ -82,5 +80,25 @@ export const useEvents = () => {
     }
   };
 
-  return { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, createEvent, deleteEvent, removeUserToEvent, renameEvent };
+  const getUsersToInvite = async (): Promise<User[]> => {
+    try {
+      const response = await axiosInstance.get<User[]>("/api/events/usersToInvit");
+      return response.data;
+    } catch (error) {
+      console.error("Erreur lors de la récupération de la liste des utilisateurs à inviter", error);
+      throw new Error("Erreur lors de la récupération de la liste des utilisateurs à inviter");
+    }
+  };
+
+  return {
+    getEvents,
+    getCurrentEvent,
+    setOrganizerOfEvent,
+    setUserToEvent,
+    createEvent,
+    deleteEvent,
+    removeUserToEvent,
+    renameEvent,
+    getUsersToInvite,
+  };
 };

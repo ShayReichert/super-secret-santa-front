@@ -25,6 +25,7 @@ export default function AdminUserList() {
   const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
+  const [initialEmail, setInitialEmail] = useState("");
   const [isDeleteUserDialogOpen, setIsDeleteUserDialogOpen] = useState<boolean>(false);
   const [userToDelete, setUserToDelete] = useState<number | null>(null);
   const [userToRemove, setUserToRemove] = useState<number | null>(null);
@@ -57,6 +58,11 @@ export default function AdminUserList() {
   };
 
   // Open Dialogs
+  const handleOpenCreateUserDialogWithEmail = (email: string) => {
+    setInitialEmail(email);
+    handleOpenCreateUserDialog();
+  };
+
   const handleOpenCreateUserDialog = () => {
     setIsCreateUserDialogOpen(true);
   };
@@ -159,35 +165,59 @@ export default function AdminUserList() {
     handleCloseCreateUserDialog();
   };
 
-  const handleAddUser = async (UsersId: number[]) => {
+  // AddUsersDialogOld - Old version for multiple users ids
+
+  // const handleAddUser = async (UsersId: number[]) => {
+  //   if (currentEventId === null || currentEventId === undefined) {
+  //     console.error("L'ID de l'événement courant n'est pas défini.");
+  //     return;
+  //   }
+
+  //   if (UsersId.length === 0) {
+  //     console.error("Aucun utilisateur n'a été sélectionné.");
+  //     return;
+  //   }
+
+  //   const addUserPromises = UsersId.map(async (id) => {
+  //     try {
+  //       await setUserToEvent(currentEventId, id);
+  //       console.log(`Utilisateur avec l'ID ${id} ajouté à l'événement.`);
+  //     } catch (error) {
+  //       console.error(`Erreur lors de l'ajout de l'utilisateur avec l'ID ${id} à l'événement`, error);
+  //     }
+  //   });
+
+  //   try {
+  //     await Promise.all(addUserPromises);
+  //     console.log("Tous les utilisateurs ont été ajoutés à l'événement.");
+  //   } catch (error) {
+  //     console.error("Erreur lors de l'ajout des utilisateurs à l'événement", error);
+  //   }
+
+  //   handleCloseAddUsersDialog();
+  //   window.location.href = "/admin";
+  // };
+
+  const handleAddUser = async (userId: number) => {
     if (currentEventId === null || currentEventId === undefined) {
       console.error("L'ID de l'événement courant n'est pas défini.");
       return;
     }
 
-    if (UsersId.length === 0) {
+    if (!userId) {
       console.error("Aucun utilisateur n'a été sélectionné.");
       return;
     }
 
-    const addUserPromises = UsersId.map(async (id) => {
-      try {
-        await setUserToEvent(currentEventId, id);
-        console.log(`Utilisateur avec l'ID ${id} ajouté à l'événement.`);
-      } catch (error) {
-        console.error(`Erreur lors de l'ajout de l'utilisateur avec l'ID ${id} à l'événement`, error);
-      }
-    });
-
     try {
-      await Promise.all(addUserPromises);
-      console.log("Tous les utilisateurs ont été ajoutés à l'événement.");
+      await setUserToEvent(currentEventId, userId);
+      console.log(`Utilisateur avec l'ID ${userId} ajouté à l'événement.`);
+      console.log("L'utilisateur a été ajouté à l'événement.");
+      handleCloseAddUsersDialog();
+      window.location.href = "/admin";
     } catch (error) {
-      console.error("Erreur lors de l'ajout des utilisateurs à l'événement", error);
+      console.error(`Erreur lors de l'ajout de l'utilisateur avec l'ID ${userId} à l'événement`, error);
     }
-
-    handleCloseAddUsersDialog();
-    window.location.href = "/admin";
   };
 
   const handleSetOrganizer = async (userId: number) => {
@@ -369,9 +399,19 @@ export default function AdminUserList() {
           />
         </div>
 
-        <CreateUserDialog open={isCreateUserDialogOpen} onClose={handleCloseCreateUserDialog} onConfirm={handleCreateUser} />
+        <CreateUserDialog
+          open={isCreateUserDialogOpen}
+          onClose={handleCloseCreateUserDialog}
+          onConfirm={handleCreateUser}
+          initialEmail={initialEmail}
+        />
 
-        <AddUsersDialog open={isAddUsersDialogOpen} onClose={handleCloseAddUsersDialog} onConfirm={handleAddUser} />
+        <AddUsersDialog
+          open={isAddUsersDialogOpen}
+          onClose={handleCloseAddUsersDialog}
+          onConfirm={handleAddUser}
+          onCreateUser={handleOpenCreateUserDialogWithEmail}
+        />
 
         <ConfirmationDialog
           text="Es-tu sûr·e de vouloir supprimer cet évènement ?"
