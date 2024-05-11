@@ -20,7 +20,7 @@ export const useUserList = () => {
       if (axios.isAxiosError(error) && error.response) {
         if (error.response.data.message.includes("Integrity constraint violation: 1062 Duplicate entry")) {
           console.error("Le nom ou l'email existe déjà !", error);
-          return "Le nom ou l'email existe déjà !";
+          throw new Error("Le nom ou l'email existe déjà !");
         }
       }
       console.error("Erreur lors de la création d'un utilisateur", error);
