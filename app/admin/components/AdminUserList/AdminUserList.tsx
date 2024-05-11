@@ -378,6 +378,7 @@ export default function AdminUserList() {
           onClose={handleCloseAddUsersDialog}
           onConfirm={handleAddUser}
           onCreateUser={handleOpenCreateUserDialogWithEmail}
+          alreadyParticipatingUserIds={users.map((user) => user.id)}
         />
 
         <ConfirmationDialog

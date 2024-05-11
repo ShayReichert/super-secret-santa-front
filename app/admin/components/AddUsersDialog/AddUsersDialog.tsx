@@ -16,11 +16,12 @@ interface AddUsersDialogProps {
   onClose: () => void;
   onConfirm: (userId: number) => void;
   onCreateUser: (inputValue: string) => void;
+  alreadyParticipatingUserIds: number[];
 }
 
 const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-const AddUsersDialog = ({ open, onClose, onConfirm, onCreateUser }: AddUsersDialogProps) => {
+const AddUsersDialog = ({ open, onClose, onConfirm, onCreateUser, alreadyParticipatingUserIds }: AddUsersDialogProps) => {
   const { getUsersToInvite } = useEvents();
   const [users, setUsers] = useState<User[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -81,9 +82,13 @@ const AddUsersDialog = ({ open, onClose, onConfirm, onCreateUser }: AddUsersDial
 
   const handleConfirm = () => {
     if (selectedUser) {
-      onConfirm(selectedUser.id);
-      alert(`Utilisateur ${selectedUser.username} ajouté avec succès.`);
-      onClose();
+      if (alreadyParticipatingUserIds.includes(selectedUser.id)) {
+        alert(`${selectedUser.username} est déjà dans l'événement !`);
+      } else {
+        onConfirm(selectedUser.id);
+        alert(`${selectedUser.username} ajouté·e avec succès.`);
+        onClose();
+      }
     }
   };
 
