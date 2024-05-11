@@ -1,5 +1,7 @@
+// TODO : refacto par rapport aux modifs de AddUsersDialog.tsx
+
 import { act, render, screen, fireEvent } from "@testing-library/react";
-import AddUsersDialog from "./AddUsersDialogOld";
+import AddUsersDialog from "./AddUsersDialog";
 import * as userContextHooks from "@/app/context/UserContext";
 import * as eventHooks from "@/app/hook/useEvents/useEvents";
 import * as eventsFilter from "@/app/services/eventsFilter";
