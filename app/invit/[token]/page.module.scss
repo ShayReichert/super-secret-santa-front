@@ -1,0 +1,46 @@
+@import "../../styles/partials/mixins";
+
+.main {
+  display: flex;
+  justify-content: center;
+
+  &.loading {
+    align-items: center;
+  }
+
+  @include devices(large_tablet) {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .confirm-add-to-event-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 13vh 0 35rem;
+    max-width: 60rem;
+
+    @include devices(tablet) {
+      width: 100%;
+      padding: 13vh 0 5rem;
+    }
+
+    .confirm-add-to-event {
+      display: flex;
+      flex-direction: column;
+      padding: 4rem 6rem;
+      background-color: $tertiary-color;
+      border-radius: $border-radius;
+
+      @include devices(tablet) {
+        padding: 4rem 0;
+        width: 100%;
+        max-width: 45rem;
+        margin: 0 1rem;
+      }
+
+      h2 {
+        text-align: center;
+      }
+    }
+  }
+}

@@ -86,7 +86,7 @@ const AddUsersDialog = ({ open, onClose, onConfirm, onCreateUser, alreadyPartici
         alert(`${selectedUser.username} est déjà dans l'événement !`);
       } else {
         onConfirm(selectedUser.id);
-        alert(`${selectedUser.username} ajouté·e avec succès.`);
+        alert(`Invitation envoyée à ${selectedUser.username}`);
         onClose();
       }
     }

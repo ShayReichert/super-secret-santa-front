@@ -70,7 +70,7 @@ export default function MenuEvents({ isAdminPage, isOrganizerPage }: { isAdminPa
   // Find the data type based on the page
   let eventsToShow: EventInUser[] | SantaEvent[] = [];
 
-  // TODO : remove display all events for admin for version 2 (public)
+  // TODO : remove display all events for admin for version 2 (public) ?
   if (isAdministrator && isAdminPage) {
     eventsToShow = events;
   } else if (isOrganizerPage) {

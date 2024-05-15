@@ -21,7 +21,8 @@ const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 export default function AdminUserList() {
   const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
   const { createUser, updateUser, deleteUser } = useUserList();
-  const { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent, renameEvent } = useEvents();
+  const { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent, renameEvent, sendInvitation } =
+    useEvents();
   const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
@@ -165,25 +166,29 @@ export default function AdminUserList() {
     handleCloseCreateUserDialog();
   };
 
-  const handleAddUser = async (userId: number) => {
+  const handleInviteUser = async (toUserId: number) => {
     if (currentEventId === null || currentEventId === undefined) {
       console.error("L'ID de l'événement courant n'est pas défini.");
       return;
     }
 
-    if (!userId) {
+    if (!toUserId) {
       console.error("Aucun utilisateur n'a été sélectionné.");
       return;
     }
 
+    if (!userState.data?.id) {
+      console.error("Aucun·e utilisateur·ice n'est connecté·e.");
+      return;
+    }
+
     try {
-      await setUserToEvent(currentEventId, userId);
-      console.log(`Utilisateur avec l'ID ${userId} ajouté à l'événement.`);
-      console.log("L'utilisateur a été ajouté à l'événement.");
+      console.log(`Utilisateur·ice avec l'ID ${toUserId} invité·e à l'événement.`);
+      await sendInvitation(userState.data?.id, toUserId, currentEventId);
       handleCloseAddUsersDialog();
       window.location.href = "/admin";
     } catch (error) {
-      console.error(`Erreur lors de l'ajout de l'utilisateur avec l'ID ${userId} à l'événement`, error);
+      console.error(`Erreur lors de l'envoi de l'invitation à l'utilisateur·ice avec l'ID ${toUserId} à l'événement`, error);
     }
   };
 
@@ -376,7 +381,7 @@ export default function AdminUserList() {
         <AddUsersDialog
           open={isAddUsersDialogOpen}
           onClose={handleCloseAddUsersDialog}
-          onConfirm={handleAddUser}
+          onConfirm={handleInviteUser}
           onCreateUser={handleOpenCreateUserDialogWithEmail}
           alreadyParticipatingUserIds={users.map((user) => user.id)}
         />

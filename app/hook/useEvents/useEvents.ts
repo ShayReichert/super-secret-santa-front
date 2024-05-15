@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import axiosInstance from "../../services/axiosInstance";
 
 export const useEvents = () => {
@@ -90,6 +91,27 @@ export const useEvents = () => {
     }
   };
 
+  const sendInvitation = async (fromUserId: number, toUserId: number, eventId: number): Promise<void> => {
+    try {
+      await axiosInstance.get(`api/events/invit/${fromUserId}/${toUserId}/${eventId}`);
+    } catch (error) {
+      console.error("Erreur lors de l'invitation d'un·e utilisateur·ice à l'évènement", error);
+      throw new Error("Erreur lors de l'invitation d'un·e utilisateur·ice à l'évènement");
+    }
+  };
+
+  const checkTokenAndAddToEvent = async (token: string): Promise<void> => {
+    try {
+      await axiosInstance.get(`/process/invit/${token}`);
+    } catch (error) {
+      console.error(error);
+      if (error instanceof AxiosError) {
+        console.error("Erreur lors de l'ajout à l'évènement", error?.response?.data && ":", error?.response?.data);
+      }
+      throw new Error("Erreur lors de l'ajout à l'évènement");
+    }
+  };
+
   return {
     getEvents,
     getCurrentEvent,
@@ -100,5 +122,7 @@ export const useEvents = () => {
     removeUserToEvent,
     renameEvent,
     getUsersToInvite,
+    sendInvitation,
+    checkTokenAndAddToEvent,
   };
 };
