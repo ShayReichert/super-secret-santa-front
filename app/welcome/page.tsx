@@ -18,18 +18,20 @@ export default function Welcome() {
         <h1 className={titan_one.className}>Bienvenue !</h1>
         <div className={styles["text"]}>
           <p>Tu veux organiser un Père Noël secret mais tu ne sais pas comment faire ?</p>
-          <ul>
-            <li>
-              <span>1. Crée un évènement</span>
-            </li>
-            <li>
-              <span>2. Ajoute les participant·es</span>
-            </li>
-            <li>
-              <span>3. Fais le tirage au sort et partage les résultats !</span>
-            </li>
-          </ul>
-          <p> Tu pourras gérer tous tes noëls au même endroit : Noël en famille, entre ami·es, au travail, etc</p>
+          <strong>
+            <ul>
+              <li>
+                <span>📆 1. Crée un évènement </span>
+              </li>
+              <li>
+                <span>👥 2. Ajoute les participant·es </span>
+              </li>
+              <li>
+                <span>🎁 3. Fais le tirage au sort ! </span>
+              </li>
+            </ul>
+          </strong>
+          <p>ASTUCE : Tu pourras gérer tous tes noëls secrets au même endroit ! (Noël en famille, entre ami·es, au travail, etc)</p>
         </div>
 
         <Link className={styles["button"]} href="/login">

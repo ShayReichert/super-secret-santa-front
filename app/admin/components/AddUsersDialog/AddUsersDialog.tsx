@@ -63,7 +63,7 @@ const AddUsersDialog = ({ open, onClose, onConfirm, onCreateUser, alreadyPartici
               color: "primary",
             }}
           >
-            Aucun·e utilisateur·ice trouvé·e.
+            😢 Aucun·e utilisateur·ice trouvé·e.
           </div>
           <Button
             sx={{
