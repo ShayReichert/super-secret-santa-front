@@ -59,5 +59,10 @@
         color: $gray500;
       }
     }
+
+    .button {
+      @include button();
+      margin: 2rem 0;
+    }
   }
 }

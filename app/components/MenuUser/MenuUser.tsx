@@ -4,53 +4,21 @@ import styles from "./MenuUser.module.scss";
 import { useState } from "react";
 import { useAuth } from "@/app/hook/useAuth/useAuth";
 import { useUser } from "@/app/context/UserContext";
+import { useCreateEvent } from "@/app/hook/useCreateEvent/useCreateEvent";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import NewEventDialog from "../NewEventDialog/NewEventDialog";
-import { useEvents } from "@/app/hook/useEvents/useEvents";
-import { setCookie } from "cookies-next";
-import { cookieParams } from "@/app/services/cookieParams";
 
 export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
-  const { createEvent, setUserToEvent } = useEvents();
   const { logout } = useAuth();
   const { userState, isAdministrator, canOnlyManageEvent } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const open = Boolean(anchorEl);
 
-  const handleCreateEvent = () => {
-    setIsEventDialogOpen(true);
-  };
-
-  const handleCreateEventConfirm = async (newEventName: string) => {
-    try {
-      const newEvent = await createEvent(newEventName);
-
-      if (newEvent && newEvent.id) {
-        const userId = userState.data?.id;
-
-        if (userId) {
-          await setUserToEvent(newEvent.id, userId);
-        } else {
-          console.error("Erreur: ID utilisateur non trouvé.");
-        }
-
-        setIsEventDialogOpen(false);
-        setAnchorEl(null);
-        setCookie("selectedEventId", newEvent.id.toString(), cookieParams);
-        // TODO : improve update of events in menu ?
-        window.location.href = "/admin";
-      } else {
-        console.error("Erreur lors de la création de l'événement", newEventName);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la création ou de l'ajout de l'organisateur à l'événement", error);
-    }
-  };
+  const { isEventDialogOpen, handleCreateEvent, handleCreateEventConfirm, setIsEventDialogOpen } = useCreateEvent(); // Use the custom hook
 
   return (
     <div className={styles["content"]}>

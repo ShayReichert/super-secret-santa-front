@@ -4,15 +4,18 @@ import styles from "./GifteeDetails.module.scss";
 import { Titan_One } from "next/font/google";
 import { Caveat } from "next/font/google";
 import { useUser } from "@/app/context/UserContext";
+import { useCreateEvent } from "@/app/hook/useCreateEvent/useCreateEvent";
 import Loader from "@/app/components/Loader/Loader";
 import Image from "next/image";
 import { extractUrls } from "@/app/services/extractUrls";
+import NewEventDialog from "../../../components/NewEventDialog/NewEventDialog";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 const caveat = Caveat({ subsets: ["latin"], weight: ["400"] });
 
 export default function GifteeDetails() {
   const { userState, currentEvent } = useUser();
+  const { isEventDialogOpen, handleCreateEvent, handleCreateEventConfirm, setIsEventDialogOpen } = useCreateEvent(); // Use the custom hook
 
   if (userState.loading) {
     return (
@@ -28,8 +31,15 @@ export default function GifteeDetails() {
     return (
       <div className={styles["dashboard-wrapper"]}>
         <div className={styles["dashboard-background"]}>
-          <p> {`Aucun événement sélectionné (ou l'événement n'existe pas).`}</p>
+          <p> Bienvenue ! Pour commencer : </p>
+          <button className={styles["button"]}>
+            <a onClick={handleCreateEvent} aria-label="Créer un nouvel évènement">
+              📆 Crée un nouvel événement
+            </a>
+          </button>
+          <p>(ou attends de recevoir par mail une invitation à un évènement)</p>
         </div>
+        <NewEventDialog open={isEventDialogOpen} onClose={() => setIsEventDialogOpen(false)} onConfirm={handleCreateEventConfirm} />
       </div>
     );
   }

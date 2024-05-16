@@ -83,9 +83,7 @@ export default function UserWishlist() {
   if (!currentEvent) {
     return (
       <div className={styles["dashboard-wrapper"]}>
-        <div className={styles["dashboard-background"]}>
-          <p> {`Aucun événement sélectionné (ou l'événement n'existe pas).`}</p>
-        </div>
+        <div className={styles["dashboard-background"]}></div>
       </div>
     );
   }

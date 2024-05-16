@@ -57,7 +57,7 @@ export default function Invit({ params }: { params: { token: string } }) {
     <main id="main" className={styles["main"]}>
       <div className={styles["confirm-add-to-event-wrapper"]}>
         <div className={styles["confirm-add-to-event"]}>
-          <h2 className={titan_one.className}>Vous avez été ajouté à l'évènement !</h2>
+          <h2 className={titan_one.className}>Tu as été ajouté à l'évènement !</h2>
         </div>
       </div>
       <SantaImage />
