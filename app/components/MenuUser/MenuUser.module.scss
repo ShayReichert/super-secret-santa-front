@@ -6,6 +6,7 @@
 
   .button-events {
     @include button-events();
+    background-color: $background-button;
 
     @include devices(large_tablet) {
       display: flex;

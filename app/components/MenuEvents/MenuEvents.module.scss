@@ -5,6 +5,7 @@
 
   @media only screen and (min-width: $large_tablet) {
     @include button-events();
+    background-color: $background-button !important;
   }
 
   &:hover {
