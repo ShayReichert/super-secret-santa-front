@@ -40,7 +40,7 @@ export default function AdminUserList() {
   useEffect(() => {
     const fetchUsersAndOrganizerInCurrentEvent = async () => {
       const fetchedCurrentEvent = await getCurrentEvent(currentEventId as number);
-      const fetchedUsers = fetchedCurrentEvent.users;
+      const fetchedUsers = fetchedCurrentEvent.users.sort((a, b) => a.username.toLowerCase().localeCompare(b.username.toLowerCase()));
       const fetchedOrganizer = fetchedCurrentEvent.organizer;
       setUsers(fetchedUsers);
       setOrganizer(fetchedOrganizer);
