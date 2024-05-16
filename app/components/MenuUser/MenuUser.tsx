@@ -15,10 +15,9 @@ import NewEventDialog from "../NewEventDialog/NewEventDialog";
 export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
   const { logout } = useAuth();
   const { userState, isAdministrator, canOnlyManageEvent } = useUser();
+  const { isEventDialogOpen, handleCreateEvent, handleCreateEventConfirm, setIsEventDialogOpen } = useCreateEvent();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  const { isEventDialogOpen, handleCreateEvent, handleCreateEventConfirm, setIsEventDialogOpen } = useCreateEvent(); // Use the custom hook
 
   return (
     <div className={styles["content"]}>
@@ -79,7 +78,7 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
           <div>
             <Divider />
             <MenuItem onClick={() => setAnchorEl(null)}>
-              {isAdminPage ? <Link href="/dashboard">🏠 Retour au dashboard</Link> : <Link href="/admin">📜 Gérer mes évènements</Link>}
+              {isOrganizerPage ? <Link href="/dashboard">🏠 Retour au dashboard</Link> : <Link href="/admin">📜 Gérer mes évènements</Link>}
             </MenuItem>
           </div>
         )}
