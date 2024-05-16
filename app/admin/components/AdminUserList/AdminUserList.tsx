@@ -98,16 +98,6 @@ export default function AdminUserList() {
 
     try {
       const events = await getEvents();
-      const userEventIds = new Set(events.filter((event) => event.users.some((user) => user.id === userToRemove.id)).map((event) => event.id));
-      const isUserOnlyInOneEvent = userEventIds.size === 1;
-
-      if (isUserOnlyInOneEvent) {
-        alert(
-          "Tu ne peux pas retirer cet utilisateur de l'événement car il n'est présent dans aucun autre événement. Pour pouvoir le retirer, crée un autre événement et ajoute-le à celui-ci."
-        );
-        return;
-      }
-
       setIsRemoveUserDialogOpen(true);
       setUserToRemove(userToRemove.id);
     } catch (error) {
@@ -183,7 +173,6 @@ export default function AdminUserList() {
     }
 
     try {
-      console.log(`Utilisateur·ice avec l'ID ${toUserId} invité·e à l'événement.`);
       await sendInvitation(userState.data?.id, toUserId, currentEventId);
       handleCloseAddUsersDialog();
       window.location.href = "/admin";
