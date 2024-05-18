@@ -61,11 +61,13 @@ export default function Landing() {
     <main id="main" className={styles["main"]}>
       <section className={`${styles["section-wrapper"]} ${styles["section-presentation"]}`}>
         <div className={styles["column"]}>
-          <div>
+          <div className={styles["content"]}>
             <h1 className={titan_one.className}>Organise des tirages de pères noël secrets rapidement et facilement !</h1>
             <Link className={styles["button"]} href="/login">
               Faire un tirage au sort
             </Link>
+            <small>c'est gratuit pour l'instant, profites-en ! 😉</small>
+            {/* <small>Super offre de lancement : gratuit ! 😉</small> */}
           </div>
         </div>
         <div className={`${styles["column"]} ${styles["column-image"]}`}>
@@ -128,7 +130,7 @@ export default function Landing() {
       </section>
 
       <section className={`${styles["section-wrapper"]} ${styles["section-title"]}`}>
-        <h2 className={titan_one.className}>Une interface fun, accessible et agréable !</h2>
+        <h2 className={titan_one.className}>Une interface simple et agréable !</h2>
       </section>
 
       {!isMobile && (
@@ -155,11 +157,10 @@ export default function Landing() {
           <TabPanel value={value} index={1}>
             <div className={styles["column"]}>
               <Typography variant="h3" component="h3">
-                2. Ajoute facilement tes proches
+                2. Ajoute tes proches
               </Typography>
               <Typography>
-                Si tes proches ne sont pas inscrit·es sur l'app, crée-leur un compte, puis ajoute leurs emails pour qu'iels puissent participer au
-                tirage au sort.
+                Si tes proches ne sont pas inscrit·es sur l'app, crée-leur un compte pour qu'iels puissent participer au tirage au sort.
               </Typography>
             </div>
             <div className={`${styles["column"]} ${styles["column-image"]}`}>
@@ -171,7 +172,7 @@ export default function Landing() {
           <TabPanel value={value} index={2}>
             <div className={styles["column"]}>
               <Typography variant="h3" component="h3">
-                3. Tirage au sort
+                3. Fais le tirage au sort
               </Typography>
               <Typography>Lance le tirage au sort pour que chaque participant·e reçoive son père noël secret !</Typography>
             </div>
@@ -246,8 +247,20 @@ export default function Landing() {
       )}
 
       <section className={`${styles["section-wrapper"]} ${styles["section-title"]}`}>
+        <h2 className={titan_one.className}>Une démo vaut mieux que des mots 😊</h2>
+      </section>
+
+      <section className={`${styles["section-wrapper"]} ${styles["section-video"]}`}>
+        <video muted loop controls>
+          {/* <video autoPlay muted loop controls> */}
+          <source src="/home/video-demo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </section>
+
+      <section className={`${styles["section-wrapper"]} ${styles["section-title"]}`}>
         <Link className={styles["button"]} href="/login">
-          Créer un évènement
+          Créer mon évènement
         </Link>
       </section>
     </main>
