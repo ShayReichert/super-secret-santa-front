@@ -19,6 +19,13 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
+  const deleteAccount = async () => {
+    // TODO: delete account logic
+    //  Ouvrir une modal pour confirmer la suppression du compte
+    // Demander le mot de passe pour confirmer la suppression
+    console.log("delete account");
+  };
+
   return (
     <div className={styles["content"]}>
       <Button
@@ -83,20 +90,39 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
           </div>
         )}
 
-        <Divider />
-        <MenuItem
-          className={styles["log"]}
-          onClick={logout}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") logout();
-          }}
-          role="button"
-          tabIndex={0}
-          aria-label="Se déconnecter"
-          data-testid="logout-button"
-        >
-          Se déconnecter
-        </MenuItem>
+        <div>
+          <Divider />
+          <MenuItem
+            className={styles["log"]}
+            onClick={logout}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") logout();
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Se déconnecter"
+            data-testid="logout-button"
+          >
+            Se déconnecter
+          </MenuItem>
+        </div>
+
+        <div>
+          <Divider />
+          <MenuItem
+            className={styles["log"]}
+            onClick={deleteAccount}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") deleteAccount();
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Supprimer mon compte"
+            data-testid="delete-account-button"
+          >
+            Supprimer mon compte
+          </MenuItem>
+        </div>
       </Menu>
     </div>
   );

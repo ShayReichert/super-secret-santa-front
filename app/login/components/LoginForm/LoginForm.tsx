@@ -61,7 +61,7 @@ export default function LoginForm({ onForgotPassword }: Props) {
           onChange={handleChange}
           autoComplete="username"
         />
-        <input type="password" className="" placeholder="Ton code secret" name="password" value={inputs.password} onChange={handleChange} />
+        <input type="password" className="" placeholder="Ton mot de passe" name="password" value={inputs.password} onChange={handleChange} />
         {authState.errorMessage && <p className={styles["error-message"]}>{authState.errorMessage}</p>}
         <p className={styles["forgot-password"]}>
           <a href="#" onClick={onForgotPassword}>
