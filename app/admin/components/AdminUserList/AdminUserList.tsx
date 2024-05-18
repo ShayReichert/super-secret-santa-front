@@ -21,8 +21,7 @@ const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 export default function AdminUserList() {
   const { userState, currentEvent, currentEventId, isAdministrator } = useUser();
   const { createUser, updateUser, deleteUser } = useUserList();
-  const { getEvents, getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent, renameEvent, sendInvitation } =
-    useEvents();
+  const { getCurrentEvent, setOrganizerOfEvent, setUserToEvent, deleteEvent, removeUserToEvent, renameEvent, sendInvitation } = useEvents();
   const { drawState, performDraw } = useDraw();
   const [users, setUsers] = useState<User[]>([]);
   const [organizer, setOrganizer] = useState<User | null>(null);
@@ -96,13 +95,8 @@ export default function AdminUserList() {
       return;
     }
 
-    try {
-      const events = await getEvents();
-      setIsRemoveUserDialogOpen(true);
-      setUserToRemove(userToRemove.id);
-    } catch (error) {
-      console.error("Erreur lors de la vérification de la participation de l'utilisateur", error);
-    }
+    setIsRemoveUserDialogOpen(true);
+    setUserToRemove(userToRemove.id);
   };
 
   const handleOpenRenameEventDialog = () => {

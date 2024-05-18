@@ -40,7 +40,19 @@ export const useUserList = () => {
 
   const deleteUser = async (id: number): Promise<boolean> => {
     try {
+      // Retrieve all events
+      const eventsResponse = await axiosInstance.get<SantaEvent[]>("/api/events");
+      const events = eventsResponse.data;
+
+      //  Filter events where the user participates
+      const userEvents = events.filter((event) => event.users.some((user) => user.id === id));
+
+      // Remove user from each event
+      await Promise.all(userEvents.map((event) => axiosInstance.get(`/api/events/remove/${id}/${event.id}`)));
+
+      //  Delete the user
       await axiosInstance.delete(`/api/admin/user/${id}`);
+
       return true;
     } catch (error) {
       console.error("Erreur lors de la suppression d'un utilisateur", error);

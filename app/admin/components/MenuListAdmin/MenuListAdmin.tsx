@@ -9,6 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Image from "next/image";
 import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
 
 interface Props {
   onRenameEvent: () => void;
@@ -44,16 +45,18 @@ export default function MenuListAdmin({ onRenameEvent, onDeleteEvent, onCreateUs
 
   return (
     <div className={styles["menu"]}>
-      <Button
-        ref={anchorRef}
-        id="composition-button"
-        aria-controls={open ? "composition-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
-        aria-haspopup="true"
-        onClick={handleToggle}
-      >
-        <Image className={styles["dots-icon"]} src="/icons/dots.svg" alt="Menu admin" height={26} width={26} priority />
-      </Button>
+      <Tooltip title="Gérer l'évènement">
+        <Button
+          ref={anchorRef}
+          id="composition-button"
+          aria-controls={open ? "composition-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={handleToggle}
+        >
+          <Image className={styles["dots-icon"]} src="/icons/dots.svg" alt="Menu admin" height={26} width={26} priority />
+        </Button>
+      </Tooltip>
       <Popper open={open} anchorEl={anchorRef.current} role={undefined} placement="bottom-start" transition disablePortal>
         {({ TransitionProps, placement }) => (
           <Grow
