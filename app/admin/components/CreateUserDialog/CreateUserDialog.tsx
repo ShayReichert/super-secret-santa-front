@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -9,6 +10,9 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Link from "next/link";
 import styles from "./CreateUserDialog.module.scss";
 import { isPasswordComplex, isValidEmail } from "@/app/services/inputValidator";
 import Image from "next/image";
@@ -27,6 +31,8 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
   const [showPassword, setShowPassword] = useState(false);
   const [isUserCreated, setIsUserCreated] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [consent, setConsent] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (initialEmail) setEmail(initialEmail);
@@ -43,6 +49,7 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
     else if (!isValidEmail(email)) newErrors.email = "Le format de l'email n'est pas valide.";
     if (!password.trim()) newErrors.password = "Le mot de passe ne peut pas être vide.";
     else if (!isPasswordComplex(password)) newErrors.password = "Le mot de passe doit faire au moins 8 caractères de chiffres ET de lettres.";
+    if (!consent) newErrors.consent = "Vous devez accepter les conditions d'utilisation et la politique de confidentialité.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -56,6 +63,7 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
         setUsername("");
         setEmail("");
         setPassword("");
+        setConsent(false);
       } catch (error: any) {
         console.error("Erreur lors de la création de l'utilisateur", error);
         if (error.message === "Le nom ou l'email existe déjà !") {
@@ -65,6 +73,10 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
         }
       }
     }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(password);
   };
 
   return (
@@ -150,6 +162,28 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
                 ),
               }}
             />
+            {pathname.includes("/admin") && (
+              <div className={styles["admin-warning"]}>
+                <p>
+                  Attention, si tu crées ce compte pour quelqu'un, veille bien à lui transmettre ses identifiants (prénom et mot de passe) :{" "}
+                  <Button onClick={copyToClipboard} className={styles["copy-button"]}>
+                    Copier le mot de passe
+                  </Button>
+                </p>
+              </div>
+            )}
+            <FormControlLabel
+              control={<Checkbox checked={consent} onChange={(e) => setConsent(e.target.checked)} />}
+              label={
+                <>
+                  J'accepte les{" "}
+                  <Link className={styles["legals-link"]} href="/mentions-legales#consent" target="_blank">
+                    conditions d'utilisation et la politique de confidentialité
+                  </Link>
+                </>
+              }
+            />
+            {errors.consent && <DialogContentText color="error">{errors.consent}</DialogContentText>}
           </DialogContent>
           <DialogActions className={styles["buttons"]}>
             <Button className={`${styles["button"]} ${styles["cancel-button"]}`} onClick={onClose}>

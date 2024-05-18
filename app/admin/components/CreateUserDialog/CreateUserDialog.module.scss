@@ -37,6 +37,10 @@
       font-size: 13px;
     }
 
+    .legals-link {
+      text-decoration: underline;
+    }
+
     .buttons {
       justify-content: center;
 
@@ -46,6 +50,28 @@
 
       .cancel-button {
         @include button($gray500);
+      }
+    }
+
+    .admin-warning {
+      margin: 1.5rem 0;
+      border-radius: $border-radius;
+
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: $black;
+      }
+
+      .copy-button {
+        background-color: $secondary-color;
+        color: white;
+        padding: 0 1rem;
+        font-size: 10px;
+
+        &:hover {
+          background-color: darken($secondary-color, 10%);
+        }
       }
     }
   }

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import MenuUser from "../MenuUser/MenuUser";
 import { useUser } from "@/app/context/UserContext";
 import { useAuth } from "@/app/hook/useAuth/useAuth";
+import Link from "next/link";
 
 export default function Footer() {
   const { isAdministrator, canOnlyManageEvent } = useUser();
@@ -27,8 +28,9 @@ export default function Footer() {
           <MenuUser isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
         </div>
       )}
-
-      <div>© {new Date().getFullYear()} </div>
+      <div>
+        © {new Date().getFullYear()} - <Link href="/mentions-legales">Mentions Légales</Link>
+      </div>
       <div>Alexis et Shay</div>
     </footer>
   );
