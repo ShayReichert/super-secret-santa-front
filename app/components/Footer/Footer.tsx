@@ -28,10 +28,22 @@ export default function Footer() {
           <MenuUser isAdminPage={isAdminPage} isOrganizerPage={isOrganizerPage} />
         </div>
       )}
-      <div>
-        © {new Date().getFullYear()} - <Link href="/mentions-legales">Mentions Légales</Link>
+      <div className={styles["content"]}>
+        <div>
+          Codé avec ❤️ par{" "}
+          <a href="https://github.com/Alexis3386" target="_blank">
+            Alexis
+          </a>{" "}
+          et{" "}
+          <a href="https://shayreichert.com/" target="_blank">
+            Shay
+          </a>
+        </div>
+        <div className={styles["legals"]}>
+          © {new Date().getFullYear()} - <Link href="/mentions-legales">Mentions Légales</Link> -{" "}
+          <a href="mailto:shay.reichert.dev@gmail.com">Signaler un bug</a>
+        </div>
       </div>
-      <div>Alexis et Shay</div>
     </footer>
   );
 }

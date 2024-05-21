@@ -66,8 +66,8 @@ export default function Landing() {
             <Link className={styles["button"]} href="/login">
               Faire un tirage au sort
             </Link>
-            <small>c'est gratuit pour l'instant, profites-en ! 😉</small>
-            {/* <small>Super offre de lancement : gratuit ! 😉</small> */}
+            <small>Gratuit à vie pour les 1er utilisateur·ices 😮</small>
+            <small>Inscris-toi maintenant pour profiter de l'offre !</small>
           </div>
         </div>
         <div className={`${styles["column"]} ${styles["column-image"]}`}>
@@ -86,14 +86,14 @@ export default function Landing() {
           <div className={styles["card"]}>
             <div className={styles["card-image"]}>
               <div className={styles["image-container"]}>
-                <Image src="/home/1-dalle-event.webp" alt="Crée un évènement" fill sizes="auto" />
+                <Image src="/home/1-3D.webp" alt="Crée un évènement" fill sizes="auto" />
               </div>
             </div>
             <div className={styles["card-content"]}>
               <Typography variant="h3" component="h3">
                 1. Crée un évènement
               </Typography>
-              <Typography>"Noël en famille", "Noël entre ami·es", "Noël au travail", etc.</Typography>
+              <Typography>"Noël en famille" par exemple</Typography>
             </div>
           </div>
         </div>
@@ -101,14 +101,14 @@ export default function Landing() {
           <div className={styles["card"]}>
             <div className={styles["card-image"]}>
               <div className={styles["image-container"]}>
-                <Image src="/home/2-dalle-friends.webp" alt="Ajoute les participant·es" fill sizes="auto" />
+                <Image src="/home/2-3D.webp" alt="Ajoute les participant·es" fill sizes="auto" />
               </div>
             </div>
             <div className={styles["card-content"]}>
               <Typography variant="h3" component="h3">
                 2. Ajoute les participant·es
               </Typography>
-              <Typography>Ajoute les emails de chaque participant·es.</Typography>
+              <Typography>Ajoute les emails de chaque participant·es</Typography>
             </div>
           </div>
         </div>
@@ -116,14 +116,14 @@ export default function Landing() {
           <div className={styles["card"]}>
             <div className={styles["card-image"]}>
               <div className={styles["image-container"]}>
-                <Image src="/home/3-dalle-tel.webp" alt="Fais le tirage au sort" fill sizes="auto" />
+                <Image src="/home/3-3D.webp" alt="Fais le tirage au sort" fill sizes="auto" />
               </div>
             </div>
             <div className={styles["card-content"]}>
               <Typography variant="h3" component="h3">
                 3. Fais le tirage au sort
               </Typography>
-              <Typography>Lance le tirage au sort et partage avec tes ami·es !</Typography>
+              <Typography>Et partage avec tes ami·es !</Typography>
             </div>
           </div>
         </div>
