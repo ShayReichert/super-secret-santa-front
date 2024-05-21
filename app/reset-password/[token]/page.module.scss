@@ -58,7 +58,7 @@
             @include default-input();
           }
 
-          button {
+          .button {
             @include button();
             margin-top: 3rem;
           }

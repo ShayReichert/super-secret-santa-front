@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import { useResetPassword } from "@/app/hook/useResetPassword/useResetPassword";
 import { Titan_One } from "next/font/google";
 import SantaImage from "../../components/SantaImage/SantaImage";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Image from "next/image";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
@@ -16,6 +20,7 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
   const [tokenValid, setTokenValid] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const checkToken = async () => {
@@ -48,6 +53,10 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   if (isLoading) {
     return (
       <main className={`${styles["main"]} ${styles["loading"]}`}>
@@ -69,14 +78,44 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
               }}
             >
               <div className={styles["form-group"]}>
-                <input
-                  type="password"
+                <TextField
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Entre ton nouveau mot de passe"
                   required
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton aria-label="toggle password visibility" onClick={togglePasswordVisibility}>
+                          {showPassword ? (
+                            <Image
+                              className={styles["visibility-off"]}
+                              src="/icons/visibility-off.svg"
+                              alt="Cacher le mot de passe"
+                              height={20}
+                              width={20}
+                              priority
+                            />
+                          ) : (
+                            <Image
+                              className={styles["visibility"]}
+                              src="/icons/visibility.svg"
+                              alt="Voir le mot de passe"
+                              height={20}
+                              width={20}
+                              priority
+                            />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
-                <button type="submit">Sauvegarder</button>
+                <button className={styles["button"]} type="submit">
+                  Sauvegarder
+                </button>
               </div>
             </form>
           )}

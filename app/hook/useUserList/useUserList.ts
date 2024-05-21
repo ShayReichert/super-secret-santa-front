@@ -15,7 +15,17 @@ export const useUserList = () => {
   const createUser = async (newUser: { username: string; email: string; password: string }): Promise<User | string> => {
     try {
       const response = await axiosInstance.post<User>("/api/signin", newUser);
-      return response.data;
+      const createdUser = response.data;
+
+      // Send email confirmation
+      try {
+        await axiosInstance.get(`/api/send-email-confirmation-inscription/${createdUser.email}`);
+      } catch (emailError) {
+        console.error("Erreur lors de l'envoi de l'email de confirmation", emailError);
+        throw new Error("Erreur lors de l'envoi de l'email de confirmation");
+      }
+
+      return createdUser;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         if (error.response.data.message.includes("Integrity constraint violation: 1062 Duplicate entry")) {
