@@ -138,7 +138,6 @@ export default function AdminUserList() {
           await setUserToEvent(currentEventId, result.id);
         }
         setUsers((prevUsers) => [...prevUsers, result]);
-        handleCloseCreateUserDialog();
         setErrors([]);
       } catch (error) {
         console.error("Erreur lors de l'ajout de l'utilisateur à l'événement", error);
@@ -146,8 +145,6 @@ export default function AdminUserList() {
     } else if (typeof result === "string") {
       setErrors([result]);
     }
-
-    handleCloseCreateUserDialog();
   };
 
   const handleInviteUser = async (toUserId: number) => {

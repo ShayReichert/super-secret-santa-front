@@ -44,7 +44,7 @@
     .buttons {
       justify-content: center;
 
-      .confirm-button {
+      .button {
         @include button();
       }
 

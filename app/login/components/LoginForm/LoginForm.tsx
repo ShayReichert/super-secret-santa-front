@@ -41,7 +41,6 @@ export default function LoginForm({ onForgotPassword }: Props) {
 
   const handleCreateUser = async (newUserData: NewUser) => {
     const result = await createUser(newUserData);
-    setIsCreateUserDialogOpen(false);
   };
 
   return (

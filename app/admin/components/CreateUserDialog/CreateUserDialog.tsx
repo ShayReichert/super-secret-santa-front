@@ -58,12 +58,8 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
   const handleConfirm = async () => {
     if (validateForm()) {
       try {
-        const result = await onConfirm({ username, email, password });
+        await onConfirm({ username, email, password });
         setIsUserCreated(true);
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setConsent(false);
       } catch (error: any) {
         console.error("Erreur lors de la création de l'utilisateur", error);
         if (error.message === "Le nom ou l'email existe déjà !") {
@@ -79,6 +75,20 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
     navigator.clipboard.writeText(password);
   };
 
+  const resetForm = () => {
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setConsent(false);
+    setErrors({});
+    setIsUserCreated(false);
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
   return (
     <Dialog
       className={styles["dialog"]}
@@ -89,7 +99,15 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
     >
       {isUserCreated ? (
         <DialogContent>
-          <DialogContentText className={styles["dialog-content-text"]}>Le compte a bien été créé !</DialogContentText>
+          <DialogContentText className={styles["dialog-content-text"]}>
+            Le compte a bien été créé !<br />
+            <small>Un message de confirmation a été envoyé par mail</small>
+          </DialogContentText>
+          <DialogActions className={styles["buttons"]}>
+            <Button className={styles["button"]} onClick={handleClose}>
+              OK
+            </Button>
+          </DialogActions>
         </DialogContent>
       ) : (
         <>
