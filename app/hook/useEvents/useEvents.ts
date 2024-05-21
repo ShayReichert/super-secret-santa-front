@@ -83,7 +83,7 @@ export const useEvents = () => {
 
   const getUsersToInvite = async (): Promise<User[]> => {
     try {
-      const response = await axiosInstance.get<User[]>("/api/events/usersToInvit");
+      const response = await axiosInstance.get<User[]>("/api/events/users-to-invit");
       return response.data;
     } catch (error) {
       console.error("Erreur lors de la récupération de la liste des utilisateurs à inviter", error);
