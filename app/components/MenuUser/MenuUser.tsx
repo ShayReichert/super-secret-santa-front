@@ -11,19 +11,37 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import NewEventDialog from "../NewEventDialog/NewEventDialog";
+import UserAccountDialog from "../UserAccountDialog/UserAccountDialog";
 
 export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
-  const { logout } = useAuth();
+  const { logout, deleteAccount } = useAuth();
   const { userState, isAdministrator, canOnlyManageEvent } = useUser();
   const { isEventDialogOpen, handleCreateEvent, handleCreateEventConfirm, setIsEventDialogOpen } = useCreateEvent();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [isAccountDialogOpen, setIsAccountDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const deleteAccount = async () => {
-    // TODO: delete account logic
-    //  Ouvrir une modal pour confirmer la suppression du compte
-    // Demander le mot de passe pour confirmer la suppression
-    console.log("delete account");
+  const openUserAccount = () => {
+    setIsAccountDialogOpen(true);
+  };
+
+  const handleCloseAccountDialog = () => {
+    setIsAccountDialogOpen(false);
+    setErrorMessage("");
+  };
+
+  const handleUserUpdate = (user: any) => {
+    console.log("User updated", user);
+  };
+
+  const handleUserDelete = async (id: string) => {
+    const response = await deleteAccount();
+    if (response === "Vous êtes organisateur d'un évènement, merci de changer l'organisateur") {
+      setErrorMessage("Vous êtes organisateur·ice d'un évènement, merci de changer l'organisateur·ice avant de supprimer votre compte.");
+    } else {
+      handleCloseAccountDialog();
+    }
   };
 
   return (
@@ -94,6 +112,32 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
           <Divider />
           <MenuItem
             className={styles["log"]}
+            onClick={openUserAccount}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") openUserAccount();
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Mon compte"
+            data-testid="account-button"
+          >
+            Mon compte
+          </MenuItem>
+        </div>
+
+        <UserAccountDialog
+          open={isAccountDialogOpen}
+          onClose={handleCloseAccountDialog}
+          user={userState.data}
+          onUpdate={handleUserUpdate}
+          onDelete={handleUserDelete}
+          errorMessage={errorMessage}
+        />
+
+        <div>
+          <Divider />
+          <MenuItem
+            className={styles["log"]}
             onClick={logout}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") logout();
@@ -104,23 +148,6 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
             data-testid="logout-button"
           >
             Se déconnecter
-          </MenuItem>
-        </div>
-
-        <div>
-          <Divider />
-          <MenuItem
-            className={styles["log"]}
-            onClick={deleteAccount}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") deleteAccount();
-            }}
-            role="button"
-            tabIndex={0}
-            aria-label="Supprimer mon compte"
-            data-testid="delete-account-button"
-          >
-            Supprimer mon compte
           </MenuItem>
         </div>
       </Menu>

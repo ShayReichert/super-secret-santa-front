@@ -56,5 +56,18 @@ export const useAuth = () => {
     window.location.href = "/login";
   };
 
-  return { authState, isLoggedIn, login, logout };
+  const deleteAccount = async () => {
+    try {
+      const response = await axiosInstance.get("api/user/delete-compte");
+      if (response.data === "Vous êtes organisateur d'un évènement, merci de changer l'organisateur") {
+        return response.data;
+      } else {
+        logout();
+      }
+    } catch (error) {
+      console.error("Erreur lors de la suppression du compte", error);
+    }
+  };
+
+  return { authState, isLoggedIn, login, logout, deleteAccount };
 };
