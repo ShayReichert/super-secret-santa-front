@@ -129,9 +129,7 @@ export default function AdminUserItem({
         </>
       ) : (
         <>
-          <td>
-            <span>{user.username}</span>
-          </td>
+          <td>{user.pseudo ? <span>{user.pseudo}</span> : <span>{user.username}</span>}</td>
           <td>
             <span>{user.email}</span>
           </td>

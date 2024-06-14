@@ -26,6 +26,7 @@ type EventInUser = {
   name: string;
   giftList: GiftList;
   santaOf: string | null;
+  santaOfPseudo: string | null;
   santaOfGiftList: GiftList | null;
   santaOfId: number | null;
 };
@@ -88,5 +89,6 @@ type User = {
   id: number;
   username: string;
   email: string;
+  pseudo?: string;
   roles?: string[];
 };

@@ -26,7 +26,6 @@ const UserAccountDialog = ({ open, onClose, user, onUpdate, onDelete, errorMessa
 
   const handleUpdate = () => {
     onUpdate({ ...user, pseudo });
-    onClose();
   };
 
   const openDeleteConfirm = () => {

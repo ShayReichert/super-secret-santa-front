@@ -3,6 +3,7 @@
 import styles from "./MenuUser.module.scss";
 import { useState } from "react";
 import { useAuth } from "@/app/hook/useAuth/useAuth";
+import { useUserAccount } from "@/app/hook/useUserAccount/useUserAccount";
 import { useUser } from "@/app/context/UserContext";
 import { useCreateEvent } from "@/app/hook/useCreateEvent/useCreateEvent";
 import Link from "next/link";
@@ -14,7 +15,8 @@ import NewEventDialog from "../NewEventDialog/NewEventDialog";
 import UserAccountDialog from "../UserAccountDialog/UserAccountDialog";
 
 export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage?: boolean; isOrganizerPage?: boolean }) {
-  const { logout, deleteAccount } = useAuth();
+  const { logout } = useAuth();
+  const { deleteAccount, updatePseudo } = useUserAccount();
   const { userState, isAdministrator, canOnlyManageEvent } = useUser();
   const { isEventDialogOpen, handleCreateEvent, handleCreateEventConfirm, setIsEventDialogOpen } = useCreateEvent();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -31,8 +33,13 @@ export default function MenuUser({ isAdminPage, isOrganizerPage }: { isAdminPage
     setErrorMessage("");
   };
 
-  const handleUserUpdate = (user: any) => {
-    console.log("User updated", user);
+  const handleUserUpdate = async (user: any) => {
+    const response = await updatePseudo(user.id, user.pseudo);
+    if (response === undefined) {
+      setErrorMessage("Erreur lors de la mise à jour du pseudo");
+    } else if (response.id) {
+      handleCloseAccountDialog();
+    }
   };
 
   const handleUserDelete = async (id: string) => {

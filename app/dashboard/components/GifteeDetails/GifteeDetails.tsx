@@ -50,7 +50,9 @@ export default function GifteeDetails() {
         <div className={styles["content"]}>
           <div className={styles["title"]}>
             <p>Tu es le Père Noël de</p>
-            <div className={`${styles["name"]} ${titan_one.className}`}>{currentEvent.santaOf ? currentEvent.santaOf : "..."}</div>
+            <div className={`${styles["name"]} ${titan_one.className}`}>
+              {currentEvent.santaOfPseudo ? currentEvent.santaOfPseudo : currentEvent.santaOf ? currentEvent.santaOf : "..."}
+            </div>
           </div>
 
           <div>
