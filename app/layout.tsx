@@ -10,10 +10,11 @@ import { Analytics } from "@vercel/analytics/react";
 const raleway = Raleway({ subsets: ["latin"], weight: ["300", "400", "700"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://supersecretsanta.fr"),
   title: "Super Secret Santa",
   description: "Plaisir d'offrir, joie de décevoir",
   openGraph: {
-    images: "/images/opengraph_image.jpg",
+    images: "/opengraph_image.jpg",
   },
 };
 
