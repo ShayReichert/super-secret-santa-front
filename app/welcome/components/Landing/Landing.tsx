@@ -130,7 +130,7 @@ export default function Landing() {
       </section>
 
       <section className={`${styles["section-wrapper"]} ${styles["section-title"]}`}>
-        <h2 className={titan_one.className}>Une interface simple et agréable !</h2>
+        <h2 className={titan_one.className}>Une interface simple et intuitive !</h2>
       </section>
 
       {!isMobile && (

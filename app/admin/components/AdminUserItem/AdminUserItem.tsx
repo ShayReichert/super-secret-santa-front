@@ -57,7 +57,7 @@ export default function AdminUserItem({
   const handlePasswordConfirm = async (newPassword: string) => {
     const success = await updateUser(user.id, { password: newPassword } as Partial<User>);
     if (success) {
-      console.log("Mot de passe mis à jour avec succès pour", user.username);
+      // console.log("Mot de passe mis à jour avec succès pour", user.username);
     } else {
       console.error("Erreur lors de la mise à jour du mot de passe de", user.username);
     }

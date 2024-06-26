@@ -276,7 +276,7 @@ export default function AdminUserList() {
     if (currentEventId) {
       try {
         await renameEvent(currentEventId, newEventName);
-        console.log("L'événement a été renommé avec succès :", newEventName);
+        // console.log("L'événement a été renommé avec succès :", newEventName);
         handleCloseRenameEventDialog();
         window.location.href = "/admin";
       } catch (error) {
