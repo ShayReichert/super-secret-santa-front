@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Super Secret Santa",
   description: "Plaisir d'offrir, joie de décevoir",
   openGraph: {
-    images: "/opengraph-image.jpg",
+    images: "/images/opengraph_image.jpg",
   },
 };
 
