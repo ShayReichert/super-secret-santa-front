@@ -20,10 +20,10 @@ export const useAuth = () => {
     return !!getCookie("jwt_token");
   };
 
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     try {
       const response = await axiosInstance.post("api/login_check", {
-        username: username,
+        email: email,
         password: password,
       });
       const { token } = response.data;

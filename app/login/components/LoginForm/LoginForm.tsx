@@ -11,13 +11,13 @@ interface Props {
 export default function LoginForm({ onForgotPassword }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [disabledButton, setDisabledButton] = useState(true);
-  const [inputs, setInputs] = useState({ username: "", password: "" });
+  const [inputs, setInputs] = useState({ email: "", password: "" });
   const { login, authState } = useAuth();
   const [isCreateUserDialogOpen, setIsCreateUserDialogOpen] = useState(false);
   const { createUser } = useUserList();
 
   useEffect(() => {
-    setDisabledButton(!(inputs.username && inputs.password));
+    setDisabledButton(!(inputs.email && inputs.password));
   }, [inputs]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ export default function LoginForm({ onForgotPassword }: Props) {
     if (honeypot && honeypot.value) return;
 
     setIsLoading(true);
-    await login(inputs.username, inputs.password);
+    await login(inputs.email, inputs.password);
     setIsLoading(false);
   };
 
@@ -51,15 +51,7 @@ export default function LoginForm({ onForgotPassword }: Props) {
         </label>
       </p>
       <div className={styles["form-group"]}>
-        <input
-          type="text"
-          className=""
-          placeholder="Ton prénom"
-          name="username"
-          value={inputs.username}
-          onChange={handleChange}
-          autoComplete="username"
-        />
+        <input type="text" className="" placeholder="Ton email" name="email" value={inputs.email} onChange={handleChange} autoComplete="email" />
         <input type="password" className="" placeholder="Ton mot de passe" name="password" value={inputs.password} onChange={handleChange} />
         {authState.errorMessage && <p className={styles["error-message"]}>{authState.errorMessage}</p>}
         <p className={styles["forgot-password"]}>
