@@ -11,13 +11,13 @@ const raleway = Raleway({ subsets: ["latin"], weight: ["300", "400", "700"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://supersecretsanta.fr"),
-  title: "Super Secret Santa",
-  description: "Organisation de pères Noël secret en ligne",
+  title: "Super Secret Santa : Tirage de Père Noël secret en ligne",
+  description: "Organise facilement un tirage au sort de Père Noël secret en ligne.",
   openGraph: {
     type: "website",
     url: "https://supersecretsanta.fr",
-    title: "Super Secret Santa",
-    description: "Organisation de pères Noël secret en ligne",
+    title: "Super Secret Santa : Tirage de Père Noël secret en ligne",
+    description: "Organise facilement un tirage au sort de Père Noël secret en ligne.",
     images: [
       {
         url: "/opengraph_image.jpg",
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@supersecretsanta",
-    title: "Super Secret Santa",
-    description: "Organisation de pères Noël secret en ligne",
+    title: "Super Secret Santa : Tirage de Père Noël secret en ligne",
+    description: "Organise facilement un tirage au sort de Père Noël secret en ligne.",
     images: "/opengraph_image.jpg",
   },
   robots: {
