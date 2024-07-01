@@ -12,9 +12,38 @@ const raleway = Raleway({ subsets: ["latin"], weight: ["300", "400", "700"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://supersecretsanta.fr"),
   title: "Super Secret Santa",
-  description: "Plaisir d'offrir, joie de décevoir",
+  description: "Organisation de pères Noël secret en ligne",
   openGraph: {
+    type: "website",
+    url: "https://supersecretsanta.fr",
+    title: "Super Secret Santa",
+    description: "Organisation de pères Noël secret en ligne",
+    images: [
+      {
+        url: "/opengraph_image.jpg",
+        width: 800,
+        height: 600,
+        alt: "Super Secret Santa Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@supersecretsanta",
+    title: "Super Secret Santa",
+    description: "Organisation de pères Noël secret en ligne",
     images: "/opengraph_image.jpg",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  viewport: "width=device-width, initial-scale=1.0",
+  alternates: {
+    canonical: "https://supersecretsanta.fr",
+  },
+  other: {
+    author: "Super Secret Santa Team",
   },
 };
 
