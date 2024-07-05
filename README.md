@@ -8,7 +8,7 @@ Cette application Next.js permet de gérer plusieurs évènements de pères noë
 
 ### Prérequis
 
-- Node.js (v12 ou supérieur)
+- Node.js (v20 ou supérieur)
 - npm ou yarn
 
 ### Instructions
@@ -63,7 +63,7 @@ This Next.js application allows you to manage several secret Santa events, to dr
 
 ### Prerequisites
 
-- Node.js (v12 or higher)
+- Node.js (v20 ou supérieur)
 - npm or yarn
 
 ### Instructions
