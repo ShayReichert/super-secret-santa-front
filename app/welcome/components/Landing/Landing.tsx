@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Tabs, Tab, Box, Typography } from "@mui/material";
-import styles from "./Landing.module.scss";
-import Link from "next/link";
-import Image from "next/image";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { Titan_One } from "next/font/google";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import styles from "./Landing.module.scss";
 
 const titan_one = Titan_One({ subsets: ["latin"], weight: ["400"] });
 
@@ -62,7 +62,7 @@ export default function Landing() {
       <section className={`${styles["section-wrapper"]} ${styles["section-presentation"]}`}>
         <div className={styles["column"]}>
           <div className={styles["content"]}>
-            <h1 className={titan_one.className}>Organise des tirages de pères noël secrets rapidement et facilement !</h1>
+            <h1 className={titan_one.className}>Organise un tirage de père noël secret rapidement et facilement !</h1>
             <Link className={styles["button"]} href="/login">
               Faire un tirage au sort
             </Link>

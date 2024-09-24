@@ -3,7 +3,7 @@ import Landing from "./components/Landing/Landing";
 
 export const metadata: Metadata = {
   title: "Super Secret Santa",
-  description: "Organise facilement tes Pères Noël secret en ligne",
+  description: "Organise facilement un tirage au sort de Père Noël secret en ligne.",
 };
 
 export default function Welcome() {
