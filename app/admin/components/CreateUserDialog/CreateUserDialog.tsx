@@ -183,7 +183,7 @@ const CreateUserDialog = ({ open, onClose, onConfirm, initialEmail }: CreateUser
             {pathname.includes("/admin") && (
               <div className={styles["admin-warning"]}>
                 <p>
-                  Attention, si tu crées ce compte pour quelqu'un, veille bien à lui transmettre ses identifiants (prénom et mot de passe) :{" "}
+                  Attention, si tu crées ce compte pour quelqu'un, veille bien à lui transmettre ses identifiants (email et mot de passe) :{" "}
                   <Button onClick={copyToClipboard} className={styles["copy-button"]}>
                     Copier le mot de passe
                   </Button>
