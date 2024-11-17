@@ -66,8 +66,12 @@ export default function Landing() {
             <Link className={styles["button"]} href="/login">
               Faire un tirage au sort
             </Link>
-            <small>Gratuit à vie pour les 1er utilisateur·ices 😮</small>
-            <small>Inscris-toi maintenant pour profiter de l'offre !</small>
+            <div className={styles["link-login"]}>
+              Tu as déjà un compte ?{" "}
+              <Link href="/login">
+                <span>Connecte-toi</span>
+              </Link>
+            </div>
           </div>
         </div>
         <div className={`${styles["column"]} ${styles["column-image"]}`}>

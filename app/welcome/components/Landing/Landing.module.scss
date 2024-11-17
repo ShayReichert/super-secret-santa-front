@@ -75,6 +75,29 @@
             margin-bottom: 20px;
           }
 
+          .link-login {
+            font-size: 14px;
+
+            a {
+              position: relative;
+
+              @include after(0, 1px) {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: $black;
+                transition: width 0.3s ease-in-out;
+              }
+
+              &:hover {
+                &:after {
+                  width: 0;
+                }
+              }
+            }
+          }
+
           .button {
             @include button();
             margin: 2rem 0 0.5rem;
